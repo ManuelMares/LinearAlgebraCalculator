@@ -1,4 +1,4 @@
-package Shared;
+package Classes;
 import java.util.Scanner;
 
 
@@ -113,6 +113,23 @@ public class Validations{
    }
 
    
+   public double validateInput_isDouble(String message){
+      double input = -1;
+      boolean isdouble = false;
+      System.out.println(message);
+      while( !isdouble ){
+         if( scan.hasNextDouble() ){
+            input = scan.nextDouble();
+            isdouble = true;
+         } else {
+            System.out.println("\n\nThe las input was not a valid decimal value. Please try with a different value.");
+            isdouble = false; //for some reason, code crashes without this.
+            scan.next();//deletes the memory of what there is in the input. Otherwise it would loop infinitely
+         }
+      }
+      return input;
+   }
+
    public double validateInput_isDouble(){
       double input = -1;
       boolean isdouble = false;

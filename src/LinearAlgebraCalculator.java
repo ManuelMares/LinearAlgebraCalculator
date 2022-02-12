@@ -1,7 +1,8 @@
 import java.util.Scanner;
+
+import Classes.Validations;
 import MainMenu.MainMenu;
 import Methods.Matrix.MatrixMain;
-import Shared.Validations;
 
 public class LinearAlgebraCalculator{
    //IMPORTS

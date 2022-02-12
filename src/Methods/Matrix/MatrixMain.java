@@ -1,8 +1,8 @@
 package Methods.Matrix;
 import java.util.Scanner;
 
+import Classes.Validations;
 import Methods.Matrix.SolveMatrix.SolveMatrix_ReduceEchelon;
-import Shared.Validations;
 
 
 public class MatrixMain{     
