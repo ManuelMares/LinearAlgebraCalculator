@@ -7,17 +7,61 @@ import Variables.Dictionary;
 public class SolveMatrix_ReduceEchelon {
     //IMPORTS
     static Validations validation = new Validations();
-    static Matrix matrix = new Matrix("Matrix A");
+    static Matrix matrix;
+    private boolean stepByStep;
 
     public void Main(){
-        System.out.println("\n\n\nLet's start by indicate the size of the matrix");
+        matrix = new Matrix("Matrix A");
         CreateNewMatrix();
+        SetStepByStep();
         PrepareMatrix();
-        Reduce_GaussJordan();
+        if(stepByStep){
+            matrix.PrintPivots();
+            Reduce_GaussJordan_SteByStep();
+        }
+        else
+            Reduce_GaussJordan();        
         System.out.println("======================== Conclusion ========================");
-        PrintConclusion();
+        matrix.SetPivotsResults();
+        PrintConclusion();        
+        matrix.pivots.PrintPivots();
+        matrix.pivots.PrintPivots_CompleteStatus();
+        System.out.println("======================== END OF THE PROGRAM ======================== \n\n\n");
 
         //iteration try for pivots
+    }
+
+    public Matrix ReduceMatrix(double[][] GivenMatrix){
+        matrix = new Matrix("New Matrix", GivenMatrix);
+        PrepareMatrix();
+        if(stepByStep){
+            matrix.PrintPivots();
+            Reduce_GaussJordan_SteByStep();
+        }
+        else
+            Reduce_GaussJordan(); 
+            
+        matrix.TryGetPivots();       
+        PrintConclusion();
+        return matrix;
+    }
+
+    public void CreateNewMatrix(){
+        System.out.println("\n\n\nLet's start by indicate the size of the matrix");
+        int AmountRows = validation.validateInput_BiggerThan("Please indicate the amount of rows in the matrix", 2);
+        int AmountColumns = validation.validateInput_BiggerThan("Please indicate the amount of columns in the matrix", 2);
+        int[] size = {AmountRows, AmountColumns};
+        matrix.SetSize(size);
+        matrix.PrintMatrix("\nThe matrix input is:\n");
+        matrix.setMatrix_Inputs();
+        matrix.PrintMatrix("\nThe matrix input is:");
+    }
+    
+    private void SetStepByStep() {
+        System.out.println("\n\n\nPlease indicate if you want a detailed Step-by-Step solution");
+        boolean status = validation.validateInput_YesNo();
+        matrix.SetStepByStep(status);
+        stepByStep = status;
     }
 
     private void PrintConclusion(){
@@ -61,22 +105,28 @@ public class SolveMatrix_ReduceEchelon {
     private void PrepareMatrix(){
         matrix.DeleteRepetedRows();
         matrix.TryGetPivots();
-        matrix.PrintPivots();
     }
 
     private void Reduce_GaussJordan(){
+        for (int indexVar = 0; indexVar < matrix.pivots.size; indexVar++){
+            if(!matrix.pivots.areFree[indexVar])
+                ReduceColumn(indexVar);            
+        }
+    }
+    
+    private void Reduce_GaussJordan_SteByStep(){
         System.out.println("======================== Solution step by step ========================");
         for (int indexVar = 0; indexVar < matrix.pivots.size; indexVar++) {            
             System.out.println("~~~~~~~~~~~~~~~ Step " +(indexVar + 1) +  " ~~~~~~~~~~~~~~~");
             if(!matrix.pivots.areFree[indexVar]){
-                ReduceColumn(indexVar);
+                ReduceColumn_StepByStep(indexVar);
             }else{
                 System.out.println("Pivot "+(indexVar + 1) + " is a free variable. Hence, there is nothing to do in this step. \n");
             }
         }
     }
 
-    private void ReduceColumn(int indexVar){
+    private void ReduceColumn_StepByStep(int indexVar){
         if(matrix.GetElement(matrix.pivots.positions[indexVar]) != 0){
             String varName = "X"+ (indexVar + 1);
             String position = "(" + (matrix.pivots.positions[indexVar][0]+1) + "," + (matrix.pivots.positions[indexVar][1]+1) + ")";
@@ -90,22 +140,11 @@ public class SolveMatrix_ReduceEchelon {
         }
     }
 
-    public void CreateNewMatrix(){
-        int AmountRows = -1;
-        while(AmountRows < 2){
-            System.out.println("Please indicate the amount of rows in the matrix");
-            AmountRows = validation.validateInput_isInt();
+    private void ReduceColumn(int indexVar){
+        if(matrix.GetElement(matrix.pivots.positions[indexVar]) != 0){
+            String varName = "X"+ (indexVar + 1);
+            matrix.usePivotTo_ClearColumn(varName);
         }
-        int AmountColumns = -1;
-        while(AmountColumns < 2){
-            System.out.println("Please indicate the amount of columns in the matrix");
-            AmountColumns = validation.validateInput_isInt();
-        }
-        int[] size = {AmountRows, AmountColumns};
-        matrix.SetSize(size);
-        matrix.PrintMatrix("\nThe matrix input is:\n");
-        matrix.setMatrix_Inputs();
-        matrix.PrintMatrix("\nThe matrix input is:");
     }
-    
+
 }

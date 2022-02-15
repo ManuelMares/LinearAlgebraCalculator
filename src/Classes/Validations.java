@@ -61,6 +61,20 @@ public class Validations{
    }
    
    
+   public double validateInput_BiggerThan(String message, double minValue){
+      boolean valid = false;
+      double input = -1;
+      while(!valid){
+         System.out.println(message);
+         input = scan.nextInt();
+         if(input > minValue){
+            valid = true;
+         }else{
+            System.out.println("\nError: input must be bigger than " + minValue + ".");
+         }
+      }
+      return input;  
+   }
    public int validateInput_BiggerThan(String message, int minValue){
       boolean valid = false;
       int input = -1;
@@ -95,6 +109,26 @@ public class Validations{
       return input;
    }
    
+   
+   public int validateInput_isInt(String message){
+      //print menu and validates input
+      int input = -1;
+      boolean isNumeric = false;
+
+      System.out.println(message);
+      while( !isNumeric ){
+         if( scan.hasNextInt() ){
+            input = scan.nextInt();
+            isNumeric = true;
+         } else {
+            System.out.println("\n\nInvalid option. Please indicate one index from the menu ");
+            isNumeric = false;
+            scan.next();//deletes the memory of what there is in the input. Otherwise it would loop infinitely
+         }
+      }
+      return input;
+   }
+
    public int validateInput_isInt(){
       //print menu and validates input
       int input = -1;
