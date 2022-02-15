@@ -10,10 +10,12 @@ public  class Matrix{
    public int[] sizeMatrix;
    public Pivots pivots;
    public boolean isConsistent;
+   public boolean showStepByStep;
 
 
    //CONSTRUCTORS---------------------------------------------
    public Matrix(String name, double[][] values){
+      showStepByStep = true;
       isConsistent = true;
       sizeMatrix = new int[2];
       nameMatrix = name;
@@ -21,6 +23,7 @@ public  class Matrix{
       SetMatrixTo_Matrix(values);
    }
    public Matrix(String name, int[] size, double value){
+      showStepByStep = true;
       isConsistent = true;
       sizeMatrix = new int[2];
       nameMatrix = name;
@@ -37,6 +40,7 @@ public  class Matrix{
       SetMatrixTo_Value(value);
    }
    public Matrix(String name, int[] size){
+      showStepByStep = true;
       isConsistent = true;
       sizeMatrix = new int[2];
       nameMatrix = name;
@@ -44,6 +48,7 @@ public  class Matrix{
       matrix = new double[size[0]][size[1]];
    }
    public Matrix(String name, int size){
+      showStepByStep = true;
       isConsistent = true;
       sizeMatrix = new int[2];
       nameMatrix = name;
@@ -56,6 +61,7 @@ public  class Matrix{
       nameMatrix = name;
       pivots = new Pivots();
       matrix = null;
+      showStepByStep = true;
    }
 
 
@@ -91,7 +97,9 @@ public  class Matrix{
    public int[] GetSize(){
       return sizeMatrix;
    }
-
+   public void SetStepByStep(boolean status){
+      showStepByStep = status;
+   }
 
 
 
@@ -218,12 +226,11 @@ public  class Matrix{
    }
 
    public void setMatrixRow_Inputs(int indexRow){
-      for (int indexColumn = 0; indexColumn < sizeMatrix[0]; indexColumn++) {
+      for (int indexColumn = 0; indexColumn < sizeMatrix[1]; indexColumn++) {
          String message = "Indicate entry (" + (indexRow + 1) + "," + (indexColumn + 1) + "):";
          double value = validation.validateInput_isDouble(message);
          int[] position = {indexRow, indexColumn};
-         SetElementTo_Value(position, value);
-         
+         SetElementTo_Value(position, value);         
       }
    }
 
@@ -472,6 +479,7 @@ public  class Matrix{
       return newVector;
    }
 
+
    public double[] GetUnitarianRow(int[] pivotPosition){
       double pivotValue = GetElement(pivotPosition);
       double[] pivotRow = GetRow(pivotPosition[0]);
@@ -479,24 +487,24 @@ public  class Matrix{
 
       return unitarianRow;
    }
-
    public void usePivotTo_ClearColumn(String pivotName) {
       if(pivotName != null ){
          int[] pivotPosition = pivots.GetPivot_Position(pivotName);
          String message = "Dividing Row" + (pivotPosition[0] + 1)+ " by " + GetElement(pivotPosition) + " to get the unitarian row, the new matrix is:";
          double[] unitarianRow = GetUnitarianRow(pivotPosition);
          setRowTo_Array(pivotPosition[0], unitarianRow);
-         PrintMatrix(message);
-         
-         System.out.println("\nNow this unitarian row will be use to clean the pivot's column. The operations are:");
+         if(showStepByStep){
+            PrintMatrix(message);
+            System.out.println("\nNow this unitarian row will be use to clean the pivot's column. The operations are:");
+         }
          ClearColumn(unitarianRow, pivotPosition);
-         PrintMatrix("The resulting matrix in step " + pivotName.charAt(1) + " is:");
+         if(showStepByStep)
+            PrintMatrix("The resulting matrix in step " + pivotName.charAt(1) + " is:");
       }else{
          System.out.println("Error: The parameter indicated is exceeds the amount of variables in the matrix");
          System.out.println("In method ClearColumn");
       }
    }
-
    private void ClearColumn(double[] unitarianRow, int[] pivotPosition){
       //Loops through each row and cancels element in the same column with the unitarian row, except itself
       int counter = 1;
@@ -504,8 +512,7 @@ public  class Matrix{
          if( indexRow != pivotPosition[0] && matrix[indexRow][pivotPosition[1]] != 0){
             int[] positionToCancel = {indexRow, pivotPosition[1]};
             double factorToCancel = (-1) * GetElement(positionToCancel);
-            //printf: 1) R2*(-5) added to R3.
-            System.out.printf("%d)R%d*(%.2f) added to R%d.\n", counter,(pivotPosition[0]+1),factorToCancel, (positionToCancel[0]+1) );
+            PrintRowOperationInstruction(counter,(pivotPosition[0]+1),factorToCancel, (positionToCancel[0]+1));
             double[] arrayToAdd = Operate_ArrayByScalar(unitarianRow, factorToCancel);         
             ModifyMatrix_AddVectorTo_Row(indexRow, arrayToAdd);
             counter++;
@@ -518,7 +525,7 @@ public  class Matrix{
 
    //VALIDATIONS
    public void Validate_HasColumnsZero(){
-      //This method return an array with the list of all the zero columns
+      //TODO: This method return an array with the list of all the zero columns
       
 
    }
@@ -588,6 +595,16 @@ public  class Matrix{
 
 
    //PIVOTS
+   public void SetPivotsResults(){
+      pivots.results = new double[pivots.size];
+      int counter = 0;
+      for (int[] positionPivot : pivots.positions) {
+         int[] positionResult = {positionPivot[0], (sizeMatrix[1]-1)};
+         pivots.results[counter] = GetElement(positionResult);
+         counter++;
+      }
+   }
+
    public void TryGetPivots(){      
       //This method will get the pivots. If it is not possible to find all of the index, it will randomly rearrage it and try again.
 
@@ -939,6 +956,14 @@ public  class Matrix{
    
    
 
+   //STEP BY STEP
+   
+   public void PrintRowOperationInstruction(int indexStep, int indexRow_Base, double factor, int indexRow_ToCancel){
+      if(showStepByStep){
+         //printf: 1) R2*(-5) added to R3.
+         System.out.printf("%d)R%d*(%.2f) added to R%d.\n", indexStep, indexRow_Base, factor, indexRow_ToCancel );
+      }      
+   }
 
 
 

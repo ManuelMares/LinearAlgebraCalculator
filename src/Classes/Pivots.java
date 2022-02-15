@@ -4,6 +4,7 @@ public class Pivots{
     public String[] names;
     public int[][] positions;
     public double[] values;
+    public double[] results;
     public boolean[] areFree;
     public int size;
 
@@ -11,6 +12,7 @@ public class Pivots{
         names = new String[0];
         positions = new int[0][0];
         values = new double[0];
+        results = new double[0];
         areFree = new boolean[0];
         size = 0;
     }
@@ -158,9 +160,9 @@ public class Pivots{
 
     public void PrintPivots(){
         String topDivisor = "------------";
-        System.out.println("\n\nDetail report of variables' status....");
+        System.out.println("\n\nDetailed report of variables' status....");
         System.out.printf("|%-12s|%-12s|%-12s|%-12s|\n", topDivisor, topDivisor, topDivisor, topDivisor);
-        System.out.printf("|%-12s|%-12s|%-12s|%-12s|\n", "Name", "Position", "Values", "Status");
+        System.out.printf("|%-12s|%-12s|%-12s|%-12s|\n", "Name", "Position", "Coeficients", "Status");
         System.out.printf("|%-12s|%-12s|%-12s|%-12s|\n", topDivisor, topDivisor, topDivisor, topDivisor);
         for (int index = 0; index < names.length; index++) {
             if(areFree[index]){
@@ -176,6 +178,28 @@ public class Pivots{
             }
         }        
         System.out.printf("|%-12s|%-12s|%-12s|%-12s|\n\n\n", topDivisor, topDivisor, topDivisor, topDivisor);
+    }
+
+    public void PrintPivots_CompleteStatus(){
+        String topDivisor = "------------";
+        System.out.println("\n\nUpdated detailed report of variables' status");
+        System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|\n", topDivisor, topDivisor, topDivisor, topDivisor, topDivisor);
+        System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|\n", "Name", "Position", "Coeficient", "Result" , "Status");
+        System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|\n", topDivisor, topDivisor, topDivisor, topDivisor, topDivisor);
+        for (int index = 0; index < names.length; index++) {
+            if(areFree[index]){
+                String name =names[index];
+                String na ="N/A";
+                String status = "Free";
+                System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|\n", name, na, na, na, status);
+            }else{
+                String name =names[index];
+                String position = "(" + (positions[index][0]+1) +","+ (positions[index][1]+1) + ")";
+                String status = "Basic";
+                System.out.printf("|%-12s|%-12s|%-12.2f|%-12.2f|%-12s|\n", name, position, values[index], results[index], status);
+            }
+        }        
+        System.out.printf("|%-12s|%-12s|%-12s|%-12s|%-12s|\n\n\n", topDivisor, topDivisor, topDivisor, topDivisor, topDivisor);
     }
 
 }
