@@ -74,8 +74,8 @@ public class SolveMatrix_ReduceEchelon {
 
     public void CreateNewMatrix(){
         System.out.println("\n\n\nLet's start by indicate the size of the matrix");
-        int AmountRows = validation.validateInput_BiggerThan("Please indicate the amount of rows in the matrix", 2);
-        int AmountColumns = validation.validateInput_BiggerThan("Please indicate the amount of columns in the matrix", 2);
+        int AmountRows = validation.Input_BiggerThan("Please indicate the amount of rows in the matrix", 2);
+        int AmountColumns = validation.Input_BiggerThan("Please indicate the amount of columns in the matrix", 2);
         int[] size = {AmountRows, AmountColumns};
         matrix.SetSize(size);
         matrix.PrintMatrix("\nThe matrix input is:\n");
@@ -85,7 +85,7 @@ public class SolveMatrix_ReduceEchelon {
     
     private void SetStepByStep() {
         System.out.println("\n\n\nPlease indicate if you want a detailed Step-by-Step solution");
-        boolean status = validation.validateInput_YesNo();
+        boolean status = validation.Input_YesNo();
         matrix.SetStepByStep(status);
         stepByStep = status;
     }
@@ -112,7 +112,6 @@ public class SolveMatrix_ReduceEchelon {
                 System.out.printf("|%-31s-%-31s-%-31s|\n", topDivisor, topDivisor, topDivisor);
             }
             matrix.printVariablesValues();
-            matrix.printVariables_ParametricForm();
         }
         else{            
             String topDivisor = "-------------------------------";

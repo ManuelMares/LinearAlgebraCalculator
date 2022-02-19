@@ -1,207 +1,211 @@
 package Classes;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import Classes.Exceptions.InvalidAnswerException;
+import Classes.Exceptions.InvalidNumberException;
 
 
 public class Validations{  
-   static Scanner scan = new Scanner (System.in);
+   static Scanner scan = new Scanner (System.in);   
    
-   
-   
-   
-   public int ShowAndValidate_Menu(String[] options){
-      if(options.length > 0){
-         boolean validOption = false;
-         int selection = -1;
-         while(  validOption == false ){
-            //Prints menu and validates entrance
-            selection = validateInput_isInt(options);
-
-            //Validates that it is a valid option
-            if( selection >= 1 && selection <= options.length ){
-               validOption = true;
-            }else{
-               System.out.println("\n\nInvalid option. Please select one option form the menu: ");
-            }
+   //VALIDATE MENU
+   public int     ShowAndValidate_Menu(String[] options){
+      int selection = -1;
+      try{
+         if(options.length > 0){
+            DisplayMenuOptions(options);
+            String message = "Please select an option from the menu";
+            selection = Input_InRange(message, 0, options.length);
          }
-         return selection; 
-      } else{
-            System.out.println("This menu does not have any option available yet. Please contact support");   
-            return -1;   
-      } 
+      }catch(NullPointerException ex){
+         System.out.printf("Exception: %s\n",ex);
+      }      
+      return selection; 
    }
-   
-   public void listMenu(String[] options){
+   public void    DisplayMenuOptions(String[] options){
       int indexMenu = 0;
       for(String option : options){               
-         System.out.println((indexMenu+1) + "    " + option);
+         System.out.printf("%d)     %s\n",(indexMenu+1), option);
          indexMenu++;
       }
    }
    
-   
-   
-   
-   
-   
+     
    
    //INPUTS VALUE
-   public static int validateInput_Positive(String message){
-      boolean valid = false;
-      int input = -1;
-      while(!valid){
-         System.out.println(message);
-         input = scan.nextInt();
-         if(input > 0){
-            valid = true;
-         }else{
-            System.out.println("\nError: input must be bigger than 0.");
-         }
-      }
-      return input;  
-   }
-   
-   
-   public double validateInput_BiggerThan(String message, double minValue){
+   public double  Input_InRange(String message, double minValue, double maxValue){
       boolean valid = false;
       double input = -1;
       while(!valid){
-         System.out.println(message);
-         input = scan.nextInt();
-         if(input > minValue){
+         try{
+            System.out.println(message);
+            input = scan.nextInt();
+            if(input > maxValue  ||  input < minValue){
+               throw new InvalidNumberException("The number has to be bigger than " + minValue + " and smaller than" + maxValue);
+            }
             valid = true;
-         }else{
-            System.out.println("\nError: input must be bigger than " + minValue + ".");
+         }catch(InvalidNumberException ex){
+            System.out.printf("Exception: %s\n", ex);
+         }catch(InputMismatchException ex){
+            System.out.printf("Exception: %s\nThe input must be an integer.\n", ex);
+            //This statement is necesary to clean the input
+            scan.next();
          }
       }
       return input;  
    }
-   public int validateInput_BiggerThan(String message, int minValue){
+   public int     Input_InRange(String message, int minValue, int maxValue){
       boolean valid = false;
       int input = -1;
       while(!valid){
-         System.out.println(message);
-         input = scan.nextInt();
-         if(input > minValue){
+         try{
+            System.out.println(message);
+            input = scan.nextInt();
+            if(input > maxValue  ||  input < minValue){
+               throw new InvalidNumberException("The number has to be bigger than " + minValue + " and smaller than" + maxValue);
+            }
             valid = true;
-         }else{
-            System.out.println("\nError: input must be bigger than " + minValue + ".");
+         }catch(InvalidNumberException ex){
+            System.out.printf("Exception: %s\n", ex);
+         }catch(InputMismatchException ex){
+            System.out.printf("Exception: %s\nThe input must be an integer.\n", ex);
+            //This statement is necesary to clean the input
+            scan.next();
+         }
+      }
+      return input;  
+   }
+   public double  Input_Positive(){
+      double doubleNum = 0;
+      double input = Input_BiggerThan("Please input a positive double", doubleNum);
+      return input;  
+   }
+   public int     Input_Positive(String message){
+      int input = Input_BiggerThan(message, 0);
+      return input;  
+   }
+   public double  Input_BiggerThan(String message, double minValue){
+      boolean valid = false;
+      double input = -1;
+      while(!valid){
+         try{
+            System.out.println(message);
+            input = scan.nextInt();
+            if(input < minValue){
+               throw new InvalidNumberException("The number has to be bigger than " + minValue);
+            }
+            valid = true;
+         }catch(InvalidNumberException ex){
+            System.out.printf("Exception: %s\n", ex);
+         }catch(InputMismatchException ex){
+            System.out.printf("Exception: %s\nThe input must be an integer.\n", ex);
+            //This statement is necesary to clean the input
+            scan.next();
+         }
+      }
+      return input;  
+   }
+   public int     Input_BiggerThan(String message, int minValue){
+      boolean valid = false;
+      int input = -1;
+      while(!valid){
+         try{
+            System.out.println(message);
+            input = scan.nextInt();
+            if(input < minValue){
+               throw new InvalidNumberException("The number has to be bigger than " + minValue);
+            }
+            valid = true;
+         }catch(InvalidNumberException ex){
+            System.out.printf("Exception: %s\n", ex);
+         }catch(InputMismatchException ex){
+            System.out.printf("Exception: %s\nThe input must be an integer.\n", ex);
+            //This statement is necesary to clean the input
+            scan.next();
          }
       }
       return input;  
    }
    
 
-   public int validateInput_isInt(String[] options){
-      //print menu and validates input
-      int input = -1;
-      boolean isNumeric = false;
-      while( !isNumeric ){
-         listMenu(options);
-         if( scan.hasNextInt() ){
-            input = scan.nextInt();
-            isNumeric = true;
-         } else {
-            System.out.println("\n\nInvalid option. Please indicate one index from the menu ");
-            isNumeric = false;
-            scan.next();//deletes the memory of what there is in the input. Otherwise it would loop infinitely
-         }
-      }
-      return input;
-   }
-   
-   
-   public int validateInput_isInt(String message){
-      //print menu and validates input
-      int input = -1;
-      boolean isNumeric = false;
-
-      System.out.println(message);
-      while( !isNumeric ){
-         if( scan.hasNextInt() ){
-            input = scan.nextInt();
-            isNumeric = true;
-         } else {
-            System.out.println("\n\nInvalid option. Please indicate one index from the menu ");
-            isNumeric = false;
-            scan.next();//deletes the memory of what there is in the input. Otherwise it would loop infinitely
-         }
-      }
-      return input;
-   }
-
-   public int validateInput_isInt(){
-      //print menu and validates input
-      int input = -1;
-      boolean isNumeric = false;
-      while( !isNumeric ){
-         if( scan.hasNextInt() ){
-            input = scan.nextInt();
-            isNumeric = true;
-         } else {
-            System.out.println("\n\nInvalid option. Please indicate one index from the menu ");
-            isNumeric = false;
-            scan.next();//deletes the memory of what there is in the input. Otherwise it would loop infinitely
-         }
-      }
-      return input;
-   }
-
-   
-   public double validateInput_isDouble(String message){
+   //INPUTS TYPE
+   public double  Input_IsDouble(String message){
+      boolean valid = false;
       double input = -1;
-      boolean isdouble = false;
-      System.out.println(message);
-      while( !isdouble ){
-         if( scan.hasNextDouble() ){
+      while(!valid){
+         try{
+            System.out.println(message);
             input = scan.nextDouble();
-            isdouble = true;
-         } else {
-            System.out.println("\n\nThe las input was not a valid decimal value. Please try with a different value.");
-            isdouble = false; //for some reason, code crashes without this.
-            scan.next();//deletes the memory of what there is in the input. Otherwise it would loop infinitely
+            valid = true;
+         }catch(InputMismatchException ex){
+            System.out.printf("Exception: %s\nThe input must be a double.\n", ex);
+            //This statement is necesary to clean the input
+            scan.next();
          }
       }
-      return input;
+      return input;  
    }
-
-   public double validateInput_isDouble(){
-      double input = -1;
-      boolean isdouble = false;
-      while( !isdouble ){
-         if( scan.hasNextDouble() ){
-            input = scan.nextDouble();
-            isdouble = true;
-         } else {
-            System.out.println("\n\nThe las input was not a valid decimal value. Please try with a different value.");
-            isdouble = false; //for some reason, code crashes without this.
-            scan.next();//deletes the memory of what there is in the input. Otherwise it would loop infinitely
-         }
-      }
-      return input;
-   }
-   
-   
-   public boolean validateInput_YesNo(){
+   public String  Input_IsString(String message){
+      boolean valid = false;
       String input = "";
-      boolean isValid = false;
-      boolean answerYesNo = false;
-      while( !isValid ){
-         input = scan.next();
-         if( input.length() >= 1 && 
-            (input.charAt(0) == 'Y' || input.charAt(0) == 'y' )){
-            isValid = true;
-            answerYesNo = true;
-         } else if( input.length() >= 1 && 
-            (input.charAt(0) == 'N'  || input.charAt(0) == 'n' )){
-            isValid = true;
-            answerYesNo = false;
-         }else {
-            System.out.println("\n\nPlease indicate [Y]/[y] to agree or [N]/[n] to disagree. You can also type [yes] or [no].");
-            isValid = false; //for some reason, code crashes without this.
+      while(!valid){
+         try{
+            System.out.println(message);
+            input = scan.nextLine();
+            valid = true;
+         }catch(InputMismatchException ex){
+            System.out.printf("Exception: %s\nThe input must be a double.\n", ex);
+            //This statement is necesary to clean the input
+            scan.next();
          }
       }
-      return answerYesNo;
+      return input;  
    }
+   public int     Input_IsInt(String message){
+      boolean valid = false;
+      int input = 0;
+      while(!valid){
+         try{
+            System.out.println(message);
+            input = scan.nextInt();
+            valid = true;
+         }catch(InputMismatchException ex){
+            System.out.printf("Exception: %s\nThe input must be an integer.\n", ex);
+            //This statement is necesary to clean the input
+            scan.next();
+         }
+      }
+      return input;  
+   }
+   public boolean Input_YesNo(){
+      boolean answer = false;
+      boolean valid = false;
+      String input = "";
+      while(!valid){
+         try{
+            input = scan.next().toLowerCase();
+            if(input.charAt(0) == 'y'){
+               return true;
+            }
+            if(input.charAt(0) == 'n'){
+               return false;
+            }
+            throw new InvalidAnswerException("The answer options are {Yes, yes, Y, y, or No, no, N, n}");
+         }catch(InvalidAnswerException ex){
+            System.out.printf("Exception: %s\n", ex);
+         }catch(InputMismatchException ex){
+            System.out.printf("Exception: %s\nThe input must be a word.\n", ex);
+            //This statement is necesary to clean the input
+            scan.next();
+         }
+      }
+      return answer;  
+   }
+
+
+
+
 
 
    public int Array_IndexOf(int[] array, int value){
