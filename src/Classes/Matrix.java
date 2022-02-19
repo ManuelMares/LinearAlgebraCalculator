@@ -6,11 +6,11 @@ public  class Matrix{
    static Validations validation = new Validations();
 
    private double[][] matrix;
-   public String nameMatrix;
-   public int[] sizeMatrix;
-   public Pivots pivots;
+   private String nameMatrix;
+   private int[] sizeMatrix;
+   private Pivots pivots;
    public boolean isConsistent;
-   public boolean showStepByStep;
+   private boolean showStepByStep;
 
 
    //CONSTRUCTORS---------------------------------------------
@@ -234,7 +234,6 @@ public  class Matrix{
       }
    }
 
-
    public void SetMatrixTo_Value(double value){
       for (int indexRow = 0; indexRow < matrix.length; indexRow++) {
          for (int indexColumn = 0; indexColumn < matrix.length; indexColumn++) {
@@ -247,6 +246,13 @@ public  class Matrix{
       matrix = newMatrix;
    }
    
+   public void SetRowsTo_Value(int[] listRows, double value){
+      if(listRows != null && listRows.length >= 0){
+         for (int index : listRows) {
+            setRowTo_Value(index, value);
+         }
+      }
+   }
    public void setRowTo_Array(int indexRow, double[] values){
       if( indexRow >= 0 && matrix.length > indexRow ){
          if(values != null){
@@ -272,13 +278,6 @@ public  class Matrix{
       }
    }
    
-   public void SetRowsTo_Value(int[] listRows, double value){
-      if(listRows != null && listRows.length >= 0){
-         for (int index : listRows) {
-            setRowTo_Value(index, value);
-         }
-      }
-   }
 
    public void setColumnTo_Array(int indexColumn, double[] values){      
       if( indexColumn >= 0 && matrix[0].length > indexColumn ){
@@ -304,7 +303,9 @@ public  class Matrix{
          System.out.println("Error: The column you are tryting to modify is beyond the limits of matrix "+nameMatrix);
       }
    }
-
+  
+  
+  
    public void SetElementTo_Value(int[] position, double value){
       if(position != null && position.length == 2){
          if(position[0] >=0 && matrix.length > position[0]){
@@ -490,16 +491,19 @@ public  class Matrix{
    public void usePivotTo_ClearColumn(String pivotName) {
       if(pivotName != null ){
          int[] pivotPosition = pivots.GetPivot_Position(pivotName);
-         String message = "Dividing Row" + (pivotPosition[0] + 1)+ " by " + GetElement(pivotPosition) + " to get the unitarian row, the new matrix is:";
-         double[] unitarianRow = GetUnitarianRow(pivotPosition);
-         setRowTo_Array(pivotPosition[0], unitarianRow);
-         if(showStepByStep){
-            PrintMatrix(message);
-            System.out.println("\nNow this unitarian row will be use to clean the pivot's column. The operations are:");
+         double pivotValue = GetElement(pivotPosition);
+         if(pivotValue != 0){
+            String message = "Dividing Row" + (pivotPosition[0] + 1)+ " by " + pivotValue + " to get the unitarian row, the new matrix is:";
+            double[] unitarianRow = GetUnitarianRow(pivotPosition);
+            setRowTo_Array(pivotPosition[0], unitarianRow);
+            if(showStepByStep){
+               PrintMatrix(message);
+               System.out.println("\nNow this unitarian row will be use to clean the pivot's column. The operations are:");
+            }
+            ClearColumn(unitarianRow, pivotPosition);
+            if(showStepByStep)
+               PrintMatrix("The resulting matrix in step " + pivotName.charAt(1) + " is:");
          }
-         ClearColumn(unitarianRow, pivotPosition);
-         if(showStepByStep)
-            PrintMatrix("The resulting matrix in step " + pivotName.charAt(1) + " is:");
       }else{
          System.out.println("Error: The parameter indicated is exceeds the amount of variables in the matrix");
          System.out.println("In method ClearColumn");
@@ -572,7 +576,9 @@ public  class Matrix{
             if( column[indexRow] != 0  && !pivots.Validate_RowHasPivot(indexRow)){
                int[] position = {indexRow, indexColumn};
                double pivotValue = column[indexRow];
-               pivots.AddPivot(( "X" + (pivots.size + 1) ), position, pivotValue, false);
+               String pivotName = "X" + (pivots.size + 1);
+               double pivotResult = matrix[indexRow][sizeMatrix[1] - 1]; 
+               pivots.AddPivot(pivotName, position, pivotValue, pivotResult, false);
                hasPivot = true;
                return hasPivot;
             }
@@ -594,14 +600,13 @@ public  class Matrix{
 
 
 
-   //PIVOTS
+   //GET VALUES
    public void SetPivotsResults(){
-      pivots.results = new double[pivots.size];
-      int counter = 0;
-      for (int[] positionPivot : pivots.positions) {
-         int[] positionResult = {positionPivot[0], (sizeMatrix[1]-1)};
-         pivots.results[counter] = GetElement(positionResult);
-         counter++;
+      double[] newResults = new double[pivots.size];
+      for (int index = 0; pivots.size < newResults.length; index++) {
+         int[] position = pivots.GetPivot_Position(index);
+         double result = matrix[position[0]][sizeMatrix[1] - 1];
+         pivots.setResult(position[0], result);
       }
    }
 
@@ -609,10 +614,11 @@ public  class Matrix{
       //This method will get the pivots. If it is not possible to find all of the index, it will randomly rearrage it and try again.
 
 
-      //There will be as many variables as the max num. of rows or columns (without the results)
-      //To get them, we will get the actual amount of pivots of the smaller amount between rows and (columns - 1)
+      //There will be as many variables as columns. Not every columns and row needs to have a pivot. NOT EVERY ROW HAS A VAR
+      //To get them, we will get as many vars as (columns - 1)
+      // there will be as many Basic variables as the minimum between rows and (columns - 1)
       //The rest will be free variable all the way up to the max between rows and (colums - 1)
-      int amountVariables = (sizeMatrix[0] > (sizeMatrix[1]-1)) ? sizeMatrix[0] : (sizeMatrix[1]-1);
+      int amountVariables = sizeMatrix[1] -1;
       int amountBasicVariables = (sizeMatrix[0] < (sizeMatrix[1]-1)) ? sizeMatrix[0] : (sizeMatrix[1]-1);
 
       pivots.SetPivotsToZero();
@@ -631,7 +637,7 @@ public  class Matrix{
       }
 
       if(numberTries > 0){
-         PrintMatrix("The matrix was rearranged to find the pivots:");
+         PrintMatrix("The matrix was rearranged in order to try to maxime the amount of pivots available:");
       }
       
    }
@@ -686,8 +692,8 @@ public  class Matrix{
    }
 
    public void setFreeVariables(int amountVariables){
-      if(pivots.names.length < amountVariables){
-         for (int indexFreeVar = pivots.names.length; indexFreeVar < amountVariables; indexFreeVar++) {
+      if(pivots.size < amountVariables){
+         for (int indexFreeVar = pivots.size; indexFreeVar < amountVariables; indexFreeVar++) {
             pivots.AddFreeVariable( "X" + (pivots.size + 1) );  
          }
       }
@@ -710,6 +716,17 @@ public  class Matrix{
    }
 
 
+   //PIVOT-CLASS METHODS
+   public Pivots GetPivot(int indexPivot){
+      Pivots newPivot = pivots.GetPivot(indexPivot);
+      return newPivot;
+   }
+   public int GetAmountPivots(){
+      return pivots.size;
+   }
+   public void PrintPivotsCompleteStatus(){
+      pivots.PrintPivots_CompleteStatus();
+   }
 
 
 
@@ -754,7 +771,7 @@ public  class Matrix{
       //A system is lineraly independet if it does not have free variables
       boolean isLI = true;
       for (int index = 0; index < pivots.size; index++) {
-         if(pivots.areFree[index])
+         if(pivots.GetPivot_isFree(index))
             return !isLI;
       }
       return isLI;
@@ -863,10 +880,10 @@ public  class Matrix{
       for (int indexColumn = 0; indexColumn < sizeMatrix[1]; indexColumn++) {
          int[] position = {indexRow, indexColumn};
          double elementValue = GetElement(position); 
-         if(elementValue != 0 )
+         if(Math.abs(elementValue) >=  0.0001 )
             System.out.printf(" %6.2f", elementValue);
          else
-            System.out.printf(" %6.2f", 0.0);
+            System.out.printf(" %6.2f", 0.00);
       }
    }
 
@@ -878,7 +895,7 @@ public  class Matrix{
       System.out.println("\nList of variable's values");
       int indexVariable=0;
       while(indexVariable<(sizeMatrix[1]-1)){  
-         if (!pivots.areFree[indexVariable]) {
+         if (!pivots.GetPivot_isFree(indexVariable)) {
             print_BasicVariableValue(indexVariable);
          }
          indexVariable++;
@@ -889,8 +906,8 @@ public  class Matrix{
    public void print_BasicVariableValue(int indexBasicVariable){
       //This method prints the basic variables in terms of the free ones
       //x = result + c1[freeVar1] + c2[freeVar] + ....
-      int[] position = pivots.GetPivot_Position("X" + (indexBasicVariable+1));
-      String varName = pivots.names[indexBasicVariable];
+      String varName = "X" + (indexBasicVariable+1);
+      int[] position = pivots.GetPivot_Position(varName);
       double decimalValue = matrix[position[0]][sizeMatrix[1] -1];
 
       //prints the var and its decimal value
@@ -898,12 +915,12 @@ public  class Matrix{
 
       //prints the value in terms of free variables
       for (int indexVariable = 0; indexVariable < (sizeMatrix[1]-1); indexVariable++) {
-         if(pivots.areFree[indexVariable]){
+         if(pivots.GetPivot_isFree(indexVariable)){
             double coeficientFreeVar = matrix[position[0]][indexVariable]; 
             if(coeficientFreeVar < 0)
-               System.out.printf(" -%7.2fX%d ", coeficientFreeVar, (indexVariable+1));
+               System.out.printf(" -%7.2fX%d ", Math.abs(coeficientFreeVar), (indexVariable+1));
             else               
-               System.out.printf(" +%7.2fX%d ", coeficientFreeVar, (indexVariable+1));
+               System.out.printf(" +%7.2fX%d ", Math.abs(coeficientFreeVar), (indexVariable+1));
          }
       }
 
@@ -911,12 +928,11 @@ public  class Matrix{
    }
 
    public void printFreeVars(){
-      int indexFreeVar = 0;
-      for (String name : pivots.names) {
-         if(pivots.areFree[indexFreeVar]){
-            System.out.printf("%S= %7s is free\n\n", name, name );  
+      for (int indexFreeVar = 0; indexFreeVar < pivots.size; indexFreeVar++) {
+         if(pivots.GetPivot_isFree(indexFreeVar)){
+            String name = pivots.GetPivot_Name(indexFreeVar);
+            System.out.printf("%S= %7s is free\n", name, name );  
          }
-         indexFreeVar++;
       }
    }
    

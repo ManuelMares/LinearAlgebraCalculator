@@ -44,31 +44,8 @@ public class LinearAlgebraCalculator{
             matrixMain.Start();
          break;
          default:          
-            SelectMethod();
          break;
       }           
    }
    
-   public static int SelectMethod() {
-      boolean validOption = false;
-      int option = -1;
-      while(  validOption == false ){
-         System.out.println("Work with System of Equations:       press 1");
-         System.out.println("Work with Matrix:                    press 2");
-         System.out.println("Work with Lists of Vectors:          press 3");
-         option = scan.nextInt();
-         if( option >= 1 && option <= 3 ){
-            validOption = true;
-         }else{
-            System.out.println("\n\nInvalid option. Please select one option form the menu: ");
-         }
-      }
-      return option;
-   }      
-      
-      
-        
-   
-
-       
 }
