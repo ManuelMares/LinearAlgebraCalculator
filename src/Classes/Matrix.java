@@ -6,11 +6,11 @@ public  class Matrix{
    static Validations validation = new Validations();
 
    private double[][] matrix;
-   private String nameMatrix;
-   private int[] sizeMatrix;
-   private Pivots pivots;
-   public boolean isConsistent;
-   private boolean showStepByStep;
+   private String     nameMatrix;
+   private int[]      sizeMatrix;
+   private Pivots     pivots;
+   public  boolean    isConsistent;
+   private boolean    showStepByStep;
 
 
    //CONSTRUCTORS---------------------------------------------
@@ -65,20 +65,14 @@ public  class Matrix{
    }
 
 
-
-
-
-
-
-
    //PROPERTIES   
-   public void Rename(String name){
+   public  void    Rename(String name){
       nameMatrix = name;
    }
-   public String GetName(){
+   public  String  GetName(){
       return nameMatrix;
    }
-   public void SetSize(int[] size){
+   public  void    SetSize(int[] size){
       if(size != null && size.length == 2){
          matrix = new double[size[0]][size[1]];
          UpdateSize();
@@ -87,27 +81,23 @@ public  class Matrix{
          System.out.println("In method SetSize");
       }
    }
-   private void UpdateSize(){
+   private void    UpdateSize(){
       if(sizeMatrix != null ){
          sizeMatrix = new int[2];
       }
       sizeMatrix[1] = matrix[0].length;
       sizeMatrix[0] = matrix.length;
    }
-   public int[] GetSize(){
+   public  int[]   GetSize(){
       return sizeMatrix;
    }
-   public void SetStepByStep(boolean status){
+   public  void    SetStepByStep(boolean status){
       showStepByStep = status;
    }
 
 
-
-
-
-
    //ADD
-   public void AddColumn(double[] values){
+   public void    AddColumn(double[] values){
       double[][] newMatrix = new double[matrix.length][matrix[0].length + 1];
       int indexRow = 0;
       for (double[] row : matrix) {
@@ -122,7 +112,7 @@ public  class Matrix{
          indexRow++;
       }
    }
-   public void AddColumn(double value){
+   public void    AddColumn(double value){
       double[][] newMatrix = new double[matrix.length][matrix[0].length + 1];
       int indexRow = 0;
       for (double[] row : matrix) {
@@ -137,7 +127,7 @@ public  class Matrix{
          indexRow++;
       }
    }
-   public void AddColumn(){
+   public void    AddColumn(){
       double[][] newMatrix = new double[matrix.length][matrix[0].length + 1];
       int indexRow = 0;
       for (double[] row : matrix) {
@@ -153,7 +143,7 @@ public  class Matrix{
       }
    }
 
-   public void AddRow(double[] values){
+   public void    AddRow(double[] values){
       double[][] newMatrix = new double[matrix.length + 1][matrix[0].length];
       int indexRow = 0;
       for (double[] row : matrix) {
@@ -167,7 +157,7 @@ public  class Matrix{
       }      
       setRowTo_Array(indexRow, values);
    }
-   public void AddRow(double value){
+   public void    AddRow(double value){
       double[][] newMatrix = new double[matrix.length + 1][matrix[0].length];
       int indexRow = 0;
       for (double[] row : matrix) {
@@ -181,7 +171,7 @@ public  class Matrix{
          setRowTo_Value(indexRow, value);
       }
    }
-   public void AddRow(){
+   public void    AddRow(){
       double[][] newMatrix = new double[matrix.length + 1][matrix[0].length];
       int indexRow = 0;
       for (double[] row : matrix) {
@@ -197,26 +187,19 @@ public  class Matrix{
    }
 
 
-
-
-
-
    //DELETE
-   public void DeleteColumn(int indexColumn){
+   public void    DeleteColumn(int indexColumn){
 
 
    }
-   public void DeleteRow(int indexRow){
+   public void    DeleteRow(int indexRow){
 
 
    }
-
-
-
 
 
    //SET VALUES
-   public void setMatrix_Inputs(){
+   public void    setMatrix_Inputs(){
       //This method request the entries of the matrix by asking to the user
       if(sizeMatrix != null && sizeMatrix.length == 2 ){
          for (int indexRow = 0; indexRow < sizeMatrix[0]; indexRow++) {
@@ -224,17 +207,7 @@ public  class Matrix{
          }
       }
    }
-
-   public void setMatrixRow_Inputs(int indexRow){
-      for (int indexColumn = 0; indexColumn < sizeMatrix[1]; indexColumn++) {
-         String message = "Indicate entry (" + (indexRow + 1) + "," + (indexColumn + 1) + "):";
-         double value = validation.validateInput_isDouble(message);
-         int[] position = {indexRow, indexColumn};
-         SetElementTo_Value(position, value);         
-      }
-   }
-
-   public void SetMatrixTo_Value(double value){
+   public void    SetMatrixTo_Value(double value){
       for (int indexRow = 0; indexRow < matrix.length; indexRow++) {
          for (int indexColumn = 0; indexColumn < matrix.length; indexColumn++) {
             int[] positionElement = {indexRow, indexColumn};
@@ -242,18 +215,26 @@ public  class Matrix{
          }
       }
    }
-   public void SetMatrixTo_Matrix(double[][] newMatrix){
+   public void    SetMatrixTo_Matrix(double[][] newMatrix){
       matrix = newMatrix;
    }
    
-   public void SetRowsTo_Value(int[] listRows, double value){
+   public void    setMatrixRow_Inputs(int indexRow){
+      for (int indexColumn = 0; indexColumn < sizeMatrix[1]; indexColumn++) {
+         String message = "Indicate entry (" + (indexRow + 1) + "," + (indexColumn + 1) + "):";
+         double value = validation.Input_IsDouble(message);
+         int[] position = {indexRow, indexColumn};
+         SetElementTo_Value(position, value);         
+      }
+   }
+   public void    SetRowsTo_Value(int[] listRows, double value){
       if(listRows != null && listRows.length >= 0){
          for (int index : listRows) {
             setRowTo_Value(index, value);
          }
       }
    }
-   public void setRowTo_Array(int indexRow, double[] values){
+   public void    setRowTo_Array(int indexRow, double[] values){
       if( indexRow >= 0 && matrix.length > indexRow ){
          if(values != null){
             for (int indexColumn = 0; indexColumn < matrix[0].length; indexColumn++) {
@@ -267,7 +248,7 @@ public  class Matrix{
          System.out.println("Error: The row you are tryting to modify is beyond the limits of matrix " + nameMatrix);
       }
    }
-   public void setRowTo_Value(int indexRow, double value){
+   public void    setRowTo_Value(int indexRow, double value){
       if( indexRow >= 0 && matrix.length > indexRow ){
          for (int indexColumn = 0; indexColumn < matrix[0].length; indexColumn++) {
             int[] positionElement = {indexRow, indexColumn};
@@ -278,8 +259,7 @@ public  class Matrix{
       }
    }
    
-
-   public void setColumnTo_Array(int indexColumn, double[] values){      
+   public void    setColumnTo_Array(int indexColumn, double[] values){      
       if( indexColumn >= 0 && matrix[0].length > indexColumn ){
          if(values != null && matrix[0].length>values.length){
             for (int indexRow = 0; indexRow < matrix.length; indexRow++) {
@@ -293,7 +273,7 @@ public  class Matrix{
          System.out.println("Error: The column you are tryting to modify is beyond the limits of matrix "+nameMatrix);
       }
    }
-   public void setColumnTo_Value(int indexColumn, double value){
+   public void    setColumnTo_Value(int indexColumn, double value){
       if( indexColumn >= 0 && matrix[0].length > indexColumn ){
          for (int indexRow = 0; indexRow < matrix.length; indexRow++) {
             int[] positionElement = {indexRow, indexColumn};
@@ -303,10 +283,8 @@ public  class Matrix{
          System.out.println("Error: The column you are tryting to modify is beyond the limits of matrix "+nameMatrix);
       }
    }
-  
-  
-  
-   public void SetElementTo_Value(int[] position, double value){
+
+   public void    SetElementTo_Value(int[] position, double value){
       if(position != null && position.length == 2){
          if(position[0] >=0 && matrix.length > position[0]){
             if(position[1] >=0 && matrix[0].length > position[1]){
@@ -325,11 +303,6 @@ public  class Matrix{
    }
 
 
-
-
-
-
-
    //GET
    public double[][] GetCopy_Matrix(){
       double[][] newMatrix = new double[matrix.length][matrix[0].length];
@@ -345,8 +318,7 @@ public  class Matrix{
       }
       return newMatrix;
    }
-
-   public double GetElement(int[] position){
+   public double     GetElement(int[] position){
       double value = 0;
       if(position != null && position.length == 2){
          if(position[0] >=0 && matrix.length > position[0] &&
@@ -361,8 +333,7 @@ public  class Matrix{
          return value;
       }
    }
-
-   public double[] GetRow(int indexRow){
+   public double[]   GetRow(int indexRow){
       double[] newRow = new double[sizeMatrix[1]];
       if( indexRow >= 0 && indexRow<sizeMatrix[0]){
          int indexColumn  = 0;
@@ -376,8 +347,7 @@ public  class Matrix{
       }
       return newRow;
    }
-
-   public double[] GetColumn(int indexColumn){
+   public double[]   GetColumn(int indexColumn){
       double[] newColumn = new double[sizeMatrix[0]];
       if(indexColumn >= 0 && indexColumn< sizeMatrix[1]){
          for (int indexRow = 0; indexRow < sizeMatrix[0]; indexRow++) {
@@ -391,11 +361,9 @@ public  class Matrix{
       return newColumn;
    }
 
-
-
    
    //OPERATIONS
-   public void ModifyMatrix_AddVectorTo_Column(int indexColumn, double[] array){
+   public  void     ModifyMatrix_AddVectorTo_Column(int indexColumn, double[] array){
       if( array != null && matrix.length == array.length ){
          if(indexColumn >= 0 && matrix[0].length > indexColumn){
             double[] newColumn = GetColumn(indexColumn);
@@ -414,7 +382,7 @@ public  class Matrix{
       }
 
    }
-   public void ModifyMatrix_ColumnByScalar(int indexColumn, double scalar){
+   public  void     ModifyMatrix_ColumnByScalar(int indexColumn, double scalar){
       if(indexColumn >= 0 && matrix[0].length > indexColumn){
          double[] newColumn = GetColumn(indexColumn);
          //TODO: CHANGE FOR A VECTOR INSTANCE
@@ -428,7 +396,7 @@ public  class Matrix{
       }
    }
 
-   public void ModifyMatrix_AddVectorTo_Row(int indexRow, double[] array){
+   public  void     ModifyMatrix_AddVectorTo_Row(int indexRow, double[] array){
       if( array != null && sizeMatrix[1] == array.length ){
          if(indexRow >= 0 && matrix.length > indexRow){
             double[] newRow = GetRow(indexRow);
@@ -446,7 +414,7 @@ public  class Matrix{
       }
 
    }
-   public void ModifyMatrix_RowByScalar(int indexRow, double scalar){
+   public  void     ModifyMatrix_RowByScalar(int indexRow, double scalar){
       if(indexRow >= 0 && matrix.length > indexRow){
          double[] newRow = GetRow(indexRow);
          //TODO: CHANGE FOR A VECTOR INSTANCE
@@ -460,7 +428,7 @@ public  class Matrix{
       }
    }
 
-   public double[] Operate_ArrayByScalar(double[] vector, double scalar){
+   public  double[] Operate_ArrayByScalar(double[] vector, double scalar){
       double[] newVector = new double[vector.length];
       if(vector != null && vector.length > 0){
          if(scalar != 0){
@@ -479,16 +447,15 @@ public  class Matrix{
       }
       return newVector;
    }
-
-
-   public double[] GetUnitarianRow(int[] pivotPosition){
+   
+   public  double[] GetUnitarianRow(int[] pivotPosition){
       double pivotValue = GetElement(pivotPosition);
       double[] pivotRow = GetRow(pivotPosition[0]);
       double[] unitarianRow = Operate_ArrayByScalar(pivotRow, (1/pivotValue));
 
       return unitarianRow;
    }
-   public void usePivotTo_ClearColumn(String pivotName) {
+   public  void     usePivotTo_ClearColumn(String pivotName) {
       if(pivotName != null ){
          int[] pivotPosition = pivots.GetPivot_Position(pivotName);
          double pivotValue = GetElement(pivotPosition);
@@ -509,7 +476,7 @@ public  class Matrix{
          System.out.println("In method ClearColumn");
       }
    }
-   private void ClearColumn(double[] unitarianRow, int[] pivotPosition){
+   private void     ClearColumn(double[] unitarianRow, int[] pivotPosition){
       //Loops through each row and cancels element in the same column with the unitarian row, except itself
       int counter = 1;
       for (int indexRow = 0; indexRow < sizeMatrix[0]; indexRow++) {
@@ -526,15 +493,13 @@ public  class Matrix{
    } 
 
 
-
    //VALIDATIONS
-   public void Validate_HasColumnsZero(){
+   public void       Validate_HasColumnsZero(){
       //TODO: This method return an array with the list of all the zero columns
       
 
    }
-
-   public boolean Validate_ColumnIsZero(int indexColumn){
+   public boolean    Validate_ColumnIsZero(int indexColumn){
       //This method return a boolean indicating if the whole column is set to zero
       boolean isZero = true;
       if(indexColumn >= 0 && matrix[0].length > indexColumn){
@@ -548,8 +513,7 @@ public  class Matrix{
       }
       return isZero;
    }
-
-   public boolean Validate_RowIsZero(int indexRow){
+   public boolean    Validate_RowIsZero(int indexRow){
       //This method returns a boolean indicating if the whole row is set to zero
       boolean isZero = true;
       if(indexRow >= 0 && matrix.length > indexRow){
@@ -563,8 +527,7 @@ public  class Matrix{
       }
       return isZero;
    }
-
-   private boolean GetPivot_Column(int indexColumn) {
+   private boolean   GetPivot_Column(int indexColumn) {
       if(indexColumn >= 0 && indexColumn <= sizeMatrix[1]){
          // gets the column as an array. Then loops through it looking for the first non-zero value.
          //With such index, it checks if it is already listed as a pivot. If so, it check next number. If not, it stops.
@@ -595,13 +558,8 @@ public  class Matrix{
    }
 
 
-
-
-
-
-
    //GET VALUES
-   public void SetPivotsResults(){
+   public  void    SetPivotsResults(){
       double[] newResults = new double[pivots.size];
       for (int index = 0; pivots.size < newResults.length; index++) {
          int[] position = pivots.GetPivot_Position(index);
@@ -609,8 +567,7 @@ public  class Matrix{
          pivots.setResult(position[0], result);
       }
    }
-
-   public void TryGetPivots(){      
+   public  void    TryGetPivots(){      
       //This method will get the pivots. If it is not possible to find all of the index, it will randomly rearrage it and try again.
 
 
@@ -641,8 +598,7 @@ public  class Matrix{
       }
       
    }
-   
-   private void ReaArrangeMatrix_Random(){
+   private void    ReaArrangeMatrix_Random(){
       int[] rndmArray = newArray(sizeMatrix[0], -1);
       for (int index = 0; index < rndmArray.length; index++) {
          int max = sizeMatrix[0] -1;
@@ -660,8 +616,7 @@ public  class Matrix{
       }
       ReaArrangeMatrix_GivenOrder(rndmArray);
    }
-
-   private void ReaArrangeMatrix_GivenOrder(int[] array){
+   private void    ReaArrangeMatrix_GivenOrder(int[] array){
       if(array.length == sizeMatrix[0]){
          double[][] newMatrix = new double[sizeMatrix[0]][sizeMatrix[1]];
          int counter = 0;
@@ -676,8 +631,7 @@ public  class Matrix{
          System.out.println("in method ReaArrangeMatrix_GivenOrder");
       }
    }
-
-   public int setAvailablePivots(int amountVariables){
+   public  int     setAvailablePivots(int amountVariables){
       int pivotsFound = 0;
       for (int indexColumn = 0; indexColumn < (sizeMatrix[1] - 1); indexColumn++) {
          //if the pivot was already added
@@ -690,16 +644,14 @@ public  class Matrix{
 
       return pivotsFound;
    }
-
-   public void setFreeVariables(int amountVariables){
+   public  void    setFreeVariables(int amountVariables){
       if(pivots.size < amountVariables){
          for (int indexFreeVar = pivots.size; indexFreeVar < amountVariables; indexFreeVar++) {
             pivots.AddFreeVariable( "X" + (pivots.size + 1) );  
          }
       }
    }
-
-   public void DeleteRepetedRows(){
+   public  void    DeleteRepetedRows(){
       int[] rowsToDelete = new int[0];
       for (int indexRow_Base = 0; indexRow_Base < sizeMatrix[0]; indexRow_Base++) {
          for (int indexRow_ToCompare = (indexRow_Base + 1); indexRow_ToCompare < sizeMatrix[0]; indexRow_ToCompare++) {
@@ -717,14 +669,14 @@ public  class Matrix{
 
 
    //PIVOT-CLASS METHODS
-   public Pivots GetPivot(int indexPivot){
+   public Pivots  GetPivot(int indexPivot){
       Pivots newPivot = pivots.GetPivot(indexPivot);
       return newPivot;
    }
-   public int GetAmountPivots(){
+   public int     GetAmountPivots(){
       return pivots.size;
    }
-   public void PrintPivotsCompleteStatus(){
+   public void    PrintPivotsCompleteStatus(){
       pivots.PrintPivots_CompleteStatus();
    }
 
@@ -732,7 +684,7 @@ public  class Matrix{
 
 
    //CONCLUSIONS
-   public int CheckConsistentsy(){
+   public int     CheckConsistentsy(){
       int indexInconsistent = -1;
       isConsistent = true;
       for (int indexRow = 0; indexRow < matrix.length; indexRow++) {
@@ -744,7 +696,6 @@ public  class Matrix{
       }
       return indexInconsistent;
    }
-
    public boolean rowIsConsistent(int index){
       //two conditions for inconsistency: all var coeficients are zero, and the decimal result is not
       boolean coeficientsAreZero = true;
@@ -766,7 +717,6 @@ public  class Matrix{
       else
          return true;
    }
-
    public boolean IsLinearlyIndependent(){
       //A system is lineraly independet if it does not have free variables
       boolean isLI = true;
@@ -781,21 +731,21 @@ public  class Matrix{
 
 
    //ARRAY METHODS
-   public int[] newArray(int length){
+   public  int[]    newArray(int length){
       int[] array = new int[length];
       for (int index = 0; index < array.length; index++) {
          array[index] = 0;
       }
       return array;
    }
-   public int[] newArray(int length, int value){
+   public  int[]    newArray(int length, int value){
       int[] array = new int[length];
       for (int index = 0; index < array.length; index++) {
          array[index] = value;
       }
       return array;
    }
-   public double[] newArray(int length, double value){
+   public  double[] newArray(int length, double value){
       double[] array = new double[length];
       for (int index = 0; index < array.length; index++) {
          array[index] = value;
@@ -803,7 +753,7 @@ public  class Matrix{
       return array;
    }
 
-   private int ArrayContains(int[] array, int value){
+   private int      ArrayContains(int[] array, int value){
       if(array != null && array.length >= 0){
          for (int counter = 0; counter < array.length; counter++) {
             if(array[counter] == value){
@@ -813,7 +763,7 @@ public  class Matrix{
       }
       return -1;
    }
-   private int ArrayContains(double[] array, double value){
+   private int      ArrayContains(double[] array, double value){
       if(array != null && array.length >= 0){
          for (int counter = 0; counter < array.length; counter++) {
             if(array[counter] == value){
@@ -824,34 +774,30 @@ public  class Matrix{
       return -1;
    }
 
-   public boolean ArraysAreEqual(double[] arr1, double[] arr2){
+   public  boolean  ArraysAreEqual(double[] arr1, double[] arr2){      
       boolean areEqual = true;
-      if(arr1 != null && arr1.length >0 && 
-         arr2 != null && arr2.length > 0){
+      try{
          for (int index = 0; index < arr2.length; index++) {
             if(arr1[index] != arr2[index]){
                return false;
             }
          }   
-      }else{
-         return false;
+      }catch(NullPointerException ex){
+         System.out.printf("Exception: %s\n",ex);
       }
-      
       return areEqual;
    }
-   public boolean ArraysAreEqual(int[] arr1, int[] arr2){
+   public  boolean  ArraysAreEqual(int[] arr1, int[] arr2){
       boolean areEqual = true;
-      if(arr1 != null && arr1.length >0 && 
-         arr2 != null && arr2.length > 0){
+      try{
          for (int index = 0; index < arr2.length; index++) {
             if(arr1[index] != arr2[index]){
                return false;
             }
-         }   
-      }else{
-         return false;
+         } 
+      }catch(NullPointerException ex){
+         System.out.printf("Exception: %s\n",ex);
       }
-      
       return areEqual;
    }
 
@@ -875,7 +821,6 @@ public  class Matrix{
          System.out.println("   |");
       }
    }
-
    public void PrintMatrix_Row(int indexRow){
       for (int indexColumn = 0; indexColumn < sizeMatrix[1]; indexColumn++) {
          int[] position = {indexRow, indexColumn};
@@ -886,11 +831,9 @@ public  class Matrix{
             System.out.printf(" %6.2f", 0.00);
       }
    }
-
    public void PrintPivots(){
       pivots.PrintPivots();
    }
-
    public void printVariablesValues() {
       System.out.println("\nList of variable's values");
       int indexVariable=0;
@@ -902,7 +845,6 @@ public  class Matrix{
       }
       printFreeVars();
    }
-
    public void print_BasicVariableValue(int indexBasicVariable){
       //This method prints the basic variables in terms of the free ones
       //x = result + c1[freeVar1] + c2[freeVar] + ....
@@ -926,7 +868,6 @@ public  class Matrix{
 
       System.out.print("\n");
    }
-
    public void printFreeVars(){
       for (int indexFreeVar = 0; indexFreeVar < pivots.size; indexFreeVar++) {
          if(pivots.GetPivot_isFree(indexFreeVar)){
@@ -935,7 +876,6 @@ public  class Matrix{
          }
       }
    }
-   
    public void printArray(double[]array, String message){
       System.out.println(message);
       System.out.print("{");
@@ -944,7 +884,6 @@ public  class Matrix{
       }
       System.out.println("}");
    }
-   
    public void printArray(int[]array, String message){
       System.out.println(message);
       System.out.print("{");
@@ -954,21 +893,6 @@ public  class Matrix{
       System.out.println("}");
    }
 
-   public void printVariables_ParametricForm() {
-      //TODO: PRINT PARAMETRIC FORM
-   }
-
-   public void printColumn_Variables(int amountVariables){
-
-   }
-
-   public void printColumn(int indexColumn){
-
-   }
-   
-   public void printColumn(int indexColumn, String parameterName){
-      
-   }
    
    
 

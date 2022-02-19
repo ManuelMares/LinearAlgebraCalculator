@@ -13,7 +13,6 @@ public class MatrixMain{
    
    //variables
    String[] menuOptions = {"Matrix algebra", "Solve Matrix"};
-   public static void main (String args[]){ }
    
    public void Start(){
       int MethodSelected = -1;
