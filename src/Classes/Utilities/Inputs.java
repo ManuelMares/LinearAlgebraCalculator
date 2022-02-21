@@ -7,16 +7,18 @@ import Classes.Exceptions.InvalidNumberException;
 
 
 public class Inputs{  
+   static Printer printer = new Printer();
    static Scanner scan = new Scanner (System.in);   
    
    //VALIDATE MENU
-   public int     ShowAndValidate_Menu(String[] options){
+   public int     ShowAndValidate_Menu(String[] options, String message){
+      printer.Subtitle2(message);
       int selection = -1;
       try{
          if(options.length > 0){
             DisplayMenuOptions(options);
-            String message = "Please select an option from the menu";
-            selection = InRange(message, 0, options.length);
+            String instruction = "Please select an option from the menu: ";
+            selection = InRange(instruction, 0, options.length);
          }
       }catch(NullPointerException ex){
          System.out.printf("Exception: %s\n",ex);
@@ -29,6 +31,7 @@ public class Inputs{
          System.out.printf("%d)     %s\n",(indexMenu+1), option);
          indexMenu++;
       }
+      System.out.print("\n");
    }
    
      
@@ -182,7 +185,6 @@ public class Inputs{
       boolean answer = false;
       boolean valid = false;
       String input = "";
-      System.out.print(message);
       while(!valid){
          try{
             System.out.print(message);

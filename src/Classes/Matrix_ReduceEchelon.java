@@ -156,7 +156,9 @@ public class Matrix_ReduceEchelon extends Matrix{
       }
 
       if(numberTries > 0){
-         String message = "The matrix's row order was permutated in order to try to maxime the amount of pivots available\n";
+         
+         printer.Subtitle2("Permutations");
+         String message = "The matrix's row order has been permutated in order to try to find all available pivots\n";
          printer.Matrix(matrix, message);
       }
       
@@ -290,7 +292,9 @@ public class Matrix_ReduceEchelon extends Matrix{
       }
       if(rowsToDelete.length > 0){
          Set_RowsToValue(rowsToDelete, 0.0);
-         printer.Matrix(matrix, "Matrix without repeted rows:\n");
+         printer.Subtitle2("Repeted rows");
+         String message = "Repeted rows have been detected. \n The matrix's repeted rows have been set to zero.\nFinal Matrix";
+         printer.Matrix(matrix, message);
       }
    }
 
