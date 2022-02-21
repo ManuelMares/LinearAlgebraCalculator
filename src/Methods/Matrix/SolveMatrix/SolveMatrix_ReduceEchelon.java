@@ -24,16 +24,18 @@ public class SolveMatrix_ReduceEchelon {
     }
 
     private void    Create_Matrix(){
-        System.out.println("\n\n\nLet's start by indicate the size of the matrix");
+        printer.Title("Solve matrix  by reduction method");
+        printer.Subtitle2("Let's start by indicate the size of the matrix");
         int AmountRows = input.BiggerThan("Please indicate the amount of rows in the matrix", 2);
         int AmountColumns = input.BiggerThan("Please indicate the amount of columns in the matrix", 2);
         int[] size = {AmountRows, AmountColumns};
         matrix.Set_Size(size);
-        printer.Matrix(matrix.Get_CopyMatrix(), "\nThe matrix input is:\n");
+        printer.Matrix(matrix.Get_CopyMatrix(), "\nThe matrix base is:");
         matrix.Set_MatrixInputs();
-        printer.Matrix(matrix.Get_CopyMatrix(), "\nThe matrix input is:");
+        printer.Matrix(matrix.Get_CopyMatrix(), "\nThe input Matrix is:");
     }
     private void    Set_StepByStep() {
+        printer.Subtitle2("step by step options");
         String message = "Please indicate if you want a detailed Step-by-Step solution\n";
         boolean status = input.YesNo(message);
         matrix.Set_StepByStep(status);
@@ -71,6 +73,4 @@ public class SolveMatrix_ReduceEchelon {
         matrix.CheckConsistentsy();
     }
    
-
-
 }

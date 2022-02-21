@@ -1,6 +1,5 @@
 package Classes.Utilities;
 import Classes.Pivots;
-import Classes.Matrix_ReduceEchelon;
 
 public class Printer {
     public void     Matrix(double[][] matrix, String message){
@@ -45,9 +44,21 @@ public class Printer {
         return content;
     }
 
+    public void     Title(String message){
+        String divisor = "========================================";
+        System.out.printf("%60s%s%s\n", divisor, message.toUpperCase(), divisor);
+    }
+    public void     Subtitle(String message){
+        String divisor = "=============================";
+        System.out.printf("%s%s%s\n", divisor, message, divisor);
+    }
+    public void     Subtitle2(String message){
+        String divisor = "~~~~~~~~~~~~~~~~";
+        System.out.printf("%s%s%s\n", divisor, message, divisor);
+    }
 
 
-    public void Table(String header, String[] categories, String[][] content, int cellSize){
+    public void     Table(String header, String[] categories, String[][] content, int cellSize){
         System.out.println(header);
         Table_DivisorRow(cellSize, categories.length);
         Table_row(cellSize, categories);
@@ -57,7 +68,7 @@ public class Printer {
         }
         Table_DivisorRow(cellSize, categories.length);
     }
-    public void Table_DivisorRow(int lengthCell, int numCells){
+    public void     Table_DivisorRow(int lengthCell, int numCells){
         System.out.print("|");
         for (int index = 0; index < numCells; index++) {
             Times("-", lengthCell);
@@ -65,7 +76,7 @@ public class Printer {
         }
         System.out.print("\n");
     }
-    public void Table_row(int lengthCell, String[] content){
+    public void     Table_row(int lengthCell, String[] content){
         System.out.print("|");
         for (String element : content) {
             String format = String.format("%-" + lengthCell + "s|", element);
@@ -74,7 +85,7 @@ public class Printer {
         System.out.print("\n");
     }
     
-    public void    Vector(double[] row){
+    public void     Vector(double[] row){
         System.out.print("{");
         for (double element : row) {
             if(Math.abs(element) >=  0.0001 )
@@ -84,7 +95,7 @@ public class Printer {
         }
         System.out.println("   }");
     }
-    public void    Vector(double[] row, String message){
+    public void     Vector(double[] row, String message){
         if(message.length() > 0)
             System.out.println(message);
         System.out.print("{");
@@ -96,7 +107,7 @@ public class Printer {
         }
         System.out.println("   }");
     }
-    public void    Vector(double[] row, String message, String holdingSimbol){
+    public void     Vector(double[] row, String message, String holdingSimbol){
         if(message.length() > 0)
             System.out.println(message);
         System.out.printf("%s", holdingSimbol);
@@ -108,7 +119,7 @@ public class Printer {
         }
         System.out.printf("   %s\n", holdingSimbol);
     }
-    public void    Vector(int[] row){
+    public void     Vector(int[] row){
         System.out.print("{");
         for (double element : row) {
             if(Math.abs(element) >=  0.0001 )
@@ -118,7 +129,7 @@ public class Printer {
         }
         System.out.println("   }");
     }
-    public void    Vector(int[] row, String message){
+    public void     Vector(int[] row, String message){
         if(message.length() > 0)
             System.out.println(message);
         System.out.print("{");
@@ -130,7 +141,7 @@ public class Printer {
         }
         System.out.println("   }");
     }
-    public void    Vector(int[] row, String message, String holdingSimbol){
+    public void     Vector(int[] row, String message, String holdingSimbol){
         if(message.length() > 0)
             System.out.println(message);
         System.out.printf("%s", holdingSimbol);
