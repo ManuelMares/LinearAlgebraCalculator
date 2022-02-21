@@ -1,4 +1,4 @@
-package Classes;
+package Classes.Utilities;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -6,7 +6,7 @@ import Classes.Exceptions.InvalidAnswerException;
 import Classes.Exceptions.InvalidNumberException;
 
 
-public class Validations{  
+public class Inputs{  
    static Scanner scan = new Scanner (System.in);   
    
    //VALIDATE MENU
@@ -16,7 +16,7 @@ public class Validations{
          if(options.length > 0){
             DisplayMenuOptions(options);
             String message = "Please select an option from the menu";
-            selection = Input_InRange(message, 0, options.length);
+            selection = InRange(message, 0, options.length);
          }
       }catch(NullPointerException ex){
          System.out.printf("Exception: %s\n",ex);
@@ -34,7 +34,7 @@ public class Validations{
      
    
    //INPUTS VALUE
-   public double  Input_InRange(String message, double minValue, double maxValue){
+   public double  InRange(String message, double minValue, double maxValue){
       boolean valid = false;
       double input = -1;
       while(!valid){
@@ -55,7 +55,7 @@ public class Validations{
       }
       return input;  
    }
-   public int     Input_InRange(String message, int minValue, int maxValue){
+   public int     InRange(String message, int minValue, int maxValue){
       boolean valid = false;
       int input = -1;
       while(!valid){
@@ -76,16 +76,16 @@ public class Validations{
       }
       return input;  
    }
-   public double  Input_Positive(){
+   public double  Positive(){
       double doubleNum = 0;
-      double input = Input_BiggerThan("Please input a positive double", doubleNum);
+      double input = BiggerThan("Please input a positive double", doubleNum);
       return input;  
    }
-   public int     Input_Positive(String message){
-      int input = Input_BiggerThan(message, 0);
+   public int     Positive(String message){
+      int input = BiggerThan(message, 0);
       return input;  
    }
-   public double  Input_BiggerThan(String message, double minValue){
+   public double  BiggerThan(String message, double minValue){
       boolean valid = false;
       double input = -1;
       while(!valid){
@@ -106,7 +106,7 @@ public class Validations{
       }
       return input;  
    }
-   public int     Input_BiggerThan(String message, int minValue){
+   public int     BiggerThan(String message, int minValue){
       boolean valid = false;
       int input = -1;
       while(!valid){
@@ -130,7 +130,7 @@ public class Validations{
    
 
    //INPUTS TYPE
-   public double  Input_IsDouble(String message){
+   public double  IsDouble(String message){
       boolean valid = false;
       double input = -1;
       while(!valid){
@@ -146,7 +146,7 @@ public class Validations{
       }
       return input;  
    }
-   public String  Input_IsString(String message){
+   public String  IsString(String message){
       boolean valid = false;
       String input = "";
       while(!valid){
@@ -162,7 +162,7 @@ public class Validations{
       }
       return input;  
    }
-   public int     Input_IsInt(String message){
+   public int     IsInt(String message){
       boolean valid = false;
       int input = 0;
       while(!valid){
@@ -178,12 +178,14 @@ public class Validations{
       }
       return input;  
    }
-   public boolean Input_YesNo(){
+   public boolean YesNo(String message){
       boolean answer = false;
       boolean valid = false;
       String input = "";
+      System.out.print(message);
       while(!valid){
          try{
+            System.out.print(message);
             input = scan.next().toLowerCase();
             if(input.charAt(0) == 'y'){
                return true;
@@ -201,45 +203,6 @@ public class Validations{
          }
       }
       return answer;  
-   }
-
-
-
-
-
-
-   public int Array_IndexOf(int[] array, int value){
-      int index = -1;
-      boolean isFound = false;
-      int counter = 0;
-      while( !isFound ){
-         if( array[counter] == value ){
-            index = counter;
-            isFound =true;
-         }
-         if(counter == (array.length -1)){
-            isFound = true;
-         }
-         counter++;
-      }
-      return index;
-   }
-   
-   public int Array_IndexOf(double[] array, double value){
-      int index = -1;
-      boolean isFound = false;
-      int counter = 0;
-      while( !isFound ){
-         if( array[counter] == value ){
-            index = counter;
-            isFound =true;
-         }
-         if(counter == (array.length -1)){
-            isFound = true;
-         }
-         counter++;
-      }
-      return index;
    }
 
 }
