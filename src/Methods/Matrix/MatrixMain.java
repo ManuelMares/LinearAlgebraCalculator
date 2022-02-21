@@ -1,14 +1,14 @@
 package Methods.Matrix;
 import java.util.Scanner;
 
-import Classes.Validations;
+import Classes.Utilities.Inputs;
 import Methods.Matrix.SolveMatrix.SolveMatrix_ReduceEchelon;
 
 
 public class MatrixMain{     
    //imports
    static Scanner scan = new Scanner (System.in);
-   static Validations validator = new Validations();
+   static Inputs validator = new Inputs();
    static SolveMatrix_ReduceEchelon solveMatrix_ReduceEchelon = new SolveMatrix_ReduceEchelon();
    
    //variables

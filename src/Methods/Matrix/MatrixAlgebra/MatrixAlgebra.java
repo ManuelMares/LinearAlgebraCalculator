@@ -1,17 +1,17 @@
 package Methods.Matrix.MatrixAlgebra;
 
-import Classes.Matrix;
-import Classes.Validations;
+import Classes.Matrix_ReduceEchelon;
+import Classes.Utilities.Inputs;
 import Variables.Dictionary;
 
 public class MatrixAlgebra {
     //IMPORTS
-    static Validations validation = new Validations();
-    static Matrix matrix;
+    static Inputs input = new Inputs();
+    static Matrix_ReduceEchelon matrix;
 
     // I need a way to operate a expression defined by the user
     public void menu(){
-        //validation.ShowAndValidate_Menu(options)
+        //input.ShowAndValidate_Menu(options)
     }
 
 }

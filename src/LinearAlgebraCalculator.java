@@ -1,13 +1,13 @@
 import java.util.Scanner;
 
-import Classes.Validations;
+import Classes.Utilities.Inputs;
 import MainMenu.MainMenu;
 import Methods.Matrix.MatrixMain;
 
 public class LinearAlgebraCalculator{
    //IMPORTS
    MainMenu menu = new MainMenu();
-   static Validations validator = new Validations();
+   static Inputs validator = new Inputs();
    static Scanner scan = new Scanner (System.in);
 
    //VARIABLES

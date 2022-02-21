@@ -1,179 +1,76 @@
 package Methods.Matrix.SolveMatrix;
-
 import Classes.*;
+import Classes.Recursion.Recursion;
+import Classes.Utilities.Printer;
+import Classes.Utilities.Inputs;
 import Variables.Dictionary;
+
 
 public class SolveMatrix_ReduceEchelon {
     //IMPORTS
-    static Validations validation = new Validations();
-    static Matrix matrix;
-    private boolean stepByStep;
-    private boolean cancelledPivot =false; 
+    static  Inputs      input = new Inputs();
+    static  Recursion   recursion = new Recursion();
+    static  Printer     printer = new Printer();
+    static  Vector      vector = new Vector();
+    static  Matrix_ReduceEchelon matrix;
 
     public void Main(){
-        matrix = new Matrix("Matrix A");
-        CreateNewMatrix();
-        SetStepByStep();
-        PrepareMatrix();
-        if(stepByStep){
-            matrix.PrintPivots();
-            Reduce_GaussJordan_SteByStep();
-            if(cancelledPivot){
-                System.out.println("\n\n======================== Extra steps ========================");
-                System.out.println("The position of at least one pivot has changed. A new iteration of solutions needs to be executed.");
-                PrepareMatrix();
-                Reduce_GaussJordan();
-                cancelledPivot = true;
-            }
-        }
-        else{
-            Reduce_GaussJordan();
-            if(cancelledPivot){
-                PrepareMatrix();
-                Reduce_GaussJordan();
-                cancelledPivot = true;
-            }
-        }
-        System.out.println("======================== Conclusion ========================");
-        matrix.SetPivotsResults();
-        PrintConclusion();        
-        System.out.println("======================== END OF THE PROGRAM ======================== \n\n\n");
-
-        //iteration try for pivots
+        matrix = new Matrix_ReduceEchelon("Matrix A");
+        Create_Matrix();
+        Set_StepByStep();
+        Reduce_Matrix();
+        Set_MatrixStatus();
+        Conclusion();
     }
 
-    public Matrix ReduceGivenMatrix(double[][] GivenMatrix){
-        matrix = new Matrix("New Matrix", GivenMatrix);
-        PrepareMatrix();
-        if(stepByStep){
-            matrix.PrintPivots();
-            Reduce_GaussJordan_SteByStep();
-        }
-        else
-            Reduce_GaussJordan();             
-        matrix.SetPivotsResults();;       
-        PrintConclusion();
-        return matrix;
-    }
-
-    public Matrix ReduceMatrix(){
-        matrix = new Matrix("Matrix A");
-        CreateNewMatrix();
-        PrepareMatrix();
-        if(stepByStep){
-            matrix.PrintPivots();
-            Reduce_GaussJordan_SteByStep();
-        }
-        else
-            Reduce_GaussJordan();             
-        matrix.SetPivotsResults();;       
-        PrintConclusion();
-        return matrix;
-    }
-
-
-    public void CreateNewMatrix(){
+    private void    Create_Matrix(){
         System.out.println("\n\n\nLet's start by indicate the size of the matrix");
-        int AmountRows = validation.Input_BiggerThan("Please indicate the amount of rows in the matrix", 2);
-        int AmountColumns = validation.Input_BiggerThan("Please indicate the amount of columns in the matrix", 2);
+        int AmountRows = input.BiggerThan("Please indicate the amount of rows in the matrix", 2);
+        int AmountColumns = input.BiggerThan("Please indicate the amount of columns in the matrix", 2);
         int[] size = {AmountRows, AmountColumns};
-        matrix.SetSize(size);
-        matrix.PrintMatrix("\nThe matrix input is:\n");
-        matrix.setMatrix_Inputs();
-        matrix.PrintMatrix("\nThe matrix input is:");
+        matrix.Set_Size(size);
+        printer.Matrix(matrix.Get_CopyMatrix(), "\nThe matrix input is:\n");
+        matrix.Set_MatrixInputs();
+        printer.Matrix(matrix.Get_CopyMatrix(), "\nThe matrix input is:");
     }
-    
-    private void SetStepByStep() {
-        System.out.println("\n\n\nPlease indicate if you want a detailed Step-by-Step solution");
-        boolean status = validation.Input_YesNo();
-        matrix.SetStepByStep(status);
-        stepByStep = status;
+    private void    Set_StepByStep() {
+        String message = "Please indicate if you want a detailed Step-by-Step solution\n";
+        boolean status = input.YesNo(message);
+        matrix.Set_StepByStep(status);
     }
-
-    private void PrintConclusion(){
-        matrix.PrintMatrix("\nReduce Echelon matrix:");
-        //matrix.PrintPivotsCompleteStatus();
+    private void    Reduce_Matrix(){
+        matrix.ReduceMatrix_AllPivots();
+    }
+    private void    Conclusion(){
+        System.out.print("======================== Conclusion ========================");        
         int inconsistentRow = matrix.CheckConsistentsy();
-
-        if(matrix.isConsistent){
-            if(matrix.IsLinearlyIndependent()){
-                String topDivisor = "-------------------------------";
-                System.out.printf("\n|%-31s-%-31s-%-31s|\n", topDivisor, topDivisor, topDivisor);
-                System.out.printf("|%-31s|%-31s|%-31s|\n", "It is Consistent", "It is Linearly Independent", "It is Linearly Dependent");
-                System.out.printf("|%-31s|%-31s|%-31s|\n", topDivisor, topDivisor, topDivisor);
-                System.out.printf("|%-31s|%-31s|%-31s|\n", "YES", "YES", "NO");
-                System.out.printf("|%-31s-%-31s-%-31s|\n", topDivisor, topDivisor, topDivisor);
+        String header = "Matrix Status";
+        String[] categories = {"It is Consistent", "It is Linearly Independent", "It is Linearly Dependent"};
+        int cellSize = 31;
+        
+        printer.Matrix(matrix.Get_CopyMatrix(), "\nReduce Echelon matrix:");
+        if(matrix.Get_IsConsistent()){
+            if(matrix.IsLinearlyIndependent()){   
+                String[][] content = {{"YES", "YES", "NO"}};  
+                printer.Table(header, categories, content, cellSize);
             }else{
-                String topDivisor = "-------------------------------";
-                System.out.printf("\n|%-31s-%-31s-%-31s|\n", topDivisor, topDivisor, topDivisor);
-                System.out.printf("|%-31s|%-31s|%-31s|\n", "It is Consistent", "It is Linearly Independent", "It is Linearly Dependent");
-                System.out.printf("|%-31s|%-31s|%-31s|\n", topDivisor, topDivisor, topDivisor);
-                System.out.printf("|%-31s|%-31s|%-31s|\n", "YES", "NO", "YES");
-                System.out.printf("|%-31s-%-31s-%-31s|\n", topDivisor, topDivisor, topDivisor);
+                String[][] content = {{"YES", "NO", "YES"}};  
+                printer.Table(header, categories, content, cellSize);
             }
-            matrix.printVariablesValues();
+            matrix.print_VariablesValues();
         }
         else{            
-            String topDivisor = "-------------------------------";
-            System.out.printf("\n|%-31s-%-31s-%-31s|\n", topDivisor, topDivisor, topDivisor);
-            System.out.printf("|%-31s|%-31s|%-31s|\n", "It is Consistent", "It is Linearly Independent", "It is Linearly Dependent");
-            System.out.printf("|%-31s|%-31s|%-31s|\n", topDivisor, topDivisor, topDivisor);
-            System.out.printf("|%-31s|%-31s|%-31s|\n", "NO, because of row " + (inconsistentRow+1), "NA", "NA");
-            System.out.printf("|%-31s-%-31s-%-31s|\n", topDivisor, topDivisor, topDivisor);
+            String[][] content = {{"NO, because of row " + (inconsistentRow+1), "NA", "NA"}};  
+            printer.Table(header, categories, content, cellSize);
         }
-    }
 
-    private void PrepareMatrix(){
-        matrix.DeleteRepetedRows();
-        matrix.TryGetPivots();
+        System.out.print("======================== END OF THE PROGRAM ======================== \n\n\n");
     }
+    private void    Set_MatrixStatus(){
+        matrix.Set_PivotsResults();
+        matrix.CheckConsistentsy();
+    }
+   
 
-    private void Reduce_GaussJordan(){
-        for (int indexVar = 0; indexVar < matrix.GetAmountPivots(); indexVar++){
-            Pivots newPivot = matrix.GetPivot(indexVar);
-            if(!newPivot.GetPivot_isFree(0))
-                ReduceColumn(indexVar);            
-        }
-    }
-    
-    private void Reduce_GaussJordan_SteByStep(){
-        System.out.println("======================== Solution step by step ========================");
-        for (int indexVar = 0; indexVar < matrix.GetAmountPivots(); indexVar++) {            
-            System.out.println("~~~~~~~~~~~~~~~ Step " +(indexVar + 1) +  " ~~~~~~~~~~~~~~~");
-            Pivots newPivot = matrix.GetPivot(indexVar);
-            if(!newPivot.GetPivot_isFree(0)){
-                ReduceColumn_StepByStep(indexVar);
-            }else{
-                System.out.println("Pivot "+(indexVar + 1) + " is a free variable. Hence, there is nothing to do in this step. \n");
-            }
-        }
-    }
-
-    private void ReduceColumn_StepByStep(int indexVar){
-        Pivots newPivot = matrix.GetPivot(indexVar);
-        double value = matrix.GetElement(newPivot.GetPivot_Position(0));
-        if(newPivot.size > 0 &&  Math.abs(value) > 0.00001 ){
-            String varName = "X"+ (indexVar + 1);
-            String position = "(" + (newPivot.GetPivot_Position(0)[0] +1) + "," + (newPivot.GetPivot_Position(0)[1]+1) + ")";
-
-            System.out.println("Pivot "+ varName + ",    Position = " + position+ ",   Value = " + value);
-            matrix.usePivotTo_ClearColumn(varName);
-            System.out.println("\n");
-        }else{
-            System.out.println("Pivot "+(indexVar + 1) + " has turn into a zero, so no operation is executed in this step \n");
-            cancelledPivot = true;
-        }
-    }
-
-    private void ReduceColumn(int indexVar){
-        Pivots newPivot = matrix.GetPivot(indexVar);
-        double value = matrix.GetElement(newPivot.GetPivot_Position(0));
-        if(newPivot.size > 0 &&  Math.abs(value) > 0.00001){
-            String varName = "X"+ (indexVar + 1);
-            matrix.usePivotTo_ClearColumn(varName);
-        }else{            
-            cancelledPivot = true;
-        }
-    }
 
 }
