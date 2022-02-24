@@ -45,11 +45,17 @@ public class Printer {
     }
 
     public void     Title(String message){
-        String divisor = "========================================";
-        System.out.printf("%60s%s%s\n", divisor, message.toUpperCase(), divisor);
+        String simbol = "/";
+        Times(simbol, 150);
+        System.out.printf("\n%2s%100s%48s\n", "//", message.toUpperCase(), "//");
+        Times(simbol, 150);
+    }
+    public void     Title2(String message){
+        String divisor = "======================================================";
+        System.out.printf("%s%s%s\n", divisor,  message.toUpperCase(), divisor);
     }
     public void     Subtitle(String message){
-        String divisor = "=============================";
+        String divisor = "-----------------------------------------------------------------";
         System.out.printf("%s%s%s\n", divisor, message, divisor);
     }
     public void     Subtitle2(String message){

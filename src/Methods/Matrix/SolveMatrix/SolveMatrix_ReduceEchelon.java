@@ -3,7 +3,6 @@ import Classes.*;
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
 import Classes.Utilities.Inputs;
-import Variables.Dictionary;
 
 
 public class SolveMatrix_ReduceEchelon {
@@ -24,7 +23,7 @@ public class SolveMatrix_ReduceEchelon {
     }
 
     private void    Create_Matrix(){
-        printer.Title("Solve matrix  by reduction method");
+        printer.Title2("Solve matrix  by reduction method");
         printer.Subtitle2("Let's start by indicate the size of the matrix");
         int AmountRows = input.BiggerThan("Please indicate the amount of rows in the matrix", 2);
         int AmountColumns = input.BiggerThan("Please indicate the amount of columns in the matrix", 2);
@@ -44,7 +43,7 @@ public class SolveMatrix_ReduceEchelon {
         matrix.ReduceMatrix_AllPivots();
     }
     private void    Conclusion(){
-        System.out.print("======================== Conclusion ========================");        
+        printer.Subtitle("Conclusion");        
         int inconsistentRow = matrix.CheckConsistentsy();
         String header = "Matrix Status";
         String[] categories = {"It is Consistent", "It is Linearly Independent", "It is Linearly Dependent"};
@@ -65,8 +64,7 @@ public class SolveMatrix_ReduceEchelon {
             String[][] content = {{"NO, because of row " + (inconsistentRow+1), "NA", "NA"}};  
             printer.Table(header, categories, content, cellSize);
         }
-
-        System.out.print("======================== END OF THE PROGRAM ======================== \n\n\n");
+        printer.Title("End of the prorgam");
     }
     private void    Set_MatrixStatus(){
         matrix.Set_PivotsResults();

@@ -324,8 +324,9 @@ public class Matrix_ReduceEchelon extends Matrix{
       //It returns a false if a pivot has turned into zero and therefore, it's column has not been cancelled
       //It allows to repet this method until complete
       
-      String header = "======================== Solution step by step ========================\n";
-      System.out.print(StepByStepStatus ? header : "");
+      String header = "Solution step by step";
+      if (StepByStepStatus)
+         printer.Subtitle(header);
 
       for (int indexVar = 0; indexVar < Get_AmountPivots(); indexVar++){
          String stepDivisor = "~~~~~~~~~~~~~~~ Step " +(indexVar + 1) +  " ~~~~~~~~~~~~~~~\n";
