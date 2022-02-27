@@ -7,12 +7,11 @@ import Classes.Exceptions.InvalidNumberException;
 
 
 public class Inputs{  
-   static Printer printer = new Printer();
    static Scanner scan = new Scanner (System.in);   
    
    //VALIDATE MENU
-   public int     ShowAndValidate_Menu(String[] options, String message){
-      printer.Subtitle2(message);
+   public static int     ShowAndValidate_Menu(String[] options, String message){
+      Printer.Subtitle2(message);
       int selection = -1;
       try{
          if(options.length > 0){
@@ -25,7 +24,7 @@ public class Inputs{
       }      
       return selection; 
    }
-   public void    DisplayMenuOptions(String[] options){
+   public static void    DisplayMenuOptions(String[] options){
       int indexMenu = 0;
       for(String option : options){               
          System.out.printf("%d)     %s\n",(indexMenu+1), option);
@@ -37,7 +36,7 @@ public class Inputs{
      
    
    //INPUTS VALUE
-   public double  InRange(String message, double minValue, double maxValue){
+   public static double  InRange(String message, double minValue, double maxValue){
       boolean valid = false;
       double input = -1;
       while(!valid){
@@ -58,7 +57,7 @@ public class Inputs{
       }
       return input;  
    }
-   public int     InRange(String message, int minValue, int maxValue){
+   public static int     InRange(String message, int minValue, int maxValue){
       boolean valid = false;
       int input = -1;
       while(!valid){
@@ -79,16 +78,16 @@ public class Inputs{
       }
       return input;  
    }
-   public double  Positive(){
+   public static double  Positive(){
       double doubleNum = 0;
       double input = BiggerThan("Please input a positive double", doubleNum);
       return input;  
    }
-   public int     Positive(String message){
+   public static int     Positive(String message){
       int input = BiggerThan(message, 0);
       return input;  
    }
-   public double  BiggerThan(String message, double minValue){
+   public static double  BiggerThan(String message, double minValue){
       boolean valid = false;
       double input = -1;
       while(!valid){
@@ -109,7 +108,7 @@ public class Inputs{
       }
       return input;  
    }
-   public int     BiggerThan(String message, int minValue){
+   public static int     BiggerThan(String message, int minValue){
       boolean valid = false;
       int input = -1;
       while(!valid){
@@ -133,7 +132,7 @@ public class Inputs{
    
 
    //INPUTS TYPE
-   public double  IsDouble(String message){
+   public static double  IsDouble(String message){
       boolean valid = false;
       double input = -1;
       while(!valid){
@@ -149,7 +148,7 @@ public class Inputs{
       }
       return input;  
    }
-   public String  IsString(String message){
+   public static String  IsString(String message){
       boolean valid = false;
       String input = "";
       while(!valid){
@@ -165,7 +164,7 @@ public class Inputs{
       }
       return input;  
    }
-   public int     IsInt(String message){
+   public static int     IsInt(String message){
       boolean valid = false;
       int input = 0;
       while(!valid){
@@ -181,7 +180,7 @@ public class Inputs{
       }
       return input;  
    }
-   public boolean YesNo(String message){
+   public static boolean YesNo(String message){
       boolean answer = false;
       boolean valid = false;
       String input = "";

@@ -18,61 +18,11 @@ public class Matrix_ReduceEchelon extends Matrix{
 
    //CONSTRUCTORS---------------------------------------------
    public Matrix_ReduceEchelon(String name, double[][] values){
-      super(name);
+      super(name, values);
       StepByStepStatus = true;
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
       pivots = new Pivots();
-      Set_MatrixToMatrix(values);
    }
-   public Matrix_ReduceEchelon(String name, int[] size, double value){
-      super(name);
-      StepByStepStatus = true;
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      pivots = new Pivots();
-      matrix = new double[size[0]][size[1]];
-      Set_MatrixToValue(value);
-   }
-   public Matrix_ReduceEchelon(String name, int size, double value){
-      super(name);
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      pivots = new Pivots();
-      matrix = new double[size][size];
-      Set_MatrixToValue(value);
-   }
-   public Matrix_ReduceEchelon(String name, int[] size){
-      super(name);
-      StepByStepStatus = true;
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      pivots = new Pivots();
-      matrix = new double[size[0]][size[1]];
-   }
-   public Matrix_ReduceEchelon(String name, int size){
-      super(name);
-      StepByStepStatus = true;
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      pivots = new Pivots();
-      matrix = new double[size][size];
-   }
-   public Matrix_ReduceEchelon(String name){
-      super(name);
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      pivots = new Pivots();
-      matrix = null;
-      StepByStepStatus = true;
-   }
-
+   
    
    //PROPERTIES
    public void    Set_StepByStep(boolean status){
@@ -157,9 +107,9 @@ public class Matrix_ReduceEchelon extends Matrix{
 
       if(numberTries > 0){
          
-         printer.Subtitle2("Permutations");
+         Printer.Subtitle2("Permutations");
          String message = "The matrix's row order has been permutated in order to try to find all available pivots\n";
-         printer.Matrix(matrix, message);
+         Printer.Matrix(matrix, message);
       }
       
    }
@@ -212,12 +162,12 @@ public class Matrix_ReduceEchelon extends Matrix{
             double[] unitarianRow = Get_UnitarianRow(pivotPosition);
             Set_RowToArray(pivotPosition[0], unitarianRow);
             if(StepByStepStatus){
-               printer.Matrix(matrix, messageMatrix);
+               Printer.Matrix(matrix, messageMatrix);
                System.out.println("\nNow this unitarian row will be use to clean the pivot's column. The operations are:");
             }
             ClearColumn(unitarianRow, pivotPosition);
             if(StepByStepStatus)
-               printer.Matrix(matrix, "The resulting matrix in step " + pivotName.charAt(1) + " is:");
+               Printer.Matrix(matrix, "The resulting matrix in step " + pivotName.charAt(1) + " is:");
          }
       }else{
          System.out.println("Error: The parameter indicated is exceeds the amount of variables in the matrix");
@@ -292,9 +242,9 @@ public class Matrix_ReduceEchelon extends Matrix{
       }
       if(rowsToDelete.length > 0){
          Set_RowsToValue(rowsToDelete, 0.0);
-         printer.Subtitle2("Repeted rows");
+         Printer.Subtitle2("Repeted rows");
          String message = "Repeted rows have been detected. \n The matrix's repeted rows have been set to zero.\nFinal Matrix";
-         printer.Matrix(matrix, message);
+         Printer.Matrix(matrix, message);
       }
    }
 
@@ -326,7 +276,7 @@ public class Matrix_ReduceEchelon extends Matrix{
       
       String header = "Solution step by step";
       if (StepByStepStatus)
-         printer.Subtitle(header);
+         Printer.Subtitle(header);
 
       for (int indexVar = 0; indexVar < Get_AmountPivots(); indexVar++){
          String stepDivisor = "~~~~~~~~~~~~~~~ Step " +(indexVar + 1) +  " ~~~~~~~~~~~~~~~\n";
@@ -380,7 +330,7 @@ public class Matrix_ReduceEchelon extends Matrix{
 
    //PRINT
    public void Print_Pivots(){
-      printer.Pivots(pivots);
+      Printer.Pivots(pivots);
    }
    public void print_VariablesValues() { 
       System.out.println("\nList of variable's values");

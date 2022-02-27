@@ -13,44 +13,13 @@ public abstract class Matrix{
  
    //CONSTRUCTORS---------------------------------------------
    public Matrix(String name, double[][] values){
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
+      int[] size = {values.length, values[1].length };
+      Set_IsConsistent(true);
+      Set_Size(size);
+      Set_Name(name);
       Set_MatrixToMatrix(values);
    }
-   public Matrix(String name, int[] size, double value){
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      matrix = new double[size[0]][size[1]];
-      Set_MatrixToValue(value);
-   }
-   public Matrix(String name, int size, double value){
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      matrix = new double[size][size];
-      Set_MatrixToValue(value);
-   }
-   public Matrix(String name, int[] size){
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      matrix = new double[size[0]][size[1]];
-   }
-   public Matrix(String name, int size){
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      matrix = new double[size][size];
-   }
-   public Matrix(String name){
-      isConsistent = true;
-      sizeMatrix = new int[2];
-      nameMatrix = name;
-      matrix = null;
-   }
-
+   
  
    //PROPERTIES
    public void    Set_Name(String name){
@@ -69,11 +38,18 @@ public abstract class Matrix{
       }
    }
    public void    Set_Size(int[] size){
+      sizeMatrix = new int[2];
       matrix = new double[size[0]][size[1]];
       Set_Size();
    }
    public int[]   Get_Size(){
       return sizeMatrix;
+   }
+   public int     Get_SizeRows(){
+      return sizeMatrix[0];
+   }
+   public int     Get_SizeColumns(){
+      return sizeMatrix[1];
    }
    public void    Set_IsConsistent(boolean status){
       isConsistent = status;
@@ -304,7 +280,7 @@ public abstract class Matrix{
    //ELEMENTS
    public void    Set_ElementToInput(int[] position){
       String message = "Indicate entry (" + (position[0] + 1) + "," + (position[1] + 1) + "):";
-      double value = input.IsDouble(message);
+      double value = Inputs.IsDouble(message);
       Set_ElementToValue(position, value);
    }
    public void    Set_ElementToValue(int[] position, double value){
