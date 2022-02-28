@@ -1,6 +1,6 @@
 package Methods.MatrixAlgebra;
-import Classes.Matrix_Simple;
-import Classes.Vector;
+import Classes.*;
+import Classes.Matrix.Matrix_Simple;
 import Classes.Utilities.Inputs;
 import Classes.Utilities.Printer;
 import Methods.CreateMatrix.CreateMatrix;
@@ -70,7 +70,7 @@ public class MatrixMultiplication {
         String message = "The given matrices are not compatible";
         Printer.Title2(message);
 
-        System.out.println("Remember, for a multiplication of matrices to be define:,\n   the number of columns in the first matrix hast to match the number of rows in the second matrix.");
+        System.out.println("Remember, for a multiplication of matrices to be define:\n     the number of columns in the first matrix hast to match the number of rows in the second matrix.");
         
         System.out.println("Matrix A Size: (" + matrix1.Get_SizeRows() + "," + matrix2.Get_SizeColumns() + ").");
         System.out.println("Matrix B Size: (" + matrix2.Get_SizeRows() + "," + matrix2.Get_SizeColumns() + ").");

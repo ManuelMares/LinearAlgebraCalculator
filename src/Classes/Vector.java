@@ -175,6 +175,36 @@ public class Vector {
         return newVector;
     }
 
+    public static double[] DecreaseVector(double[] array){
+        double[] newArray = new double[array.length - 1];
+        try {
+            for (int index = 0; index < (newArray.length); index++) {
+                newArray[index] = array[index];
+            }
+            return newArray;
+        } catch (Exception ex) {
+            System.out.printf("Exception: %s\n", ex);
+            System.out.print("The given array is not valid, and a null value has been returned.\n");
+        }
+        return null;
+    }    
+    public static double[] DeleteElement(double[] array, int indexElementToDelete){
+        double[] newArray = new double[array.length - 1];
+        try {
+            int counter = 0;
+            for (int index = 0; index < (array.length); index++) {
+                if(index != indexElementToDelete){
+                    newArray[counter] = array[index];
+                    counter++;
+                }
+            }
+            return newArray;
+        } catch (Exception ex) {
+            System.out.printf("Exception: %s\n", ex);
+            System.out.print("The given array is not valid, and a null value has been returned.\n");
+        }
+        return null;
+    }
 
     public static int[]     SwapElements(int[] array, int index1, int index2){
         int[] newArray = CopyVector(array);
@@ -243,7 +273,18 @@ public class Vector {
         return newArray;
     }
 
-
+    public static double[]  Get_Column(double[][] matrix, int indexColumn){
+        if(matrix[0].length > 0 && matrix.length > 0){
+            double[] column = new double[matrix[0].length];
+            int counter = 0;
+            for (double[] row : matrix) {
+                column[counter] = row[indexColumn];
+                counter++;
+            }
+            return column;
+        }
+        return null;
+    }
 
 
     

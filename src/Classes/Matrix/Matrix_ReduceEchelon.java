@@ -1,5 +1,7 @@
-package Classes;
-import Classes.AbstractClasses.Matrix;
+package Classes.Matrix;
+import Classes.Pivots;
+import Classes.Vector;
+import Classes.Matrix.AbstractClasses.Matrix;
 //import Inputs; You don't need to import files in the same folder
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
@@ -12,8 +14,8 @@ public class Matrix_ReduceEchelon extends Matrix{
    static Printer printer = new Printer();
    static Vector vector = new Vector();
 
-   private Pivots     pivots;
-   private boolean    StepByStepStatus;
+   protected   Pivots     pivots;
+   protected     boolean    StepByStepStatus;
 
 
    //CONSTRUCTORS---------------------------------------------
@@ -57,6 +59,10 @@ public class Matrix_ReduceEchelon extends Matrix{
             if(row[indexElement] != 0)
                coeficientsAreZero =false;
          }
+         Printer.Subtitle("Conclusion"); 
+         String message ="The identity matrix is";
+         Printer.Matrix(matrix, message);
+         Printer.Title("End of the prorgam");
       }
 
       if( coeficientsAreZero && !resultIsZero)
@@ -174,7 +180,7 @@ public class Matrix_ReduceEchelon extends Matrix{
          System.out.println("In method ClearColumn");
       }
    }
-   private void     ClearColumn(double[] unitarianRow, int[] pivotPosition){
+   protected void     ClearColumn(double[] unitarianRow, int[] pivotPosition){
       //Loops through each row and cancels element in the same column with the unitarian row, except itself
       int counter = 1;
       for (int indexRow = 0; indexRow < sizeMatrix[0]; indexRow++) {
@@ -190,7 +196,7 @@ public class Matrix_ReduceEchelon extends Matrix{
          
       }
    } 
-   private boolean  GetPivot_Column(int indexColumn) {
+   protected boolean  GetPivot_Column(int indexColumn) {
       if(indexColumn >= 0 && indexColumn <= sizeMatrix[1]){
          // gets the column as an array. Then loops through it looking for the first non-zero value.
          //With such index, it checks if it is already listed as a pivot. If so, it check next number. If not, it stops.
@@ -269,7 +275,8 @@ public class Matrix_ReduceEchelon extends Matrix{
       }
 
    }
-   private boolean  ReduceMatrix_OnlyNonZeroPivots(boolean allPivotsReduced){
+
+   protected boolean  ReduceMatrix_OnlyNonZeroPivots(boolean allPivotsReduced){
       //This method iterates the pivots, and reduces the column of those pivots that are not free
       //It returns a false if a pivot has turned into zero and therefore, it's column has not been cancelled
       //It allows to repet this method until complete
@@ -291,7 +298,7 @@ public class Matrix_ReduceEchelon extends Matrix{
       }
       return allPivotsReduced;
    }
-   private boolean  Reduce_Column(int indexVar, boolean allPivotsReduced){
+   protected boolean  Reduce_Column(int indexVar, boolean allPivotsReduced){
       Pivots newPivot = Get_Pivot(indexVar);
       double value = GetElement(newPivot.GetPivot_Position(0));
       if(newPivot.size > 0 &&  Math.abs(value) > 0.00001){

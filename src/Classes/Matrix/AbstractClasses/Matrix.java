@@ -1,4 +1,4 @@
-package Classes.AbstractClasses;
+package Classes.Matrix.AbstractClasses;
 import Classes.Vector;
 import Classes.Utilities.Inputs;
 
@@ -100,46 +100,38 @@ public abstract class Matrix{
       double[][] newMatrix = new double[matrix.length][matrix[0].length + 1];
       int indexRow = 0;
       for (double[] row : matrix) {
-         int indexColumn = 0;
-         for (double element : row) {
-            int[] positionElement = {indexRow, indexColumn};
-            Set_ElementToValue(positionElement, element);
-            indexColumn++;
-         }
-         int[] positionElement = {indexRow, indexColumn};
-         Set_ElementToValue(positionElement, values[indexRow]);
+         newMatrix[indexRow] = Vector.IncreaseVector(row);
+
+         newMatrix[indexRow][newMatrix[0].length -1] = values[indexRow];
          indexRow++;
       }
+      Set_MatrixToMatrix(newMatrix);
+      Set_Size();
    }
    public void    Add_Column(double value){
       double[][] newMatrix = new double[matrix.length][matrix[0].length + 1];
       int indexRow = 0;
       for (double[] row : matrix) {
-         int indexColumn = 0;
-         for (double element : row) {
-            int[] positionElement = {indexRow, indexColumn};
-            Set_ElementToValue(positionElement, element);
-            indexColumn++;
-         }
-         int[] positionElement = {indexRow, indexColumn};
-         Set_ElementToValue(positionElement, value);
+         newMatrix[indexRow] = Vector.IncreaseVector(row);
+
+         newMatrix[indexRow][newMatrix[0].length -1] = value;
          indexRow++;
       }
+      Set_MatrixToMatrix(newMatrix);
+      Set_Size();
    }
    public void    Add_Column(){
       double[][] newMatrix = new double[matrix.length][matrix[0].length + 1];
       int indexRow = 0;
+      double value = 0.0;
       for (double[] row : matrix) {
-         int indexColumn = 0;
-         for (double value : row) {
-            int[] positionElement = {indexRow, indexColumn};
-            Set_ElementToValue(positionElement, value);
-            indexColumn++;
-         }
-         int[] positionElement = {indexRow, indexColumn};
-         Set_ElementToValue(positionElement, 0.0);
+         newMatrix[indexRow] = Vector.IncreaseVector(row);
+
+         newMatrix[indexRow][newMatrix[0].length -1] = value;
          indexRow++;
       }
+      Set_MatrixToMatrix(newMatrix);
+      Set_Size();
    }
    public void    Add_Row(double[] values){
       double[][] newMatrix = new double[matrix.length + 1][matrix[0].length];
@@ -185,9 +177,15 @@ public abstract class Matrix{
    }
  
    public void    Delete_Column(int indexColumn){
+      double[][] newMatrix = new double[matrix.length][matrix[0].length - 1];
+      for (int indexRow = 0; indexRow < newMatrix.length; indexRow++) {
+         newMatrix[indexRow] = Vector.DeleteElement(matrix[indexRow], indexColumn);
+      }
 
-
+      Set_MatrixToMatrix(newMatrix);
+      Set_Size();
    }
+
    public void    Delete_Row(int indexRow){
 
 
