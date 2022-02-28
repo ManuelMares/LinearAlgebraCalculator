@@ -1,6 +1,6 @@
 package Classes.Utilities;
-import Classes.Matrix_Simple;
 import Classes.Pivots;
+import Classes.Matrix.AbstractClasses.Matrix;
 
 public class Printer {
     public static void     Matrix(double[][] matrix, String message){
@@ -11,7 +11,7 @@ public class Printer {
             
         System.out.print("\n");  
     }
-    public static void     Matrix(Matrix_Simple matrix, String message){
+    public static void     Matrix(Matrix matrix, String message){
         if(message.length() > 0)
             System.out.println(message);  
         for (int indexRow = 0; indexRow < matrix.Get_SizeRows(); indexRow++) {

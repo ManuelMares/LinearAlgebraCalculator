@@ -1,5 +1,6 @@
-package Classes;
-import Classes.AbstractClasses.Matrix;
+package Classes.Matrix;
+
+import Classes.Matrix.AbstractClasses.Matrix;
 //import Inputs; You don't need to import files in the same folder
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;

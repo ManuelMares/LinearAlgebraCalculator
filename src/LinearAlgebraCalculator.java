@@ -1,13 +1,12 @@
 import java.util.Scanner;
 import Classes.Utilities.Inputs;
 import Classes.Utilities.Printer;
-import MainMenu.MainMenu;
+import Methods.Inverse.InverseMatrix;
 import Methods.MatrixAlgebra.MatrixMultiplication;
 import Methods.SolveMatrix.SolveMatrix_ReduceEchelon;
 
 public class LinearAlgebraCalculator{
    //IMPORTS
-   MainMenu menu = new MainMenu();
    static Inputs input = new Inputs();
    static Scanner scan = new Scanner (System.in);
    static Printer printer = new Printer();
@@ -45,7 +44,8 @@ public class LinearAlgebraCalculator{
             matrixMultiplication.Main();
          break;
          case 3:
-            
+            InverseMatrix inverseMatrix = new InverseMatrix();
+            inverseMatrix.Main();
          break;
          default:          
          break;

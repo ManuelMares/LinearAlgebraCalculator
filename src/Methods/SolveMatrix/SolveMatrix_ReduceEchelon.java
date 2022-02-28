@@ -1,6 +1,7 @@
 package Methods.SolveMatrix;
 import Classes.*;
-import Classes.AbstractClasses.Matrix;
+import Classes.Matrix.AbstractClasses.Matrix;
+import Classes.Matrix.Matrix_ReduceEchelon;
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
 import Methods.CreateMatrix.CreateMatrix;
