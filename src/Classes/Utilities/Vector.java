@@ -1,4 +1,4 @@
-package Classes;
+package Classes.Utilities;
 
 public class Vector {
     public Vector(){}

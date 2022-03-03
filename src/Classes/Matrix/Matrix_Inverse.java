@@ -1,11 +1,11 @@
 package Classes.Matrix;
-import Classes.Pivots;
 import Classes.Vector;
 import Classes.Matrix.AbstractClasses.Matrix;
 //import Inputs; You don't need to import files in the same folder
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
-import Classes.Utilities.Inputs;
+import Classes.Utilities.Vector;
+import Classes.Utilities.Pivots;
 
 
 public class Matrix_Inverse extends Matrix_ReduceEchelon{    
