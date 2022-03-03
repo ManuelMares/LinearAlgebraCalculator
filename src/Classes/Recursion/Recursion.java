@@ -1,5 +1,5 @@
 package Classes.Recursion;
-import Classes.Vector;
+import Classes.Utilities.Vector;
 
 public class Recursion {
     static Vector vector = new Vector();

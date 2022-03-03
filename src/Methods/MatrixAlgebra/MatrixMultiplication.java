@@ -3,6 +3,7 @@ import Classes.*;
 import Classes.Matrix.Matrix_Simple;
 import Classes.Utilities.Inputs;
 import Classes.Utilities.Printer;
+import Classes.Utilities.Vector;
 import Methods.CreateMatrix.CreateMatrix;
 
 public class MatrixMultiplication {

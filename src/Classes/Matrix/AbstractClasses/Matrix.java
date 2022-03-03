@@ -1,6 +1,6 @@
 package Classes.Matrix.AbstractClasses;
-import Classes.Vector;
 import Classes.Utilities.Inputs;
+import Classes.Utilities.Vector;
 
 public abstract class Matrix{
    static Inputs input = new Inputs();
