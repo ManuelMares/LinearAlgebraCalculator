@@ -3,6 +3,7 @@ import Classes.Utilities.Inputs;
 import Classes.Utilities.Printer;
 import Methods.Inverse.InverseMatrix;
 import Methods.MatrixAlgebra.MatrixMultiplication;
+import Methods.SolveMatrix.SolveMatrix_Reduce;
 import Methods.SolveMatrix.SolveMatrix_ReduceEchelon;
 
 public class LinearAlgebraCalculator{
@@ -16,7 +17,7 @@ public class LinearAlgebraCalculator{
    static boolean method_Matrix;
    static boolean method_Vectors;
    static int methodSelected;
-   static String[] menuOptions = {"Solve system", "Multiply Matrices", "Invert Matrix"};
+   static String[] menuOptions = {"Reduce Echelon", "Reduce", "Multiply Matrices", "Invert Matrix"};
    
    
    
@@ -40,10 +41,14 @@ public class LinearAlgebraCalculator{
             solveMatrix_ReduceEchelon.Main();
          break;
          case 2:
+            SolveMatrix_Reduce solveMatrix_Reduce = new SolveMatrix_Reduce();
+            solveMatrix_Reduce.Main();
+         break;
+         case 3:
             MatrixMultiplication matrixMultiplication = new MatrixMultiplication();
             matrixMultiplication.Main();
          break;
-         case 3:
+         case 4:
             InverseMatrix inverseMatrix = new InverseMatrix();
             inverseMatrix.Main();
          break;

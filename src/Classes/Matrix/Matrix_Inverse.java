@@ -1,11 +1,12 @@
 package Classes.Matrix;
-import Classes.Vector;
+import Classes.Utilities.Vector;
 import Classes.Matrix.AbstractClasses.Matrix;
+import Classes.Matrix.Pivots.Pivot;
+import Classes.Matrix.Pivots.Pivots;
 //import Inputs; You don't need to import files in the same folder
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
 import Classes.Utilities.Vector;
-import Classes.Utilities.Pivots;
 
 
 public class Matrix_Inverse extends Matrix_ReduceEchelon{    
@@ -23,7 +24,7 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       Delete_RepetedRows();
       Get_PivotsNoAugmented();
       AugmentMatrix_Identity();     
-      allPivotsReduced = ReduceMatrix_OnlyNonZeroPivots(allPivotsReduced);
+      allPivotsReduced = Try_ReduceMatrix();
 
       while(!allPivotsReduced){
          DecreaseMatrixInverse();
@@ -33,7 +34,7 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
          Delete_RepetedRows();
          Get_PivotsNoAugmented();    
          AugmentMatrix_Identity();     
-         allPivotsReduced = ReduceMatrix_OnlyNonZeroPivots(allPivotsReduced);
+         allPivotsReduced = Try_ReduceMatrix();
       }
       DecreaseMatrix_Identity();
    }
@@ -79,8 +80,9 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       return null;
    }
    public boolean IsValid(){
-      for (int index = 0; index < pivots.size; index++) {
-         if(pivots.GetPivot_isFree(index))
+      for (int index = 0; index < pivots.Get_Size(); index++) {
+         Pivot newPivot = pivots.Get_Pivot(index);
+         if(newPivot.Get_IsFree())
             return false;
       }
       return true;

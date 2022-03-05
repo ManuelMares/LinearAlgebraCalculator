@@ -1,5 +1,7 @@
 package Classes.Utilities;
 import Classes.Matrix.AbstractClasses.Matrix;
+import Classes.Matrix.Pivots.Pivot;
+import Classes.Matrix.Pivots.Pivots;
 
 public class Printer {
     public static void     Matrix(double[][] matrix, String message){
@@ -30,28 +32,39 @@ public class Printer {
         Table(header, categories, content, cellSize);
     }
     private static String[][] Get_PivotsRows(Pivots pivots, int cellSize){
-        String[][] content = new String[pivots.size][4];
-        for (int index = 0; index < pivots.size; index++) {
-            boolean isFree= pivots.GetPivot_isFree(index);
-            int[]   position = pivots.GetPivot_Position(index);
-            double  value = pivots.GetPivot_Value(index);
-
-            String  stringName =pivots.GetPivot_Name(index);
-            String  stringNa ="N/A";
-            String  stringStatus = isFree ? "free": "Basic";
-            String  stringPosition = "(" + (position[0]+1) +","+ (position[1]+1) + ")";
-            String  stringValue = String.format("%.2f", value);
-
-            if( isFree ){
-                String[] cellRow = {stringName, stringNa, stringNa, stringStatus};
-                content[index] = cellRow;
-            }else{
-                String[] cellRow = {stringName, stringPosition, stringValue, stringStatus};
-                content[index] = cellRow;
-            }
-        }
+        String[][] content = new String[0][4];
         return content;
     }
+
+    public static void      Pivots1(Pivots pivots){
+        for (int index = 0; index < pivots.Get_Size(); index++) {
+            Pivot(pivots.Get_Pivot(index));
+        }
+    }
+    public static void      Pivot(Pivot pivot){
+        if(pivot != null ){
+            String name = pivot.Get_Name();
+            String position;
+            String coeficient;
+            String result;
+            String isFree;
+            if(!pivot.Get_IsFree()){
+                int[] posit = pivot.Get_Position();
+                position = String.format("(%d,%d)", posit[0], posit[1]);
+                coeficient = String.format("%.2f", pivot.Get_Coeficient());
+                result = String.format("%.2f", pivot.Get_Result());
+                isFree = "Basic";
+            }else{
+                position = "Na";
+                coeficient = "Na";
+                result = "Na";
+                isFree = "Free";
+            }
+            
+            System.out.printf("Name: %4s, Position: %6s, Coeficient: %6s, Result: %6s, status: %s\n\n", name, position, coeficient, result, isFree);
+        }
+    }
+
 
     public static void     Title(String message){
         String simbol = "/";

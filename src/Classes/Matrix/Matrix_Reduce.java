@@ -9,7 +9,7 @@ import Classes.Utilities.Vector;
 import Classes.Utilities.Inputs;
 
 
-public class Matrix_ReduceEchelon extends Matrix{      
+public class Matrix_Reduce extends Matrix{      
    static Inputs     input     = new Inputs();
    static Recursion  recursion = new Recursion();
    static Printer    printer   = new Printer();
@@ -20,7 +20,7 @@ public class Matrix_ReduceEchelon extends Matrix{
 
 
    //CONSTRUCTORS---------------------------------------------
-   public Matrix_ReduceEchelon(String name, double[][] values){
+   public Matrix_Reduce(String name, double[][] values){
       super(name, values);
       StepByStepStatus  = true;
       pivots            = new Pivots();
@@ -73,11 +73,6 @@ public class Matrix_ReduceEchelon extends Matrix{
       else
          return true;
    }
-   
-
-   
-
-
    public  void     Delete_RepetedRows(){
       int[] rowsToDelete = new int[0];
       for (int indexRow_Base = 0; indexRow_Base < sizeMatrix[0]; indexRow_Base++) {
@@ -95,10 +90,6 @@ public class Matrix_ReduceEchelon extends Matrix{
          Printer.Matrix(matrix, message);
       }
    }
-
-
-
-
 
    //REDUCE   
    public void      ReduceMatrix_AllPivots(){
@@ -118,7 +109,7 @@ public class Matrix_ReduceEchelon extends Matrix{
       }
 
    }
-   public void    Get_PivotsRecursion(){
+   public void      Get_PivotsRecursion(){
       pivots = pivots.Get_PivotsRecursion(Get_CopyMatrix());   
       Printer.Pivots1(pivots);   
    }
@@ -177,7 +168,7 @@ public class Matrix_ReduceEchelon extends Matrix{
    protected void    ClearColumn(double[] unitarianRow, int[] pivotPosition){
       //Loops through each row and cancels element in the same column with the unitarian row, except itself
       int counter = 1;
-      for (int indexRow = 0; indexRow < sizeMatrix[0]; indexRow++) {
+      for (int indexRow = pivotPosition[1]; indexRow < sizeMatrix[0]; indexRow++) {
          if( indexRow != pivotPosition[0] && matrix[indexRow][pivotPosition[1]] != 0){
             int[] positionToCancel = {indexRow, pivotPosition[1]};
             double factorToCancel = (-1) * GetElement(positionToCancel);

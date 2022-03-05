@@ -57,7 +57,12 @@ public abstract class Matrix{
    public boolean Get_IsConsistent(){
       return isConsistent;
    } 
-
+   public int     Get_NumColumns(){
+      return sizeMatrix[1];
+   }
+   public int     Get_NumRows(){
+      return sizeMatrix[0];
+   }
 
    //MATRIX
    public void    Set_MatrixInputs(){

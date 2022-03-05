@@ -1,16 +1,16 @@
 package Methods.SolveMatrix;
 import Classes.*;
 import Classes.Matrix.AbstractClasses.Matrix;
-import Classes.Matrix.Matrix_ReduceEchelon;
+import Classes.Matrix.Matrix_Reduce;
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
 import Methods.CreateMatrix.CreateMatrix;
 import Classes.Utilities.Inputs;
 
 
-public class SolveMatrix_ReduceEchelon {
+public class SolveMatrix_Reduce {
     Recursion   recursion = new Recursion();
-    Matrix_ReduceEchelon matrix;
+    Matrix_Reduce matrix;
 
     public void Main(){
         Create_Matrix();
@@ -24,7 +24,7 @@ public class SolveMatrix_ReduceEchelon {
         Printer.Title2("Solve matrix  by reduction method");
         Printer.Subtitle2("Let's start by indicate the size of the matrix");
         double[][] entries = CreateMatrix.Free();
-        matrix = new Matrix_ReduceEchelon("A", entries);
+        matrix = new Matrix_Reduce("A", entries);
     }
     private void    Set_StepByStep() {
         Printer.Subtitle2("step by step options");
@@ -64,7 +64,7 @@ public class SolveMatrix_ReduceEchelon {
     
 
     public Matrix Reduce(double[][] givenMatrix){
-        matrix = new Matrix_ReduceEchelon("Matrix A", givenMatrix);
+        matrix = new Matrix_Reduce("Matrix A", givenMatrix);
         Set_StepByStep();
         Reduce_Matrix();
         Set_MatrixStatus();        
