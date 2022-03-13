@@ -14,6 +14,9 @@ public class Matrix_Simple extends Matrix{
    public Matrix_Simple(String name, double[][] values){
       super(name, values);
    }
+   public Matrix_Simple(String name, int[] size){
+      super(name, size);
+   }
 
 
 }

@@ -1,8 +1,9 @@
 package Classes.Matrix;
 import Classes.Utilities.Vector;
+import Methods.CreateMatrix.CreateMatrix;
 import Classes.Matrix.AbstractClasses.Matrix;
-import Classes.Matrix.Pivots.Pivot;
-import Classes.Matrix.Pivots.Pivots;
+import Classes.Matrix.Pivots.Classes.Pivot_Augmented;
+import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
 //import Inputs; You don't need to import files in the same folder
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
@@ -10,7 +11,7 @@ import Classes.Utilities.Vector;
 
 
 public class Matrix_Inverse extends Matrix_ReduceEchelon{    
-
+   private boolean hasInverse = true;
 
    //CONSTRUCTORS---------------------------------------------
    public Matrix_Inverse(String name, double[][] values){
@@ -19,23 +20,11 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
    
 
 
-   public void      ReduceMatrix_AllPivots(){
-      boolean allPivotsReduced = true;
+   public void      ReduceMatrix(){
       Delete_RepetedRows();
       Get_PivotsNoAugmented();
       AugmentMatrix_Identity();     
-      allPivotsReduced = Try_ReduceMatrix();
-
-      while(!allPivotsReduced){
-         DecreaseMatrixInverse();
-         allPivotsReduced = true;
-         String message = "\n======================== Extra steps ========================\nThe position of at least one pivot has changed. A new iteration of solutions needs to be executed.\n\n";
-         System.out.print(StepByStepStatus ? message : "");
-         Delete_RepetedRows();
-         Get_PivotsNoAugmented();    
-         AugmentMatrix_Identity();     
-         allPivotsReduced = Try_ReduceMatrix();
-      }
+      hasInverse = Try_ReduceMatrix();      
       DecreaseMatrix_Identity();
    }
 
@@ -45,7 +34,7 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       Delete_Column(matrix[0].length - 1);
    }
    private void   AugmentMatrix_Identity(){
-      double[][] identity = Get_Identity();
+      double[][] identity = CreateMatrix.Identity(Get_NumRows());
       Annex_Matrix(identity);
       String message = "augmented matrix";
       Printer.Matrix(matrix, message);
@@ -80,12 +69,7 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       return null;
    }
    public boolean IsValid(){
-      for (int index = 0; index < pivots.Get_Size(); index++) {
-         Pivot newPivot = pivots.Get_Pivot(index);
-         if(newPivot.Get_IsFree())
-            return false;
-      }
-      return true;
+      return hasInverse;
    }
 
 

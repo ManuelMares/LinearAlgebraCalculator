@@ -19,7 +19,11 @@ public abstract class Matrix{
       Set_Name(name);
       Set_MatrixToMatrix(values);
    }
-   
+   public Matrix(String name, int[] size){
+      Set_IsConsistent(true);
+      Set_Size(size);
+      Set_Name(name);
+   }
  
    //PROPERTIES
    public void    Set_Name(String name){
@@ -228,8 +232,8 @@ public abstract class Matrix{
       }
    }
    public void    Set_ColumnToArray(int indexColumn, double[] values){      
-      if( indexColumn >= 0 && matrix[0].length > indexColumn ){
-         if(values != null && matrix[0].length>values.length){
+      if( indexColumn >= 0 && sizeMatrix[1] > indexColumn ){
+         if(values != null && sizeMatrix[0]>=values.length){
             for (int indexRow = 0; indexRow < matrix.length; indexRow++) {
                int[] positionElement = {indexRow, indexColumn};
                Set_ElementToValue(positionElement, values[indexRow]);

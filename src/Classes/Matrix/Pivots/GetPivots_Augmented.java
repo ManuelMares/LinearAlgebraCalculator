@@ -1,6 +1,8 @@
 package Classes.Matrix.Pivots;
 import Classes.Matrix.Matrix_Simple;
 import Classes.Matrix.AbstractClasses.Matrix;
+import Classes.Matrix.Pivots.Classes.Pivot_Augmented;
+import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
 //import Inputs; You don't need to import files in the same folder
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
@@ -8,11 +10,11 @@ import Classes.Utilities.Vector;
 import Classes.Utilities.Inputs;
 
 
-public class Get_Pivots{  
+public class GetPivots_Augmented{  
 
    static Vector vector = new Vector();    
 
-   protected static   Pivots      Pivots;
+   protected static   Pivots_Augmented      Pivots;
    protected static   Matrix      Matrix;
    protected static   int         SizeColumns;
    protected static   int         SizeRows;
@@ -24,7 +26,7 @@ public class Get_Pivots{
    protected static   boolean     StepByStepStatus;
 
     
-   public static Pivots Main(double[][] matrix, boolean stepByStep){      
+   public static Pivots_Augmented Main(double[][] matrix, boolean stepByStep){      
       Set_Variables(matrix, stepByStep);      
       Set_Pivots();
 
@@ -32,12 +34,12 @@ public class Get_Pivots{
    }
 
    public      static void     Reset_Pivots(){
-      Pivots = new Pivots();
+      Pivots = new Pivots_Augmented();
    }
    public      static void     Set_Variables(double[][] matrix, boolean StepByStep){
       StepByStepStatus = StepByStep;
       Matrix      = new Matrix_Simple("tmp", matrix);
-      Pivots      = new Pivots();
+      Pivots      = new Pivots_Augmented();
       SizeColumns = Matrix.Get_SizeColumns();
       SizeRows    = Matrix.Get_SizeRows();
       
@@ -73,7 +75,7 @@ public class Get_Pivots{
                int[] positionResult = {indexRow, SizeColumns - 1};
                Double result = Matrix.GetElement(positionResult);
                boolean isFree = false;
-               Pivot newPivot = new Pivot(name, position, coeficient, result, isFree);
+               Pivot_Augmented newPivot = new Pivot_Augmented(name, position, coeficient, result, isFree);
 
                Pivots.Add_BasicPivot(newPivot);
 
@@ -90,7 +92,7 @@ public class Get_Pivots{
    }
    public      static void     Update_Results(){
       for (int indexColumn = 0; indexColumn < AmountBasicVariables; indexColumn++) {
-         Pivot tmpPivot = Pivots.Get_Pivot(indexColumn);
+         Pivot_Augmented tmpPivot = Pivots.Get_Pivot(indexColumn);
          if(!tmpPivot.Get_IsFree()){
             int[] positionResult = {indexColumn, SizeColumns - 1};
             double result = Matrix.GetElement(positionResult);

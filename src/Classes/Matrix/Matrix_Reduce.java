@@ -1,7 +1,7 @@
 package Classes.Matrix;
 import Classes.Matrix.AbstractClasses.Matrix;
-import Classes.Matrix.Pivots.Pivot;
-import Classes.Matrix.Pivots.Pivots;
+import Classes.Matrix.Pivots.Classes.Pivot_Augmented;
+import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
 //import Inputs; You don't need to import files in the same folder
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
@@ -9,13 +9,10 @@ import Classes.Utilities.Vector;
 import Classes.Utilities.Inputs;
 
 
-public class Matrix_Reduce extends Matrix{      
-   static Inputs     input     = new Inputs();
-   static Recursion  recursion = new Recursion();
-   static Printer    printer   = new Printer();
+public class Matrix_Reduce extends Matrix{
    static Vector     vector    = new Vector();
 
-   public    Pivots     pivots;
+   public    Pivots_Augmented     pivots;
    protected boolean    StepByStepStatus;
 
 
@@ -23,7 +20,7 @@ public class Matrix_Reduce extends Matrix{
    public Matrix_Reduce(String name, double[][] values){
       super(name, values);
       StepByStepStatus  = true;
-      pivots            = new Pivots();
+      pivots            = new Pivots_Augmented();
    }
    
    
@@ -62,16 +59,11 @@ public class Matrix_Reduce extends Matrix{
          }
       }
 
-      if( coeficientsAreZero && !resultIsZero){
-         Printer.Subtitle("Conclusion"); 
-         String message ="The identity matrix is";
-         Printer.Matrix(matrix, message);
-         Printer.Title("End of the prorgam");
-
+      if( coeficientsAreZero && !resultIsZero)
          return false;
-      }
       else
          return true;
+
    }
    public  void     Delete_RepetedRows(){
       int[] rowsToDelete = new int[0];
@@ -103,20 +95,19 @@ public class Matrix_Reduce extends Matrix{
          allPivotsReduced = true;
          String message = "\n======================== Extra steps ========================\nThe position of at least one pivot has changed. A new iteration of solutions needs to be executed.\n\n";
          System.out.print(StepByStepStatus ? message : "");
-         Get_PivotsRecursion(); 
-         Printer.Pivots1(pivots);     
+         Get_PivotsRecursion();    
          allPivotsReduced = Try_ReduceMatrix();
       }
-
+      Printer.Pivots(pivots);  
    }
    public void      Get_PivotsRecursion(){
-      pivots = pivots.Get_PivotsRecursion(Get_CopyMatrix());   
-      Printer.Pivots1(pivots);   
+      pivots = pivots.Get_PivotsRecursion_Augmented(Get_CopyMatrix());   
+      Printer.Pivots(pivots);   
    }
 
    protected boolean  Try_ReduceMatrix(){
       for (int index = 0; index < pivots.Get_Size(); index++) {
-         Pivot newPivot = pivots.Get_Pivot(index);
+         Pivot_Augmented newPivot = pivots.Get_Pivot(index);
          if(!newPivot.Get_IsFree()){
             if(!Try_Reduce_Column(index))
                return false;
@@ -126,7 +117,7 @@ public class Matrix_Reduce extends Matrix{
    }
    protected boolean  Try_Reduce_Column(int indexVar){
       boolean columnReduced =true;
-      Pivot pivot = pivots.Get_Pivot(indexVar);
+      Pivot_Augmented pivot = pivots.Get_Pivot(indexVar);
       double coeficient = pivot.Get_Coeficient();
       if( coeficient != 0){
          ClearColumn_Pivot(pivot);
@@ -145,7 +136,7 @@ public class Matrix_Reduce extends Matrix{
 
       return unitarianRow;
    }
-   public  void      ClearColumn_Pivot(Pivot pivot) {
+   public  void      ClearColumn_Pivot(Pivot_Augmented pivot) {
       if(!pivot.Get_IsFree() && pivot.Get_Coeficient() != 0){
          int[] position = pivot.Get_Position();
          Printer.Subtitle2("Step " + pivot.Get_Name().charAt(1));         

@@ -1,6 +1,8 @@
 package Classes.Matrix.Pivots;
 import Classes.Matrix.Matrix_Simple;
 import Classes.Matrix.AbstractClasses.Matrix;
+import Classes.Matrix.Pivots.Classes.Pivot;
+import Classes.Matrix.Pivots.Classes.Pivots;
 //import Inputs; You don't need to import files in the same folder
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
@@ -8,7 +10,7 @@ import Classes.Utilities.Vector;
 import Classes.Utilities.Inputs;
 
 
-public class Get_PivotsRecursion extends Get_Pivots{
+public class GetPivotsRecursion extends GetPivots{
    static Recursion recursion = new Recursion();
    static int[]     matrixOrder = new int[SizeRows];
 
@@ -23,19 +25,25 @@ public class Get_PivotsRecursion extends Get_Pivots{
    }
    
    private static void Adjust_PivotsOrder(){
-      Pivot tempPivot;
-      System.out.println("\n");
-      for (int index = 0; index < Pivots.Get_Size(); index++) {
-         tempPivot = Adjust_PivotRow(Pivots.Get_Pivot(index));
-         Pivots.Set_Pivot(tempPivot, index); 
+      if(matrixOrder != null && matrixOrder.length > 0){
+         Pivot tempPivot;
+         for (int index = 0; index < Pivots.Get_Size(); index++) {
+            tempPivot = Adjust_PivotRow(Pivots.Get_Pivot(index));
+            Pivots.Set_Pivot(tempPivot, index); 
+         }
       }
    }
    private static Pivot Adjust_PivotRow(Pivot pivot){
       Pivot tmpPivot = pivot;
-      if(!pivot.Get_IsFree()){
-         int[] position = tmpPivot.Get_Position();
-         position[0] = matrixOrder[position[0]];
-         tmpPivot.Set_Position(position);
+      try {
+         if(!pivot.Get_IsFree()){
+            int[] position = tmpPivot.Get_Position();
+            position[0] = matrixOrder[position[0]];
+            tmpPivot.Set_Position(position);
+         }
+      } catch (Exception e) {
+         System.out.println(e);
+         System.out.println(pivot.Get_IsFree());
       }
       return tmpPivot;
    }
@@ -48,7 +56,6 @@ public class Get_PivotsRecursion extends Get_Pivots{
          int[][] arrayPermutations = recursion.Get_ArrayOfPermutations(SizeRows);
          for (int[] array : arrayPermutations){
             counter++;
-            System.out.println("NEW CYCLE " +counter);
             Matrix.Set_MatrixToMatrix( MatrixCopy.Get_CopyMatrix());
             Matrix.ReaArrangeMatrix_GivenOrder(array);            
             allPivotsFound = TrySet_AllBasicPivots();
