@@ -14,7 +14,6 @@ public class InverseMatrix {
 
     public void Main(){
         Create_Matrix();
-        Set_StepByStep();
         Reduce_Matrix();
         Conclusion();
     }
@@ -27,14 +26,8 @@ public class InverseMatrix {
         double[][] entries = CreateMatrix.Square();
         matrix = new Matrix_Inverse("A", entries);
     }
-    private void    Set_StepByStep() {
-        Printer.Subtitle2("step by step options");
-        String message = "Please indicate if you want a detailed Step-by-Step solution\n";
-        boolean status = Inputs.YesNo(message);
-        matrix.Set_StepByStep(status);
-    }
     private void    Reduce_Matrix(){
-        matrix.ReduceMatrix_AllPivots();
+        matrix.ReduceMatrix();
     }
     private void    Conclusion(){
         Printer.Subtitle("Conclusion"); 
@@ -53,7 +46,6 @@ public class InverseMatrix {
     public Matrix Reduce(double[][] givenMatrix){
         matrix = new Matrix_Inverse("Matrix A", givenMatrix);
         if(MatrixIsSquare()){
-            Set_StepByStep();
             Reduce_Matrix();      
             int inconsistentRow = matrix.CheckConsistentsy();
             if(matrix.Get_IsConsistent())

@@ -14,7 +14,6 @@ public class SolveMatrix_ReduceEchelon {
 
     public void Main(){
         Create_Matrix();
-        Set_StepByStep();
         Reduce_Matrix();
         Set_MatrixStatus();
         Conclusion();
@@ -26,12 +25,7 @@ public class SolveMatrix_ReduceEchelon {
         double[][] entries = CreateMatrix.Free();
         matrix = new Matrix_ReduceEchelon("A", entries);
     }
-    private void    Set_StepByStep() {
-        Printer.Subtitle2("step by step options");
-        String message = "Please indicate if you want a detailed Step-by-Step solution\n";
-        boolean status = Inputs.YesNo(message);
-        matrix.Set_StepByStep(status);
-    }
+    
     private void    Reduce_Matrix(){
         matrix.ReduceMatrix_AllPivots();
     }
@@ -65,7 +59,6 @@ public class SolveMatrix_ReduceEchelon {
 
     public Matrix Reduce(double[][] givenMatrix){
         matrix = new Matrix_ReduceEchelon("Matrix A", givenMatrix);
-        Set_StepByStep();
         Reduce_Matrix();
         Set_MatrixStatus();        
         int inconsistentRow = matrix.CheckConsistentsy();

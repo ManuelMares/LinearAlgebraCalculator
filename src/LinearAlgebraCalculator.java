@@ -5,6 +5,8 @@ import Methods.Inverse.InverseMatrix;
 import Methods.MatrixAlgebra.MatrixMultiplication;
 import Methods.SolveMatrix.SolveMatrix_Reduce;
 import Methods.SolveMatrix.SolveMatrix_ReduceEchelon;
+import Methods.Transpose.Transpose;
+import Methods.LuFactorization.LuFactorization;
 
 public class LinearAlgebraCalculator{
    //IMPORTS
@@ -17,7 +19,7 @@ public class LinearAlgebraCalculator{
    static boolean method_Matrix;
    static boolean method_Vectors;
    static int methodSelected;
-   static String[] menuOptions = {"Reduce Echelon", "Reduce", "Multiply Matrices", "Invert Matrix"};
+   static String[] menuOptions = {"Reduce Echelon", "Reduce", "Multiply Matrices", "Invert Matrix", "Factorization", "Transpose"};
    
    
    
@@ -51,6 +53,14 @@ public class LinearAlgebraCalculator{
          case 4:
             InverseMatrix inverseMatrix = new InverseMatrix();
             inverseMatrix.Main();
+         break;
+         case 5:
+            LuFactorization luFactorization = new LuFactorization();
+            luFactorization.Main();
+         break;
+         case 6:
+            Transpose transpose = new Transpose();
+            transpose.Main();
          break;
          default:          
          break;

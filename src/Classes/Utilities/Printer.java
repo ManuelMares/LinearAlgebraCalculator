@@ -1,7 +1,9 @@
 package Classes.Utilities;
 import Classes.Matrix.AbstractClasses.Matrix;
-import Classes.Matrix.Pivots.Pivot;
-import Classes.Matrix.Pivots.Pivots;
+import Classes.Matrix.Pivots.Classes.Pivot_Augmented;
+import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
+import Classes.Matrix.Pivots.Classes.Pivot;
+import Classes.Matrix.Pivots.Classes.Pivots;
 
 public class Printer {
     public static void     Matrix(double[][] matrix, String message){
@@ -24,6 +26,13 @@ public class Printer {
     public static void     MatrixStatus(String header, String[] categories, String[][] content, int cellSize){
         Table(header, categories, content, cellSize);
     }
+    public static void     Pivots(Pivots_Augmented pivots){
+        String header = "\n\nDetailed report of variables' status...";
+        String[] categories = {"Name", "Position", "Coeficients", "Result", "Status"};
+        int cellSize = 12;
+        String[][] content = Get_PivotsRows(pivots, cellSize);
+        Table(header, categories, content, cellSize);
+    }
     public static void     Pivots(Pivots pivots){
         String header = "\n\nDetailed report of variables' status...";
         String[] categories = {"Name", "Position", "Coeficients", "Status"};
@@ -31,39 +40,75 @@ public class Printer {
         String[][] content = Get_PivotsRows(pivots, cellSize);
         Table(header, categories, content, cellSize);
     }
-    private static String[][] Get_PivotsRows(Pivots pivots, int cellSize){
-        String[][] content = new String[0][4];
+    private static String[][]   Get_PivotsRows(Pivots_Augmented pivots, int cellSize){
+        String[][] content = new String[pivots.Get_Size()][5];
+        for (int index = 0; index < pivots.Get_Size(); index++) {
+            content[index] = PivotTo_StringArray(pivots.Get_Pivot(index));
+        }
         return content;
     }
-
-    public static void      Pivots1(Pivots pivots){
+    private static String[][]   Get_PivotsRows(Pivots pivots, int cellSize){
+        String[][] content = new String[pivots.Get_Size()][4];
         for (int index = 0; index < pivots.Get_Size(); index++) {
-            Pivot(pivots.Get_Pivot(index));
+            content[index] = PivotTo_StringArray(pivots.Get_Pivot(index));
         }
+        return content;
     }
-    public static void      Pivot(Pivot pivot){
+    private static String[]     PivotTo_StringArray(Pivot_Augmented pivot){
+        String[] pivotString = new String[5]; 
         if(pivot != null ){
-            String name = pivot.Get_Name();
-            String position;
-            String coeficient;
-            String result;
-            String isFree;
+            pivotString[0] = pivot.Get_Name();
             if(!pivot.Get_IsFree()){
                 int[] posit = pivot.Get_Position();
-                position = String.format("(%d,%d)", posit[0], posit[1]);
-                coeficient = String.format("%.2f", pivot.Get_Coeficient());
-                result = String.format("%.2f", pivot.Get_Result());
-                isFree = "Basic";
+                pivotString[1] = String.format("(%d,%d)", (posit[0]+1), (posit[1]+1));
+                pivotString[2] = String.format("%.2f", pivot.Get_Coeficient());
+                pivotString[3] = String.format("%.2f", pivot.Get_Result());
+                pivotString[4] = "Basic";
             }else{
-                position = "Na";
-                coeficient = "Na";
-                result = "Na";
-                isFree = "Free";
+                pivotString[1] = "Na";
+                pivotString[2] = "Na";
+                pivotString[3] = "Na";
+                pivotString[4] = "Free";
             }
-            
-            System.out.printf("Name: %4s, Position: %6s, Coeficient: %6s, Result: %6s, status: %s\n\n", name, position, coeficient, result, isFree);
         }
+        return pivotString;
     }
+    private static String[]     PivotTo_StringArray(Pivot pivot){
+        String[] pivotString = new String[4]; 
+        if(pivot != null ){
+            pivotString[0] = pivot.Get_Name();
+            if(!pivot.Get_IsFree()){
+                int[] posit = pivot.Get_Position();
+                pivotString[1] = String.format("(%d,%d)", (posit[0]+1), (posit[1]+1));
+                pivotString[2] = String.format("%.2f", pivot.Get_Coeficient());
+                pivotString[3] = "Basic";
+            }else{
+                pivotString[1] = "Na";
+                pivotString[2] = "Na";
+                pivotString[3] = "Free";
+            }
+        }
+        return pivotString;
+    }
+    public static void     Pivot(Pivot_Augmented pivot){
+        String[] categories = {"Name:", "Position:", "Coeficient:", "Result:", "Status:"};
+        String[] pivotString = PivotTo_StringArray(pivot);
+        System.out.print("\n");
+        for (int index = 0; index < 5; index++) {
+            System.out.printf("%s %6s,   ", categories[index], pivotString[index]);
+        }
+        System.out.print("\n");
+    }
+    public static void     Pivot(Pivot pivot){
+        String[] categories = {"Name:", "Position:", "Coeficient:", "Status:"};
+        String[] pivotString = PivotTo_StringArray(pivot);
+        System.out.print("\n");
+        for (int index = 0; index < 4; index++) {
+            System.out.printf("%s %6s,   ", categories[index], pivotString[index]);
+        }
+        System.out.print("\n");
+    }
+
 
 
     public static void     Title(String message){

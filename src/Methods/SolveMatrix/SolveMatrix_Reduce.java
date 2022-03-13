@@ -14,7 +14,6 @@ public class SolveMatrix_Reduce {
 
     public void Main(){
         Create_Matrix();
-        Set_StepByStep();
         Reduce_Matrix();
         Set_MatrixStatus();
         Conclusion();
@@ -25,12 +24,6 @@ public class SolveMatrix_Reduce {
         Printer.Subtitle2("Let's start by indicate the size of the matrix");
         double[][] entries = CreateMatrix.Free();
         matrix = new Matrix_Reduce("A", entries);
-    }
-    private void    Set_StepByStep() {
-        Printer.Subtitle2("step by step options");
-        String message = "Please indicate if you want a detailed Step-by-Step solution\n";
-        boolean status = Inputs.YesNo(message);
-        matrix.Set_StepByStep(status);
     }
     private void    Reduce_Matrix(){
         matrix.ReduceMatrix_AllPivots();
@@ -65,7 +58,6 @@ public class SolveMatrix_Reduce {
 
     public Matrix Reduce(double[][] givenMatrix){
         matrix = new Matrix_Reduce("Matrix A", givenMatrix);
-        Set_StepByStep();
         Reduce_Matrix();
         Set_MatrixStatus();        
         int inconsistentRow = matrix.CheckConsistentsy();

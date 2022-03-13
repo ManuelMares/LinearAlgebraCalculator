@@ -5,6 +5,8 @@ import Classes.Utilities.Inputs;
 public class CreateMatrix{
 
     public static double[][] Free(){
+        boolean isConfirmed = true;
+        String confirmationMessage = "Is the matrix correct?";
         double[][] matrix;
         
         int AmountRows = Inputs.BiggerThan("Please indicate the amount of rows in the matrix", 2);
@@ -14,10 +16,25 @@ public class CreateMatrix{
 
         String message = "The given matrix is:";
         Printer.Matrix(matrix, message);
+        Inputs.YesNo(confirmationMessage);
+
+
+        while(!isConfirmed){
+            AmountRows = Inputs.BiggerThan("Please indicate the amount of rows in the matrix", 2);
+            AmountColumns = Inputs.BiggerThan("Please indicate the amount of columns in the matrix", 2);
+            matrix = new double[AmountRows][AmountColumns];
+            GetValues(matrix);
+            Printer.Matrix(matrix, message);
+            Inputs.YesNo(confirmationMessage);
+        }
+
+
         return matrix;
     }
 
     public static double[][] Square(){
+        boolean isConfirmed = true;
+        String confirmationMessage = "Is the matrix correct?";
         double[][] matrix;
         
         int size = Inputs.BiggerThan("Please indicate the size of the SQUARE matrix", 2);
@@ -26,7 +43,26 @@ public class CreateMatrix{
         
         String message = "The given matrix is:";
         Printer.Matrix(matrix, message);
+        Inputs.YesNo(confirmationMessage);
+
+        while(!isConfirmed){
+            size = Inputs.BiggerThan("Please indicate the size of the SQUARE matrix", 2);
+            matrix = new double[size][size];
+            GetValues(matrix);
+            
+            Printer.Matrix(matrix, message);
+            Inputs.YesNo(confirmationMessage);
+        }
+
         return matrix;
+    }
+
+    public static double[][] Identity(int size){
+        double[][] newMatrix = new double[size][size];
+        for (int index = 0; index < size; index++) {
+            newMatrix[index][index] = 1;
+        }
+        return newMatrix;
     }
 
     public static void GetValues(double[][] matrix){
