@@ -2,16 +2,12 @@ package Classes.Matrix;
 import Classes.Matrix.AbstractClasses.Matrix;
 import Classes.Matrix.Pivots.Classes.Pivot;
 import Classes.Matrix.Pivots.Classes.Pivots;
-//import Inputs; You don't need to import files in the same folder
-import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
 import Classes.Utilities.Vector;
-import Methods.CreateMatrix.CreateMatrix;
-import Classes.Utilities.Inputs;
+import Methods.Controller.GetMatrix;
 
 
 public class Matrix_LuFactorization extends Matrix{
-   static Vector     vector    = new Vector();
 
    
    public Matrix_Simple matrixL;
@@ -26,7 +22,7 @@ public class Matrix_LuFactorization extends Matrix{
    public Matrix_LuFactorization(String name, double[][] values){
       super(name, values);
       int[] size = {values.length, values[0].length};
-      double[][] identity = CreateMatrix.Identity(values.length);
+      double[][] identity = GetMatrix.Identity(values.length);
       matrixP = new Matrix_Simple("P", identity);
       matrixL = new Matrix_Simple("L", identity);
       matrixU = new Matrix_Simple("U", size);
@@ -119,7 +115,7 @@ public class Matrix_LuFactorization extends Matrix{
    public  double[]  Get_UnitarianRow(int[] pivotPosition){
       double pivotValue = GetElement(pivotPosition);
       double[] pivotRow = Get_Row(pivotPosition[0]);
-      double[] unitarianRow = vector.ByScalar(pivotRow, (1/pivotValue));
+      double[] unitarianRow = Vector.ByScalar(pivotRow, (1/pivotValue));
 
       return unitarianRow;
    }
@@ -156,7 +152,7 @@ public class Matrix_LuFactorization extends Matrix{
             matrixL.Set_ElementToValue(positionToCancel, (factor/pivot.Get_Coeficient()));
             String message = String.format("%d)R%d = R%d + (%.2f)*R%d.\n", counter, (positionToCancel[0]+1), (positionToCancel[0]+1), factorToCancel, (pivotPosition[0]+1));
             System.out.print(StepByStepStatus ? message : "");
-            double[] arrayToAdd = vector.ByScalar(unitarianRow, factorToCancel);         
+            double[] arrayToAdd = Vector.ByScalar(unitarianRow, factorToCancel);         
             ModifyMatrix_AddVectorTo_Row(indexRow, arrayToAdd);
             counter++;
          }

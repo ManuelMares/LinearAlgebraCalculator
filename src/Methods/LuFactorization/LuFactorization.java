@@ -5,7 +5,7 @@ import Classes.Matrix.Matrix_LuFactorization;
 import Classes.Matrix.Matrix_Simple;
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
-import Methods.CreateMatrix.CreateMatrix;
+import Methods.Controller.GetMatrix;
 import Classes.Utilities.Inputs;
 
 
@@ -27,8 +27,8 @@ public class LuFactorization {
     private void    Create_Matrix(){
         Printer.Title2("Solve matrix  by reduction method");
         Printer.Subtitle2("Let's start by indicate the size of the matrix");
-        double[][] entries = CreateMatrix.Free();
-        matrix = new Matrix_LuFactorization("A", entries);
+        //double[][] entries = CreateMatrix.Free();
+        //matrix = new Matrix_LuFactorization("A", entries);
     }
 
     private void    Reduce_Matrix(){

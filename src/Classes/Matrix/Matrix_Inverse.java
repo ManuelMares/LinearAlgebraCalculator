@@ -1,43 +1,67 @@
 package Classes.Matrix;
 import Classes.Utilities.Vector;
-import Methods.CreateMatrix.CreateMatrix;
-import Classes.Matrix.AbstractClasses.Matrix;
-import Classes.Matrix.Pivots.Classes.Pivot_Augmented;
-import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
-//import Inputs; You don't need to import files in the same folder
-import Classes.Recursion.Recursion;
+
+import javax.swing.JLabel;
+
+import GUI.Components.Containers.*;
+import GUI.Components.Tables.MatrixUI;
+import GUI.Components.Tables.PivotsUI;
+import GUI.Components.Text.*;
+import GUI.Controllers.InverseUI;
+import Methods.Controller.GetMatrix;
+import Classes.Utilities.Colors;
 import Classes.Utilities.Printer;
-import Classes.Utilities.Vector;
 
 
 public class Matrix_Inverse extends Matrix_ReduceEchelon{    
+   private SectionVerticalUI UI;
    private boolean hasInverse = true;
 
-   //CONSTRUCTORS---------------------------------------------
    public Matrix_Inverse(String name, double[][] values){
       super(name, values);
+      UI= new SectionVerticalUI();
+      UI.Set_BackgroundColor(Colors.gray1);
+      //int[] size = {500,500};
+      //UI.Set_Size(size);
    }
    
+   public SectionVerticalUI Get_InverseUI(){
+      return UI;
+   }
+
 
 
    public void      ReduceMatrix(){
       Delete_RepetedRows();
       Get_PivotsNoAugmented();
       AugmentMatrix_Identity();     
-      hasInverse = Try_ReduceMatrix();      
+      hasInverse = Try_ReduceMatrix();   
+        
+      MatrixUI matrixUI = new MatrixUI(matrix, "Reduced Matrix");
+      UI.Add_Component(matrixUI);   
+
       DecreaseMatrix_Identity();
    }
+   
 
    private void   Get_PivotsNoAugmented(){
       Add_Column();
       Get_PivotsRecursion();
       Delete_Column(matrix[0].length - 1);
+
+      PivotsUI pivotsUI = new PivotsUI(pivots, "Pivots");
+      UI.Add_Component(pivotsUI);
    }
+
    private void   AugmentMatrix_Identity(){
-      double[][] identity = CreateMatrix.Identity(Get_NumRows());
+      double[][] identity = GetMatrix.Identity(Get_NumRows());
       Annex_Matrix(identity);
       String message = "augmented matrix";
       Printer.Matrix(matrix, message);
+
+      
+      MatrixUI matrixUI = new MatrixUI(matrix, message);
+      UI.Add_Component(matrixUI);
    }
    private void   DecreaseMatrixInverse(){
       int index = Get_SizeRows();
@@ -50,6 +74,9 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       for (int counter = 0; counter < Get_SizeRows(); counter++) {
          Delete_Column(0);
       }
+      
+      MatrixUI matrixUI = new MatrixUI(matrix, "SOLUTION");
+      UI.Add_Component(matrixUI);
    }
    public void Annex_Matrix(double[][] identity){
       for(int indexColumn = 0;  indexColumn < identity[1].length; indexColumn++){
@@ -68,6 +95,7 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       }
       return null;
    }
+
    public boolean IsValid(){
       return hasInverse;
    }

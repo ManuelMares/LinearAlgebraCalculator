@@ -1,4 +1,6 @@
 package Classes.Utilities;
+
+import javax.swing.JOptionPane;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -187,7 +189,8 @@ public class Inputs{
       while(!valid){
          try{
             System.out.print(message);
-            input = scan.next().toLowerCase();
+
+            input = JOptionPane.showInputDialog(message).toLowerCase();
             if(input.charAt(0) == 'y'){
                return true;
             }

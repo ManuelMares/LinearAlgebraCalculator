@@ -1,28 +1,30 @@
 package Classes.Matrix;
+
+import Classes.Utilities.Printer;
+import Classes.Utilities.Vector;
 import Classes.Matrix.AbstractClasses.Matrix;
 import Classes.Matrix.Pivots.Classes.Pivot_Augmented;
 import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
-//import Inputs; You don't need to import files in the same folder
-import Classes.Recursion.Recursion;
-import Classes.Utilities.Printer;
-import Classes.Utilities.Vector;
-import Classes.Utilities.Inputs;
 
+import GUI.Components.Containers.*;
+import GUI.Controllers.ReduceUI;
 
 public class Matrix_Reduce extends Matrix{
-   static Vector     vector    = new Vector();
+   public  Pivots_Augmented   pivots;
+   private boolean            StepByStepStatus;
+   private ReduceUI           reduceUI;
 
-   public    Pivots_Augmented     pivots;
-   protected boolean    StepByStepStatus;
-
-
-   //CONSTRUCTORS---------------------------------------------
    public Matrix_Reduce(String name, double[][] values){
       super(name, values);
+      reduceUI          = new ReduceUI();
       StepByStepStatus  = true;
       pivots            = new Pivots_Augmented();
    }
+   public SectionScrollUI Get_UI(){
+      return reduceUI.Get_UI();
+   }
    
+
    
    //PROPERTIES
    public void    Set_StepByStep(boolean status){
@@ -65,11 +67,12 @@ public class Matrix_Reduce extends Matrix{
          return true;
 
    }
-   public  void     Delete_RepetedRows(){
+   
+   public void     Delete_RepetedRows(){
       int[] rowsToDelete = new int[0];
       for (int indexRow_Base = 0; indexRow_Base < sizeMatrix[0]; indexRow_Base++) {
          for (int indexRow_ToCompare = (indexRow_Base + 1); indexRow_ToCompare < sizeMatrix[0]; indexRow_ToCompare++) {
-            if(vector.AreEqual(Get_Row(indexRow_Base), Get_Row(indexRow_ToCompare))){
+            if(Vector.AreEqual(Get_Row(indexRow_Base), Get_Row(indexRow_ToCompare))){
                rowsToDelete = new int[rowsToDelete.length + 1];
                rowsToDelete[rowsToDelete.length - 1] = indexRow_ToCompare;
             }
@@ -77,35 +80,33 @@ public class Matrix_Reduce extends Matrix{
       }
       if(rowsToDelete.length > 0){
          Set_RowsToValue(rowsToDelete, 0.0);
-         Printer.Subtitle2("Repeted rows");
-         String message = "Repeted rows have been detected. \n The matrix's repeted rows have been set to zero.\nFinal Matrix";
-         Printer.Matrix(matrix, message);
+         reduceUI.Delete_RepeatedRow(matrix);
       }
    }
+
+
 
    //REDUCE   
-   public void      ReduceMatrix_AllPivots(){
-      boolean allPivotsReduced = true;
+   public void       ReduceMatrix_AllPivots(){
       Delete_RepetedRows();
-      Get_PivotsRecursion();     
-      allPivotsReduced = Try_ReduceMatrix();
-
-      if(!allPivotsReduced){
-
-         allPivotsReduced = true;
-         String message = "\n======================== Extra steps ========================\nThe position of at least one pivot has changed. A new iteration of solutions needs to be executed.\n\n";
-         System.out.print(StepByStepStatus ? message : "");
-         Get_PivotsRecursion();    
-         allPivotsReduced = Try_ReduceMatrix();
+      boolean allPivotsReduced = Set_PivotsRecursion();
+      if(!allPivotsReduced){         
+         reduceUI.Set_NewSolutionTry(true);         
+         allPivotsReduced = Set_PivotsRecursion();
       }
-      Printer.Pivots(pivots);  
+      reduceUI.Set_NewSolutionTry(false);
+      reduceUI.Print_Pivots(pivots, "Printing pivots");
    }
-   public void      Get_PivotsRecursion(){
-      pivots = pivots.Get_PivotsRecursion_Augmented(Get_CopyMatrix());   
-      Printer.Pivots(pivots);   
+   public boolean    Set_PivotsRecursion(){
+      pivots = pivots.Get_PivotsRecursion_Augmented(Get_CopyMatrix());
+      reduceUI.Print_Pivots(pivots, "Printing pivots");
+      boolean reduccion = Try_ReduceMatrix();            
+      reduceUI.Print_Matrix(matrix, "Reduced Matrix");
+      return reduccion;
    }
+      
 
-   protected boolean  Try_ReduceMatrix(){
+   private boolean   Try_ReduceMatrix(){
       for (int index = 0; index < pivots.Get_Size(); index++) {
          Pivot_Augmented newPivot = pivots.Get_Pivot(index);
          if(!newPivot.Get_IsFree()){
@@ -115,62 +116,53 @@ public class Matrix_Reduce extends Matrix{
       }
       return true;
    }
-   protected boolean  Try_Reduce_Column(int indexVar){
-      boolean columnReduced =true;
+   private boolean   Try_Reduce_Column(int indexVar){
       Pivot_Augmented pivot = pivots.Get_Pivot(indexVar);
       double coeficient = pivot.Get_Coeficient();
       if( coeficient != 0){
          ClearColumn_Pivot(pivot);
          pivots.Update_Pivots(matrix);
-      }else{            
-         String isZero = "Pivot "+(indexVar + 1) + " has turn into a zero, so no operation is executed in this step \n";
-         System.out.print(StepByStepStatus ? isZero : "");
-         columnReduced = false;
-      }
-      return columnReduced;
-   }
-   public  double[]  Get_UnitarianRow(int[] pivotPosition){
-      double pivotValue = GetElement(pivotPosition);
-      double[] pivotRow = Get_Row(pivotPosition[0]);
-      double[] unitarianRow = vector.ByScalar(pivotRow, (1/pivotValue));
-
-      return unitarianRow;
-   }
-   public  void      ClearColumn_Pivot(Pivot_Augmented pivot) {
-      if(!pivot.Get_IsFree() && pivot.Get_Coeficient() != 0){
-         int[] position = pivot.Get_Position();
-         Printer.Subtitle2("Step " + pivot.Get_Name().charAt(1));         
-         Printer.Pivot(pivot);
-         String messageMatrix = "Dividing Row" + (position[0] + 1)+ " by " + pivot.Get_Coeficient() + " to get the unitarian row, the new matrix is:";
-         
-         double[] unitarianRow = Get_UnitarianRow(position);
-         Set_RowToArray(position[0], unitarianRow);
-         
-         Printer.Matrix(matrix, messageMatrix);
-         System.out.println("\nNow this unitarian row will be use to clean the pivot's column. The operations are:");
-         ClearColumn(unitarianRow, position);
-         
-         Printer.Matrix(matrix, "The resulting matrix in step " + pivot.Get_Name().charAt(1) + " is:");
+         return true;
       }else{
-         System.out.println("Error: The parameter indicated is exceeds the amount of variables in the matrix");
-         System.out.println("In method ClearColumn");
+         reduceUI.Print_PivotHasTurnIntoZero(indexVar + 1);
+         return false;
       }
    }
-   protected void    ClearColumn(double[] unitarianRow, int[] pivotPosition){
+   private void      ClearColumn_Pivot(Pivot_Augmented pivot) {
+      try {
+         int[] position = pivot.Get_Position();
+         double[] unitarianRow = Get_UnitarianRow(position);
+         
+         reduceUI.Print_Step_ClearColumn(pivot, unitarianRow);
+         Set_RowToArray(position[0], unitarianRow);         
+         ClearColumn(unitarianRow, position);
+      }catch (Exception e) {
+         System.out.println(e);
+         System.out.printf("Wrong pivot: %s, %s\n", pivot.Get_Name(), pivot.Get_IsFree() ? "Free": "Basic");
+      }
+   }
+   private void      ClearColumn(double[] unitarianRow, int[] pivotPosition){
       //Loops through each row and cancels element in the same column with the unitarian row, except itself
-      int counter = 1;
+      int step = 1;
       for (int indexRow = pivotPosition[1]; indexRow < sizeMatrix[0]; indexRow++) {
          if( indexRow != pivotPosition[0] && matrix[indexRow][pivotPosition[1]] != 0){
+            if(step == 1)
+               reduceUI.Print_RowOperationsWillBeExecuted();
+
             int[] positionToCancel = {indexRow, pivotPosition[1]};
-            double factorToCancel = (-1) * GetElement(positionToCancel);
-            String message = String.format("%d)R%d = R%d + (%.2f)*R%d.\n", counter, (positionToCancel[0]+1), (positionToCancel[0]+1), factorToCancel, (pivotPosition[0]+1));
-            System.out.print(StepByStepStatus ? message : "");
-            double[] arrayToAdd = vector.ByScalar(unitarianRow, factorToCancel);         
+            double factorToCancel = (-1) * GetElement(positionToCancel);  
+            reduceUI.Print_RowOperation(step, (positionToCancel[0]+1), (pivotPosition[0]+1), factorToCancel);
+
+            double[] arrayToAdd = Vector.ByScalar(unitarianRow, factorToCancel);         
             ModifyMatrix_AddVectorTo_Row(indexRow, arrayToAdd);
-            counter++;
+            step++;
+            
+            reduceUI.Print_Matrix(matrix, "Reduced Matrix");
          }
          
       }
+      if(step == 1)
+         reduceUI.Print_NoRowOperationsExecuted();
    } 
 
 

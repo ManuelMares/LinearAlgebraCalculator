@@ -3,7 +3,6 @@ package Classes.Utilities;
 import Classes.Matrix.Pivots.Classes.Pivot_Augmented;
 
 public class Pivots{
-    Vector vectorMethods = new Vector();
 
     private String[] names;
     private int[][] positions;
@@ -47,23 +46,23 @@ public class Pivots{
         AddPivot(name, position, 0, 0, true);
     }
     private void AddPivotName(String newName){
-        names = vectorMethods.IncreaseVector(names);
+        names = Vector.IncreaseVector(names);
         names[names.length - 1] = newName;
     }
     private void AddPivotPosition(int[] newPosition){
-        positions = vectorMethods.IncreaseVector(positions);
+        positions = Vector.IncreaseVector(positions);
         positions[positions.length - 1] = newPosition;
     }
     private void AddPivotValue(double newValue){
-        values = vectorMethods.IncreaseVector(values);
+        values = Vector.IncreaseVector(values);
         values[values.length - 1] = newValue;
     }
     private void AddPivotResult(double newResult){
-        results = vectorMethods.IncreaseVector(results);
+        results = Vector.IncreaseVector(results);
         results[results.length - 1] = newResult;
     }
     private void AddPivotIsFree(boolean newIsFree){
-        areFree = vectorMethods.IncreaseVector(areFree);
+        areFree = Vector.IncreaseVector(areFree);
         areFree[areFree.length - 1] = newIsFree;
     }
 

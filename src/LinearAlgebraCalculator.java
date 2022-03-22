@@ -1,14 +1,29 @@
 import java.util.Scanner;
+
+import javax.swing.JButton;
+
+import GUI.Components.Containers.*;
+import GUI.Components.Text.*;
+import Classes.Utilities.Colors;
 import Classes.Utilities.Inputs;
 import Classes.Utilities.Printer;
+import Methods.Main;
+import Methods.Controller.GetMatrix;
+import Methods.Controller.GetSize;
 import Methods.Inverse.InverseMatrix;
 import Methods.MatrixAlgebra.MatrixMultiplication;
 import Methods.SolveMatrix.SolveMatrix_Reduce;
 import Methods.SolveMatrix.SolveMatrix_ReduceEchelon;
 import Methods.Transpose.Transpose;
 import Methods.LuFactorization.LuFactorization;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
 
 public class LinearAlgebraCalculator{
+   
+   static MainFrame frame =new MainFrame();
+   static int[] size;
+
    //IMPORTS
    static Inputs input = new Inputs();
    static Scanner scan = new Scanner (System.in);
@@ -24,47 +39,8 @@ public class LinearAlgebraCalculator{
    
    
    public static void main (String args[]){ 
-        
-      //PRESENTATION
-      Printer.Title("Welcome to the Linear Algebra Calculator V1.0");
-      System.out.println("This is a personal project for a calculator made without any other math libraries besides 'Math' included in natively in J.");
-      System.out.print("All the included solving methods have been coded specifically for this application and are not based in any other source of knowledge rather than the class");
-      System.out.println(" of Linear Algebra - 2415 at NMSU \n\n");      
+      Main menu = new Main();
+   }  
 
-
-      //Prints menu and validate 
-      String title = "Calculator's menu";
-      methodSelected = Inputs.ShowAndValidate_Menu(menuOptions, title);
-        
-      
-      switch(methodSelected){
-         case 1:
-            SolveMatrix_ReduceEchelon solveMatrix_ReduceEchelon = new SolveMatrix_ReduceEchelon();
-            solveMatrix_ReduceEchelon.Main();
-         break;
-         case 2:
-            SolveMatrix_Reduce solveMatrix_Reduce = new SolveMatrix_Reduce();
-            solveMatrix_Reduce.Main();
-         break;
-         case 3:
-            MatrixMultiplication matrixMultiplication = new MatrixMultiplication();
-            matrixMultiplication.Main();
-         break;
-         case 4:
-            InverseMatrix inverseMatrix = new InverseMatrix();
-            inverseMatrix.Main();
-         break;
-         case 5:
-            LuFactorization luFactorization = new LuFactorization();
-            luFactorization.Main();
-         break;
-         case 6:
-            Transpose transpose = new Transpose();
-            transpose.Main();
-         break;
-         default:          
-         break;
-      }           
-   }
    
 }
