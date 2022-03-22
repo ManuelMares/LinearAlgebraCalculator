@@ -282,7 +282,13 @@ public abstract class Matrix{
       }  
       return newColumn;
    }
+   public  double[]  Get_UnitarianRow(int[] pivotPosition){
+      double pivotValue = GetElement(pivotPosition);
+      double[] pivotRow = Get_Row(pivotPosition[0]);
+      double[] unitarianRow = Vector.ByScalar(pivotRow, (1/pivotValue));
 
+      return unitarianRow;
+   }
 
    //ELEMENTS
    public void    Set_ElementToInput(int[] position){

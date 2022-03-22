@@ -1,29 +1,81 @@
 package Methods.SolveMatrix;
+import java.awt.Dimension;
+
 import Classes.*;
 import Classes.Matrix.AbstractClasses.Matrix;
 import Classes.Matrix.Matrix_Reduce;
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
-import Methods.CreateMatrix.CreateMatrix;
 import Classes.Utilities.Inputs;
+import Classes.Utilities.Colors;
+import GUI.Components.Containers.*;
+import GUI.Components.Tables.*;
+import GUI.Components.Text.*;
+import GUI.Controllers.InverseUI;
+import GUI.Controllers.ReduceUI;
+import Methods.Controller.GetMatrix;
 
 
 public class SolveMatrix_Reduce {
     Recursion   recursion = new Recursion();
+    //matrix produces Section center; 
     Matrix_Reduce matrix;
+    private SectionCardinalUI UI;
+    SectionScrollUI top, center, bottom;
+    int[] size = {1000, 200};
 
     public void Main(){
         Create_Matrix();
+        Set_UIProperties();
+        
         Reduce_Matrix();
         Set_MatrixStatus();
         Conclusion();
+        
+        Set_UI();
+    }
+    public  SectionCardinalUI Get_UI(){
+        return UI;
+    }
+    private void Set_UIProperties(){
+        UI= new SectionCardinalUI(); 
+        UI.Set_BackgroundColor(Colors.gray1);  
+        Set_TopProperties();
+        Set_BottomProperties();
+    }
+    private void Set_TopProperties(){
+        top = new SectionScrollUI(size);
+        top.Set_BackgroundColor(Colors.gray3);
+        Subtitle1UI Title = new Subtitle1UI("Reduce Matrix", Colors.black, Colors.gray3);
+        top.Add_Component(Title);        
+        MatrixUI matrixUI =  new MatrixUI(matrix, "matrix to solve");
+        matrixUI.Set_BackgroundColor(Colors.gray3);
+        top.Add_Component(matrixUI);
+    }
+    private void Set_BottomProperties(){ 
+        bottom = new SectionScrollUI(size);
+        bottom.Set_BackgroundColor(Colors.gray3);
+        //bottom.Set_BackgroundColor(Colors.gray3); 
+        Subtitle1UI conclusion = new Subtitle1UI("Conclusion", Colors.black, Colors.gray3);
+        bottom.Add_Component(conclusion);    
+    }
+    public  void Set_UI(){  
+        UI.Add_Component(top, "NORTH");  
+        
+        center = matrix.Get_UI();
+        //center.setPreferredSize(new Dimension(1000,300));
+        UI.Add_Component(center, "CENTER");  
+        
+        UI.Add_Component(bottom, "SOUTH");   
     }
 
+
+
+    
     private void    Create_Matrix(){
-        Printer.Title2("Solve matrix  by reduction method");
         Printer.Subtitle2("Let's start by indicate the size of the matrix");
-        double[][] entries = CreateMatrix.Free();
-        matrix = new Matrix_Reduce("A", entries);
+        //double[][] entries = CreateMatrix.Free();
+        //matrix = new Matrix_Reduce("A", entries);
     }
     private void    Reduce_Matrix(){
         matrix.ReduceMatrix_AllPivots();
@@ -31,28 +83,24 @@ public class SolveMatrix_Reduce {
     private void    Set_MatrixStatus(){
         matrix.CheckConsistentsy();
     }
-    private void    Conclusion(){
-        Printer.Subtitle("Conclusion");        
+    private void    Conclusion(){       
         int inconsistentRow = matrix.CheckConsistentsy();
         String header = "Matrix Status";
         String[] categories = {"It is Consistent", "It is Linearly Independent", "It is Linearly Dependent"};
-        int cellSize = 31;
-        
-        Printer.Matrix(matrix.Get_CopyMatrix(), "\nReduce Echelon matrix:");
+        String[][] content = {{"NO, because of row " + (inconsistentRow+1), "NA", "NA"}};       
         if(matrix.Get_IsConsistent()){
-            if(matrix.pivots.check_LinearlyIndependence(matrix.Get_CopyMatrix())){   
-                String[][] content = {{"YES", "YES", "NO"}};  
-                Printer.Table(header, categories, content, cellSize);
-            }else{
-                String[][] content = {{"YES", "NO", "YES"}};  
-                Printer.Table(header, categories, content, cellSize);
-            }
+            if(matrix.pivots.check_LinearlyIndependence(matrix.Get_CopyMatrix()))  
+                content = new String[][] {{"YES", "YES", "NO"}};
+            else
+                content = new String[][] {{"YES", "NO", "YES"}};
+            MatrixUI matrixUI = new MatrixUI(matrix, "Final matrix");
+            matrixUI.Set_TableColor(Colors.gray3);
+            bottom.Add_Component(matrixUI);
         }
-        else{            
-            String[][] content = {{"NO, because of row " + (inconsistentRow+1), "NA", "NA"}};  
-            Printer.Table(header, categories, content, cellSize);
-        }
-        Printer.Title("End of the prorgam");
+        
+        ConclusionUI  conclusion = ReduceUI.Print_Conclusion(header, categories, content);
+        conclusion.Set_TableColor(Colors.gray3);
+        bottom.Add_Component(conclusion);
     }
     
 
@@ -66,6 +114,5 @@ public class SolveMatrix_Reduce {
         else
             return null;
     }
-
 
 }

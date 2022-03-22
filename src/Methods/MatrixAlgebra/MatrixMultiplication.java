@@ -4,7 +4,7 @@ import Classes.Matrix.Matrix_Simple;
 import Classes.Utilities.Inputs;
 import Classes.Utilities.Printer;
 import Classes.Utilities.Vector;
-import Methods.CreateMatrix.CreateMatrix;
+import Methods.Controller.GetMatrix;
 
 public class MatrixMultiplication {
     Matrix_Simple matrix1;
@@ -29,13 +29,13 @@ public class MatrixMultiplication {
     private void    CreateMatrices() {
         String message = "Create new Matrix A";
         Printer.Title2(message);
-        double[][] values1 = CreateMatrix.Free();
-        matrix1 = new Matrix_Simple("A", values1);
+        //double[][] values1 = CreateMatrix.Free();
+        //matrix1 = new Matrix_Simple("A", values1);
         
         message = "Create new Matrix B";
         Printer.Title2(message);
-        double[][] values2 = CreateMatrix.Free();
-        matrix2 = new Matrix_Simple("B", values2);
+        //double[][] values2 = CreateMatrix.Free();
+        //matrix2 = new Matrix_Simple("B", values2);
     }
     private boolean CheckCompatibility(){
         if(matrix1.Get_SizeColumns() == matrix2.Get_SizeRows())

@@ -232,4 +232,27 @@ public class Printer {
             System.out.print(string);
         }
     }
+
+
+
+    public static void      Inroduction_Method(String methodName){
+        Title2(methodName);
+    }
+    public static void      Step_ClearColumn(Pivot_Augmented pivot, double[] unitarianRow){
+        int[] position = pivot.Get_Position();
+        char stepNumber = pivot.Get_Name().charAt(1);
+        
+        Subtitle2("Step " + stepNumber);  
+        Pivot(pivot);
+        System.out.printf("Dividing row %d by %.2f to get the unitarian row:\n", (position[0] + 1), pivot.Get_Coeficient() );
+        Vector(unitarianRow);
+        System.out.println("\nNow this unitarian row will be use to clean the pivot's column. The operations are:");
+    }
+    public static void      Row_Operation(int step, int index_RowToCancel, int index_Row, double factorToCancel){               
+        System.out.printf("%d)R%d = R%d + (%.2f)*R%d.\n", step, index_RowToCancel, index_RowToCancel, factorToCancel, index_Row);
+    }
+
+
+
+
 }

@@ -2,7 +2,7 @@ package Methods.Transpose;
 
 import Classes.Matrix.Matrix_Transpose;
 import Classes.Utilities.Printer;
-import Methods.CreateMatrix.CreateMatrix;
+import Methods.Controller.GetMatrix;
 
 public class Transpose {
     Matrix_Transpose matrix_Transpose;
@@ -19,8 +19,8 @@ public class Transpose {
     private void    Create_Matrix(){
         Printer.Title2("Get Transpose");
         Printer.Subtitle2("Let's start by indicate the size of the matrix");
-        double[][] inputs = CreateMatrix.Free();
-        matrix_Transpose = new Matrix_Transpose("A", inputs);
+        //double[][] inputs = CreateMatrix.Free();
+        //matrix_Transpose = new Matrix_Transpose("A", inputs);
     }
     private void    Conclusion(){
         Printer.Subtitle("Conclusion"); 

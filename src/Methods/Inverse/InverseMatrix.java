@@ -1,21 +1,29 @@
 package Methods.Inverse;
 import Classes.*;
+import GUI.Components.Containers.*;
+import GUI.Components.Text.*;
+import GUI.Controllers.InverseUI;
+import Methods.Controller.GetMatrix;
 import Classes.Matrix.AbstractClasses.Matrix;
 import Classes.Matrix.Matrix_Inverse;
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
-import Methods.CreateMatrix.CreateMatrix;
+import Classes.Utilities.Colors;
 import Classes.Utilities.Inputs;
 
 
-public class InverseMatrix {
+public class InverseMatrix { 
+    private SectionCardinalUI UI;
     Recursion   recursion = new Recursion();
     Matrix_Inverse matrix;
 
     public void Main(){
+        UI= new SectionCardinalUI(20);
+
         Create_Matrix();
         Reduce_Matrix();
         Conclusion();
+        Set_UI();
     }
 
     
@@ -23,7 +31,7 @@ public class InverseMatrix {
     private void    Create_Matrix(){
         Printer.Title2("Get Matrix Inverse");
         Printer.Subtitle2("Let's start by indicate the size of the matrix");
-        double[][] entries = CreateMatrix.Square();
+        double[][] entries = GetMatrix.Square();
         matrix = new Matrix_Inverse("A", entries);
     }
     private void    Reduce_Matrix(){
@@ -60,5 +68,23 @@ public class InverseMatrix {
         return false;
     }
 
-    
+    public void Set_UI(){        
+        SectionVerticalUI top = new SectionVerticalUI();
+        top.Set_BackgroundColor(Colors.gray3);
+        Subtitle1UI Title = new Subtitle1UI("Inverse Matrix", Colors.black, Colors.gray3);
+        top.Add_Component(Title);
+        UI.Add_Component(top, "NORTH");
+
+        UI.Add_Component(matrix.Get_InverseUI(), "CENTER");   
+        
+        SectionVerticalUI bottom = new SectionVerticalUI();
+        bottom.Set_BackgroundColor(Colors.gray3);
+        Subtitle1UI conclusion = new Subtitle1UI("Conclusion", Colors.black, Colors.gray3);
+        bottom.Add_Component(conclusion);
+        UI.Add_Component(bottom, "SOUTH");
+    }
+
+    public SectionCardinalUI Get_UI(){
+        return UI;
+    }
 }
