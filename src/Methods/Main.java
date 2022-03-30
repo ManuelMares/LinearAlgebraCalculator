@@ -36,7 +36,9 @@ import java.util.function.Function;
 public class Main {
    MainFrame frame;
    double[][] Matrix;
+   double[][] Matrix2;
    CreateMatrix createMatrix;
+   CreateMatrix createMatrix2;
    //VARIABLES
    boolean method_SystemEquations;
    boolean method_Matrix;
@@ -66,36 +68,37 @@ public class Main {
 
       methodSelected = option + 1;
       Consumer<Integer> tmp = num -> Set_Matrix();
-      createMatrix = new CreateMatrix(tmp);
+      createMatrix = new CreateMatrix(tmp, "Matrix A");
       frame.Add_Component(createMatrix.Get_Component());
    }
 
    private void Start_Method() {
       switch(methodSelected){
          case 1:
-         System.out.println("YAY!");
             SolveMatrix_ReduceEchelon solveMatrix_ReduceEchelon = new SolveMatrix_ReduceEchelon();
             solveMatrix_ReduceEchelon.Main(Matrix);
             frame.Add_Component(solveMatrix_ReduceEchelon.Get_UI());
          break;
          case 2:
             SolveMatrix_Reduce solveMatrix_Reduce = new SolveMatrix_Reduce();
-            solveMatrix_Reduce.Main();
+            solveMatrix_Reduce.Main(Matrix);
             frame.Add_Component(solveMatrix_Reduce.Get_UI());
          break;
          case 3:
             MatrixMultiplication matrixMultiplication = new MatrixMultiplication();
-            matrixMultiplication.Main();
+            matrixMultiplication.Main(Matrix, Matrix2);
+            frame.Add_Component(matrixMultiplication.Get_UI());
          break;
          case 4:
             InverseMatrix inverseMatrix = new InverseMatrix();
-            inverseMatrix.Main();
+            inverseMatrix.Main(Matrix);
             frame.Add_Component(inverseMatrix.Get_UI());
 
          break;
          case 5:
             LuFactorization luFactorization = new LuFactorization();
-            luFactorization.Main();
+            luFactorization.Main(Matrix);
+            frame.Add_Component(luFactorization.Get_UI());
          break;
          case 6:
             Transpose transpose = new Transpose();
@@ -109,6 +112,22 @@ public class Main {
 
    public void Set_Matrix(){
       Matrix = createMatrix.Get_Matrix(); 
+      frame.Clean_Frame(); 
+      if(methodSelected == 3){
+         Set_SecondM();
+      } else{
+         Start_Method();  
+      }
+   }
+
+   public void Set_SecondM(){
+      frame.Clean_Frame();
+      Consumer<Integer> tmp = num -> Set_Matrix2();
+      createMatrix2 = new CreateMatrix(tmp, "Matrix B");
+      frame.Add_Component(createMatrix2.Get_Component());
+   }
+   public void Set_Matrix2(){
+      Matrix2 = createMatrix2.Get_Matrix(); 
       frame.Clean_Frame();  
       Start_Method();  
    }

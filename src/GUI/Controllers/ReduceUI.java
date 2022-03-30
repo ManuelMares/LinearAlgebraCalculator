@@ -19,7 +19,7 @@ public class ReduceUI {
    private Color              BgColordivisor;
    private Color              colorText;
    int[] size = {1000, 295};
-
+   
 
     public ReduceUI(){        
         BgColorSection =  Colors.gray1; 
@@ -76,7 +76,7 @@ public class ReduceUI {
     public void Delete_RepeatedRow(double[][] matrix){
         Division division = new Division(BgColordivisor);        
         Add_Component(division);
-        Subtitle2UI subtitle = new Subtitle2UI("At leas one repeated row has been detected and has been deleted:\n", colorText, Colors.gray1);
+        Subtitle2UI subtitle = new Subtitle2UI("At least one repeated row has been detected and has been deleted:\n", colorText, Colors.gray1);
         Add_Component(subtitle);
         
         MatrixUI matrixUI = new MatrixUI(matrix, "New matrix:");
@@ -155,20 +155,20 @@ public class ReduceUI {
     }
 
 
-    private void Add_Component(TextUI text){
+    public void Add_Component(TextUI text){
         if(NewSolutionTry)
             UI_NewSolutionTry.Add_Component(text);
         else
             UI.Add_Component(text);
     }
     
-    private void Add_Component(Subtitle2UI subtitle){
+    public void Add_Component(Subtitle2UI subtitle){
         if(NewSolutionTry)
             UI_NewSolutionTry.Add_Component(subtitle);
         else
             UI.Add_Component(subtitle);
     }
-    private void Add_Component(MatrixUI matrix){
+    public void Add_Component(MatrixUI matrix){
         matrix.Set_TableColor(BgColorSection);
         if(NewSolutionTry){
             UI_NewSolutionTry.Add_Component(matrix);
@@ -177,7 +177,7 @@ public class ReduceUI {
             UI.Add_Component(matrix);
     }
         
-    private void Add_Component(PivotsUI pivots){
+    public void Add_Component(PivotsUI pivots){
         if(NewSolutionTry){
             pivots.Set_TableColor((Colors.white));;
             UI_NewSolutionTry.Add_Component(pivots);
@@ -186,7 +186,7 @@ public class ReduceUI {
             UI.Add_Component(pivots);
     }
      
-    private void Add_Component(Division division){
+    public void Add_Component(Division division){
         if(NewSolutionTry){
             division.Set_Color(Colors.gray1);
             UI_NewSolutionTry.Add_Component(division);

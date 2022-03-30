@@ -11,9 +11,8 @@ import GUI.Controllers.ReduceUI;
 
 public class Matrix_ReduceEchelon extends Matrix{
    public    Pivots_Augmented   pivots;
-   protected boolean            StepByStepStatus;
-   private   ReduceUI           reduceEchelonUI;
-
+   public boolean            StepByStepStatus;
+   public ReduceUI           reduceEchelonUI;
 
    //CONSTRUCTORS---------------------------------------------
    public Matrix_ReduceEchelon(String name, double[][] values){

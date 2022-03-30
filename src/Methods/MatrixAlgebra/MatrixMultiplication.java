@@ -1,95 +1,96 @@
 package Methods.MatrixAlgebra;
 import Classes.*;
+import Classes.Matrix.Matrix_Multiplication;
 import Classes.Matrix.Matrix_Simple;
+import Classes.Utilities.Colors;
 import Classes.Utilities.Inputs;
 import Classes.Utilities.Printer;
 import Classes.Utilities.Vector;
+import GUI.Components.Containers.SectionCardinalUI;
+import GUI.Components.Containers.SectionScrollUI;
+import GUI.Components.Tables.MatrixUI;
+import GUI.Components.Text.Subtitle1UI;
+import GUI.Components.Text.Subtitle2UI;
+import GUI.Controllers.MultiplicationUI;
 import Methods.Controller.GetMatrix;
 
 public class MatrixMultiplication {
-    Matrix_Simple matrix1;
-    Matrix_Simple matrix2;
-    
-    Matrix_Simple resultMatrix;
+    Matrix_Multiplication matrixMultiplication;
+    private SectionCardinalUI UI;
+    SectionScrollUI top, center, bottom;
+    int[] size = {1000, 200};
 
 
     
-    public void Main(){
-        CreateMatrices();
-        if(CheckCompatibility()){
-            SetResultMatrixToZero();
-            Multiply_Matrices();
-            PrintResult();
-        }else{
+    public void Main(double[][] m1, double[][] m2){
+        matrixMultiplication = new Matrix_Multiplication(m1, m2);
+        Set_UIProperties();
+        if(matrixMultiplication.CheckCompatibility()){
+            matrixMultiplication.Multiply_Matrices();
+        }
+        Print_Conclusion();
+        Set_UI();
+    }  
+    
+    public  SectionCardinalUI Get_UI(){
+        return UI;
+    }
+    private void Set_UIProperties(){
+        UI= new SectionCardinalUI(); 
+        UI.Set_BackgroundColor(Colors.gray1);  
+        Set_TopProperties();
+        Set_BottomProperties();
+    }
+    private void Set_TopProperties(){
+        top = new SectionScrollUI(size);
+        top.Set_BackgroundColor(Colors.gray3);
+        Subtitle1UI Title = new Subtitle1UI("Multiply Matrices", Colors.black, Colors.gray3);
+        top.Add_Component(Title);        
+        MatrixUI matrixUI1 =  new MatrixUI(matrixMultiplication.Get_CopyMatrix(), "matrix A");
+        matrixUI1.Set_BackgroundColor(Colors.gray3);
+        MatrixUI matrixUI2 =  new MatrixUI(matrixMultiplication.matrix2, "matrix B");
+        matrixUI2.Set_BackgroundColor(Colors.gray3);
+        top.Add_Component(matrixUI1);
+        top.Add_Component(matrixUI2);
+    }
+    private void Set_BottomProperties(){ 
+        bottom = new SectionScrollUI(size);
+        bottom.Set_BackgroundColor(Colors.gray3);
+        //bottom.Set_BackgroundColor(Colors.gray3); 
+        Subtitle1UI conclusion = new Subtitle1UI("Conclusion", Colors.black, Colors.gray3);
+        bottom.Add_Component(conclusion);    
+    }
+    public  void Set_UI(){  
+        UI.Add_Component(top, "NORTH");  
+        
+        center = matrixMultiplication.Get_UI();
+        //center.setPreferredSize(new Dimension(1000,300));
+        UI.Add_Component(center, "CENTER");  
+        
+        UI.Add_Component(bottom, "SOUTH");   
+    }
+
+    
+    private void    Print_Conclusion() { 
+        if(matrixMultiplication.CheckCompatibility())     
+            Print_Matrix();
+        else    
             PrintNotCompatible();
-        }
-    }    
+    }
 
-
-    private void    CreateMatrices() {
-        String message = "Create new Matrix A";
-        Printer.Title2(message);
-        //double[][] values1 = CreateMatrix.Free();
-        //matrix1 = new Matrix_Simple("A", values1);
-        
-        message = "Create new Matrix B";
-        Printer.Title2(message);
-        //double[][] values2 = CreateMatrix.Free();
-        //matrix2 = new Matrix_Simple("B", values2);
-    }
-    private boolean CheckCompatibility(){
-        if(matrix1.Get_SizeColumns() == matrix2.Get_SizeRows())
-            return true;
-        return false;
-    }
-    private void    SetResultMatrixToZero(){
-        double[][] m = new double[matrix1.Get_SizeRows()][matrix2.Get_SizeColumns()];
-        resultMatrix = new Matrix_Simple("Result", m);
-    }
-    private void    Multiply_Matrices(){
-        for (int index_m1Row = 0; index_m1Row < matrix1.Get_SizeRows(); index_m1Row++) {
-            for (int index_m2Column = 0; index_m2Column < matrix2.Get_SizeColumns(); index_m2Column++){
-                SetMatrixResultPosition(index_m1Row, index_m2Column);
-            }
-        }
-
-
-    }
-    private void    SetMatrixResultPosition(int index_m1Row, int index_m2Column){        
-        double[] m1_Row = matrix1.Get_Row(index_m1Row);
-        double[] m2_Column = matrix2.Get_Column(index_m2Column);
-        int[] position = {index_m1Row, index_m2Column};        
-        double result = Vector.ByVector(m1_Row, m2_Column);
-        
-        resultMatrix.Set_ElementToValue(position, result); 
-    }
-    private void    PrintResult() {
-        String message = "The resultant matrix (" +resultMatrix.Get_SizeRows() + ","+ resultMatrix.Get_SizeColumns() +") is";
-        Printer.Matrix(resultMatrix, message);
+    private void    Print_Matrix() {
+        MatrixUI matrixUI = new MatrixUI(matrixMultiplication.ResultMatrix, "Final matrix");
+        matrixUI.Set_TableColor(Colors.gray3);
+        bottom.Add_Component(matrixUI);
+        System.out.println("Amonos, ta' jalando");
     }
     private void    PrintNotCompatible() {
         String message = "The given matrices are not compatible";
-        Printer.Title2(message);
-
-        System.out.println("Remember, for a multiplication of matrices to be define:\n     the number of columns in the first matrix hast to match the number of rows in the second matrix.");
-        
-        System.out.println("Matrix A Size: (" + matrix1.Get_SizeRows() + "," + matrix2.Get_SizeColumns() + ").");
-        System.out.println("Matrix B Size: (" + matrix2.Get_SizeRows() + "," + matrix2.Get_SizeColumns() + ").");
+        Subtitle2UI conclusion = new Subtitle2UI(message);
+        bottom.Add_Component(conclusion);
+        System.out.println("Amonos, ta' jalando");
     }
 
-
-    public Matrix_Simple Multiply_GivenMatrices(double[][] m1, double[][] m2){        
-        matrix1 = new Matrix_Simple("A", m1);
-        matrix2 = new Matrix_Simple("B", m2);        
-        if(CheckCompatibility()){
-            SetResultMatrixToZero();
-            Multiply_Matrices();
-            return resultMatrix;
-        }else{
-            PrintNotCompatible();
-        }
-        return null;
-    }
 
 
 }

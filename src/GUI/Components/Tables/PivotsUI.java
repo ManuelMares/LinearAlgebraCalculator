@@ -24,8 +24,8 @@ public class PivotsUI extends Table {
     private void        Set_TableParameters(Pivots pivots){
         categories = Get_CategoriesAugmented(false);
         content = Get_PivotsRows(pivots);
-        Set_TableColorPattern();        
         Set_Table();
+        Set_TableColorPattern();        
     }
     
     private String[]    Get_CategoriesAugmented(boolean isAugmented){

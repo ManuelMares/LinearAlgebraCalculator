@@ -4,15 +4,17 @@ import Classes.Matrix.Pivots.Classes.Pivot;
 import Classes.Matrix.Pivots.Classes.Pivots;
 import Classes.Utilities.Printer;
 import Classes.Utilities.Vector;
+import GUI.Components.Containers.SectionScrollUI;
+import GUI.Controllers.LuFactorizationUI;
 import Methods.Controller.GetMatrix;
+import Methods.LuFactorization.LuFactorization;
 
 
-public class Matrix_LuFactorization extends Matrix{
-
-   
+public class Matrix_LuFactorization extends Matrix{   
    public Matrix_Simple matrixL;
    public Matrix_Simple matrixU;
    public Matrix_Simple matrixP;
+   private LuFactorizationUI           luFactorizationUI;
 
    public    Pivots     pivots;
    protected boolean    StepByStepStatus;
@@ -21,6 +23,7 @@ public class Matrix_LuFactorization extends Matrix{
    //CONSTRUCTORS---------------------------------------------
    public Matrix_LuFactorization(String name, double[][] values){
       super(name, values);
+      luFactorizationUI          = new LuFactorizationUI();
       int[] size = {values.length, values[0].length};
       double[][] identity = GetMatrix.Identity(values.length);
       matrixP = new Matrix_Simple("P", identity);
@@ -28,6 +31,9 @@ public class Matrix_LuFactorization extends Matrix{
       matrixU = new Matrix_Simple("U", size);
       StepByStepStatus  = true;
       pivots            = new Pivots();
+   }
+   public SectionScrollUI Get_UI(){
+      return luFactorizationUI.Get_UI();
    }
    
    
@@ -67,6 +73,12 @@ public class Matrix_LuFactorization extends Matrix{
 
    }
    
+
+
+
+
+
+
    //REDUCE   
    public void      ReduceMatrix_AllPivots(){
       boolean allPivotsReduced = true;
@@ -75,17 +87,17 @@ public class Matrix_LuFactorization extends Matrix{
 
       if(!allPivotsReduced){
          allPivotsReduced = true;
-         String message = "\n======================== Extra steps ========================\nThe position of at least one pivot has changed. A new iteration of solutions needs to be executed.\n\n";
-         System.out.print(StepByStepStatus ? message : "");
+         luFactorizationUI.Set_NewSolutionTry(true); 
          Get_Pivots();    
          allPivotsReduced = Try_ReduceMatrix();
       }
-      Printer.Pivots(pivots);  
+      luFactorizationUI.Set_NewSolutionTry(false);
+      luFactorizationUI.Print_Pivots(pivots, "Printing pivots");
    }
 
    public void      Get_Pivots(){
-      pivots = pivots.Get_Pivots(Get_CopyMatrix()); 
-      Printer.Pivots(pivots);    
+      pivots = pivots.Get_Pivots(Get_CopyMatrix());
+      luFactorizationUI.Print_Pivots(pivots, "Printing pivots");
    }
 
    protected boolean  Try_ReduceMatrix(){
@@ -105,9 +117,8 @@ public class Matrix_LuFactorization extends Matrix{
       if( coeficient != 0){
          ClearColumn_Pivot(pivot);
          pivots.Update_Pivots(matrix);
-      }else{            
-         String isZero = "Pivot "+(indexVar + 1) + " has turn into a zero, so no operation is executed in this step \n";
-         System.out.print(StepByStepStatus ? isZero : "");
+      }else{   
+         luFactorizationUI.Print_PivotHasTurnIntoZero(indexVar + 1);
          columnReduced = false;
       }
       return columnReduced;
@@ -122,20 +133,14 @@ public class Matrix_LuFactorization extends Matrix{
    public  void      ClearColumn_Pivot(Pivot pivot) {
       if(!pivot.Get_IsFree() && pivot.Get_Coeficient() != 0){
          int[] position = pivot.Get_Position();
-         Printer.Subtitle2("Step " + pivot.Get_Name().charAt(1));         
-         Printer.Pivot(pivot);
-         String messageMatrix = "Dividing Row" + (position[0] + 1)+ " by " + pivot.Get_Coeficient() + " to get the unitarian row, the new matrix is:";
-         
          double[] unitarianRow = Get_UnitarianRow(position);
+         luFactorizationUI.Print_Step_ClearColumn(pivot, unitarianRow);
          
-         Printer.Matrix(matrix, messageMatrix);
-         System.out.println("\nNow this unitarian row will be use to clean the pivot's column. The operations are:");
          ClearColumn(unitarianRow, position, pivot);
-         
-         Printer.Matrix(matrix, "The resulting matrix in step " + pivot.Get_Name().charAt(1) + " is:");
       }else{
          System.out.println("Error: The parameter indicated is exceeds the amount of variables in the matrix");
          System.out.println("In method ClearColumn");
+         System.out.printf("Wrong pivot: %s, %s\n", pivot.Get_Name(), pivot.Get_IsFree() ? "Free": "Basic");
       }
    }
    protected void    ClearColumn(double[] unitarianRow, int[] pivotPosition, Pivot pivot){
@@ -146,15 +151,19 @@ public class Matrix_LuFactorization extends Matrix{
       for (int indexRow = pivotPosition[0]; indexRow < sizeMatrix[0]; indexRow++) {
          
          if( indexRow != pivotPosition[0] && matrix[indexRow][pivotPosition[1]] != 0){
+            if(counter == 1)
+               luFactorizationUI.Print_RowOperationsWillBeExecuted();
+
             int[] positionToCancel = {indexRow, pivotPosition[1]};
             double factor = GetElement(positionToCancel);
             double factorToCancel = (-1) * factor;
+            luFactorizationUI.Print_RowOperation(counter, (positionToCancel[0]+1), (pivotPosition[0]+1), factorToCancel);
             matrixL.Set_ElementToValue(positionToCancel, (factor/pivot.Get_Coeficient()));
-            String message = String.format("%d)R%d = R%d + (%.2f)*R%d.\n", counter, (positionToCancel[0]+1), (positionToCancel[0]+1), factorToCancel, (pivotPosition[0]+1));
-            System.out.print(StepByStepStatus ? message : "");
+
             double[] arrayToAdd = Vector.ByScalar(unitarianRow, factorToCancel);         
             ModifyMatrix_AddVectorTo_Row(indexRow, arrayToAdd);
             counter++;
+            luFactorizationUI.Print_Matrix(matrix, "Reduced Matrix");
          }
          
       }

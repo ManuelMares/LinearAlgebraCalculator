@@ -1,6 +1,7 @@
 package Methods.SolveMatrix;
 import Classes.*;
 import Classes.Matrix.AbstractClasses.Matrix;
+import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
 import Classes.Matrix.Matrix_ReduceEchelon;
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
@@ -8,6 +9,7 @@ import GUI.Components.Containers.SectionCardinalUI;
 import GUI.Components.Containers.SectionScrollUI;
 import GUI.Components.Tables.ConclusionUI;
 import GUI.Components.Tables.MatrixUI;
+import GUI.Components.Tables.PivotsUI;
 import GUI.Components.Text.Subtitle1UI;
 import GUI.Controllers.ReduceEchelonUI;
 import Methods.Controller.GetMatrix;
@@ -20,7 +22,7 @@ public class SolveMatrix_ReduceEchelon {
     Matrix_ReduceEchelon matrix;
     private SectionCardinalUI UI;
     SectionScrollUI top, center, bottom;
-    int[] size = {900, 200};
+    int[] size = {1000, 200};
 
     public void Main(double[][] mat){
         matrix = new Matrix_ReduceEchelon("1", mat);
@@ -69,13 +71,6 @@ public class SolveMatrix_ReduceEchelon {
 
 
 
-
-    private void    Create_Matrix(){
-        Printer.Title2("Solve matrix  by reduction method");
-        Printer.Subtitle2("Let's start by indicate the size of the matrix");
-        //double[][] entries = CreateMatrix.Free();
-        //matrix = new Matrix_ReduceEchelon("A", entries);
-    }    
     private void    Reduce_Matrix(){
         matrix.ReduceMatrix_AllPivots();
     }
@@ -96,7 +91,11 @@ public class SolveMatrix_ReduceEchelon {
             matrixUI.Set_TableColor(Colors.gray3);
             bottom.Add_Component(matrixUI);
         }
-        
+        Pivots_Augmented pivots = matrix.pivots;
+        PivotsUI pivotsUI = new PivotsUI(pivots, "Pivots' status");
+        pivotsUI.Set_BackgroundColor(Colors.gray3);
+        bottom.Add_Component(pivotsUI);
+
         ConclusionUI  conclusion = ReduceEchelonUI.Print_Conclusion(header, categories, content);
         conclusion.Set_TableColor(Colors.gray3);
         bottom.Add_Component(conclusion);
