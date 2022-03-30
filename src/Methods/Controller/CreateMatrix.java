@@ -9,22 +9,30 @@ import Classes.Utilities.Colors;
 import Classes.Utilities.Printer;
 import GUI.Components.Containers.SectionScrollUI;
 import GUI.Components.Containers.SectionVerticalUI;
+import GUI.Components.Text.Subtitle1UI;
+import GUI.Components.Text.TitleUI;
 import Methods.SolveMatrix.SolveMatrix_ReduceEchelon;
 
 public class CreateMatrix extends SectionVerticalUI {
     GetMatrix getMatrix;
     double[][] Matrix;
     int[] size;
+    int[] minSize;
     Consumer<Integer> consumer;
 
-    public CreateMatrix(Consumer<Integer> action){
+    public CreateMatrix(Consumer<Integer> action, String name){
+        Subtitle1UI title = new Subtitle1UI("Please, Indicate the new " + name);
+        this.add(title.Get_Component());
         consumer = action;
         Set_Properties();
         Set_MatrixSize();
+
     }
 
     public SectionScrollUI Get_Component(){
         SectionScrollUI container = new SectionScrollUI(size);
+        container.Set_MinSize(minSize);
+        container.Set_PrefSise(minSize);
         container.add(this);
         return container;
     }
@@ -36,6 +44,7 @@ public class CreateMatrix extends SectionVerticalUI {
     public void Set_Properties(){
         getMatrix = new GetMatrix();
         size = new int[] {1000, 350};
+        minSize = new int[] {1000, 200};
     }
 
     public void Set_Matrix(Integer[] size){

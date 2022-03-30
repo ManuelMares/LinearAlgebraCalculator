@@ -13,21 +13,15 @@ import Classes.Utilities.Colors;
 import Classes.Utilities.Printer;
 
 
-public class Matrix_Inverse extends Matrix_ReduceEchelon{    
-   private SectionVerticalUI UI;
+public class Matrix_Inverse extends Matrix_ReduceEchelon{  
    private boolean hasInverse = true;
 
    public Matrix_Inverse(String name, double[][] values){
       super(name, values);
-      UI= new SectionVerticalUI();
-      UI.Set_BackgroundColor(Colors.gray1);
       //int[] size = {500,500};
       //UI.Set_Size(size);
    }
    
-   public SectionVerticalUI Get_InverseUI(){
-      return UI;
-   }
 
 
 
@@ -37,8 +31,8 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       AugmentMatrix_Identity();     
       hasInverse = Try_ReduceMatrix();   
         
-      MatrixUI matrixUI = new MatrixUI(matrix, "Reduced Matrix");
-      UI.Add_Component(matrixUI);   
+      //MatrixUI matrixUI = new MatrixUI(matrix, "Reduced Matrix");
+      //UI.Add_Component(matrixUI);   
 
       DecreaseMatrix_Identity();
    }
@@ -49,8 +43,8 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       Get_PivotsRecursion();
       Delete_Column(matrix[0].length - 1);
 
-      PivotsUI pivotsUI = new PivotsUI(pivots, "Pivots");
-      UI.Add_Component(pivotsUI);
+      //PivotsUI pivotsUI = new PivotsUI(pivots, "Pivots");
+      //UI.Add_Component(pivotsUI);
    }
 
    private void   AugmentMatrix_Identity(){
@@ -60,8 +54,8 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       Printer.Matrix(matrix, message);
 
       
-      MatrixUI matrixUI = new MatrixUI(matrix, message);
-      UI.Add_Component(matrixUI);
+      //MatrixUI matrixUI = new MatrixUI(matrix, message);
+      //UI.Add_Component(matrixUI);
    }
    private void   DecreaseMatrixInverse(){
       int index = Get_SizeRows();
@@ -76,7 +70,7 @@ public class Matrix_Inverse extends Matrix_ReduceEchelon{
       }
       
       MatrixUI matrixUI = new MatrixUI(matrix, "SOLUTION");
-      UI.Add_Component(matrixUI);
+      reduceEchelonUI.Add_Component(matrixUI);
    }
    public void Annex_Matrix(double[][] identity){
       for(int indexColumn = 0;  indexColumn < identity[1].length; indexColumn++){

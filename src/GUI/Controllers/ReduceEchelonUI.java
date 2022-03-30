@@ -75,7 +75,7 @@ public class ReduceEchelonUI {
     public void Delete_RepeatedRow(double[][] matrix){
         Division division = new Division(BgColordivisor);        
         Add_Component(division);
-        Subtitle2UI subtitle = new Subtitle2UI("At leas one repeated row has been detected and has been deleted:\n", colorText, Colors.gray1);
+        Subtitle2UI subtitle = new Subtitle2UI("At least one repeated row has been detected and has been deleted:\n", colorText, Colors.gray1);
         Add_Component(subtitle);
         
         MatrixUI matrixUI = new MatrixUI(matrix, "New matrix:");

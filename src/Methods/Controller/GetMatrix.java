@@ -63,7 +63,8 @@ public class GetMatrix extends SectionVertical{
             try{
                 consumer.accept(0);
             }catch(Exception ex){
-                System.out.print("error, morro");
+                System.out.println("error, morro" + ex);
+                ex.printStackTrace();
             }
         }
     }

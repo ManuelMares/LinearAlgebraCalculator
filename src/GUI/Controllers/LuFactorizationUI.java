@@ -3,7 +3,9 @@ package GUI.Controllers;
 import GUI.Components.Containers.*;
 import GUI.Components.Tables.*;
 import GUI.Components.Text.*;
+import Classes.Matrix.Pivots.Classes.Pivot;
 import Classes.Matrix.Pivots.Classes.Pivot_Augmented;
+import Classes.Matrix.Pivots.Classes.Pivots;
 import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
 import Classes.Utilities.Colors;
 import java.awt.Color;
@@ -11,7 +13,7 @@ import java.awt.Color;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class InverseUI {    
+public class LuFactorizationUI {    
    private SectionScrollUI    UI;
    private SectionVerticalUI  UI_NewSolutionTry;
    private boolean            NewSolutionTry;
@@ -21,7 +23,7 @@ public class InverseUI {
    int[] size = {1000, 295};
 
 
-    public InverseUI(){        
+    public LuFactorizationUI(){        
         BgColorSection =  Colors.gray1; 
         BgColordivisor =  Colors.gray2;  
         colorText    =  Colors.black;    
@@ -68,8 +70,8 @@ public class InverseUI {
         UI.Add_Component(UI_NewSolutionTry);        
     }
 
-    public void Print_Pivots(Pivots_Augmented  pivots, String message){
-        PivotsUI pivotsUI = new PivotsUI(pivots, message);
+    public void Print_Pivots(Pivots  pivots, String message){
+        PivotsUI pivotsUI = new PivotsUI(pivots, message);        
         Add_Component(pivotsUI);
     }
     public void Delete_RepeatedRow(double[][] matrix){
@@ -100,7 +102,7 @@ public class InverseUI {
         TextUI text = new TextUI(String.format("%d)R%d = R%d + (%.2f)*R%d.\n", step, index_RowToCancel, index_RowToCancel, factorToCancel, index_Row), colorText, BgColorSection);
         Add_Component(text);
     }
-    public void Print_Step_ClearColumn(Pivot_Augmented pivot, double[] unitarianRow){     
+    public void Print_Step_ClearColumn(Pivot pivot, double[] unitarianRow){     
         int[] position = pivot.Get_Position();
         char stepNumber = pivot.Get_Name().charAt(1);
         
@@ -123,16 +125,15 @@ public class InverseUI {
         //TextUI text2 = new TextUI("\nNo row operations are needed in this step", colorText, BgColorSection);
         //Add_Component(text2);
     }
-    public void Print_Pivot(Pivot_Augmented pivot){
+    public void Print_Pivot(Pivot pivot){
         String name = pivot.Get_Name();
         int[] position = pivot.Get_Position();
         double coeficient = pivot.Get_Coeficient();
-        double result = pivot.Get_Result();
         String isFree = pivot.Get_IsFree() ? "Free": "Basic";
 
         TextUI text = new TextUI("\nPivot: ", colorText, BgColorSection);
-        TextUI text2 = new TextUI(String.format("Name: %s,  Position: (%d,%d),  Coeficient: %.2f,  Result: %.2f,  Status: %s", 
-                                             name,  (position[0]+1), (position[1]+1), coeficient,   result,     isFree),
+        TextUI text2 = new TextUI(String.format("Name: %s,  Position: (%d,%d),  Coeficient: %.2f,  Status: %s", 
+                                             name,  (position[0]+1), (position[1]+1), coeficient,  isFree),
                                              colorText, BgColorSection);
 
         Add_Component(text);

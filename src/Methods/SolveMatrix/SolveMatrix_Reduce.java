@@ -3,6 +3,7 @@ import java.awt.Dimension;
 
 import Classes.*;
 import Classes.Matrix.AbstractClasses.Matrix;
+import Classes.Matrix.Pivots.Classes.Pivots_Augmented;
 import Classes.Matrix.Matrix_Reduce;
 import Classes.Recursion.Recursion;
 import Classes.Utilities.Printer;
@@ -24,8 +25,8 @@ public class SolveMatrix_Reduce {
     SectionScrollUI top, center, bottom;
     int[] size = {1000, 200};
 
-    public void Main(){
-        Create_Matrix();
+    public void Main(double[][] mat){
+        matrix = new Matrix_Reduce("1", mat);
         Set_UIProperties();
         
         Reduce_Matrix();
@@ -70,13 +71,7 @@ public class SolveMatrix_Reduce {
     }
 
 
-
     
-    private void    Create_Matrix(){
-        Printer.Subtitle2("Let's start by indicate the size of the matrix");
-        //double[][] entries = CreateMatrix.Free();
-        //matrix = new Matrix_Reduce("A", entries);
-    }
     private void    Reduce_Matrix(){
         matrix.ReduceMatrix_AllPivots();
     }
@@ -97,6 +92,10 @@ public class SolveMatrix_Reduce {
             matrixUI.Set_TableColor(Colors.gray3);
             bottom.Add_Component(matrixUI);
         }
+        Pivots_Augmented pivots = matrix.pivots;
+        PivotsUI pivotsUI = new PivotsUI(pivots, "Pivots' status");
+        pivotsUI.Set_BackgroundColor(Colors.gray3);
+        bottom.Add_Component(pivotsUI);
         
         ConclusionUI  conclusion = ReduceUI.Print_Conclusion(header, categories, content);
         conclusion.Set_TableColor(Colors.gray3);

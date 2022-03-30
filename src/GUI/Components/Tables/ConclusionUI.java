@@ -7,7 +7,7 @@ public class ConclusionUI extends Table {
         this.content = content;
         Set_Table();
 
-        int[] size = {250, 75};
+        int[] size = {500, 75};
         Set_Size(size);
     }
 }
