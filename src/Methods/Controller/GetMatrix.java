@@ -26,6 +26,7 @@ public class GetMatrix extends SectionVertical{
      Input_BiggerThan columns;     
      Input_BiggerThan rows;
      Consumer<Integer> consumer;
+     boolean validMatrix = true;
 
     public  SectionScrollUI Get_FreeUI(){        
         SectionScrollUI newSection = new SectionScrollUI(new int[] {1000, 300} );
@@ -107,11 +108,20 @@ public class GetMatrix extends SectionVertical{
         double[][] matrix = new double[size[0]][size[1]];
         for (int indexRow = 0; indexRow < matrix.length; indexRow++) {            
             for (int indexColumn = 0; indexColumn < matrix[0].length; indexColumn++) {
-                matrix[indexRow][indexColumn] =  inputs.Get_InputValue(index);       
-                index++;
+                try {
+                    validMatrix = true;
+                    double input = inputs.Get_InputValue(index);
+                    matrix[indexRow][indexColumn] =  input;       
+                    index++;
+                } catch (Exception e) {
+                    validMatrix = false;
+                    System.out.println(e);
+                }
             }
         }
-        return matrix;
+        if(validMatrix)
+            return matrix;
+        return null;
     }
     
 }

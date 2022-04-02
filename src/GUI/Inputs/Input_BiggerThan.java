@@ -21,7 +21,7 @@ public class Input_BiggerThan extends JPanel{
     }
     public Double Get_Value(){
         try {
-            double value = Double.parseDouble( input.getText() );
+            double value = Integer.parseInt( input.getText() );
             if(value >= minimumValue)
                 return value;      
             return null;   

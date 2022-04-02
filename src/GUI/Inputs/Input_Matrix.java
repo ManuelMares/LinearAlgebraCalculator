@@ -68,6 +68,7 @@ public class Input_Matrix extends JPanel {
         else
             return empty;
     }
+
     public void Set_MatrixValues(){
         int index = 0;
         for (int indexRow = 0; indexRow < matrix.length; indexRow++) {
@@ -77,13 +78,14 @@ public class Input_Matrix extends JPanel {
             }
         }
     }
-    public double Get_InputValue(int index){
-        try {
-            double value = Double.parseDouble( Inputs[index].getText() );         
+    public Double Get_InputValue(int index){
+        try { 
+            Double value = Double.parseDouble( Inputs[index].getText() );   
             return value;   
         } catch (Exception e) {
             validMatrix = false;
-            return 0.0;
+            System.out.println(e);         
+            return null;
         }
 
     }
