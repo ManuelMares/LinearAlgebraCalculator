@@ -19,9 +19,14 @@ public class Input_Double extends JPanel{
     }
     public Double Get_InputValue(int index){
         try {
-            double value = Double.parseDouble( input.getText() );         
+            if(input.getText().equals(""))
+                throw new Exception("At least one input is null");
+            
+            double value = Double.parseDouble( input.getText() );  
+            System.out.println("value:" + value);       
             return value;   
         } catch (Exception e) {
+            System.out.println(e);
             return null;
         }
 

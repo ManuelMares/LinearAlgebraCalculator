@@ -80,7 +80,6 @@ public class InverseMatrix {
             Subtitle2UI conclusion = new Subtitle2UI(message);
             bottom.Add_Component(conclusion);
         }
-        Printer.Title("End of the prorgam");
     }
     
     

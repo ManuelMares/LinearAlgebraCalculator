@@ -49,10 +49,8 @@ public class Main {
     
     
    public Main (){ 
-   frame =new MainFrame();
-   
-   Set_Buttons();
-   
+      frame =new MainFrame();      
+      Set_Buttons();   
       frame.Set_Visible();          
    }  
    
@@ -69,10 +67,15 @@ public class Main {
       methodSelected = option + 1;
       Consumer<Integer> tmp = num -> Set_Matrix();
       createMatrix = new CreateMatrix(tmp, "Matrix A");
+      Consumer<Integer> tmp2 = num -> Reset();
+      ButtonUI button = new ButtonUI("Main menu ", tmp2, 0);
       frame.Add_Component(createMatrix.Get_Component());
+      frame.Add_Component(button.Get_UI());
    }
 
    private void Start_Method() {
+      Consumer<Integer> tmp2 = num -> Reset();
+      ButtonUI button = new ButtonUI("Return ", tmp2, 0);
       switch(methodSelected){
          case 1:
             SolveMatrix_ReduceEchelon solveMatrix_ReduceEchelon = new SolveMatrix_ReduceEchelon();
@@ -108,6 +111,7 @@ public class Main {
          break;
       } 
       
+      frame.Add_Component(button.Get_UI());
    }
 
    public void Set_Matrix(){
@@ -124,12 +128,23 @@ public class Main {
       frame.Clean_Frame();
       Consumer<Integer> tmp = num -> Set_Matrix2();
       createMatrix2 = new CreateMatrix(tmp, "Matrix B");
+      Consumer<Integer> tmp2 = num -> Reset();
+      ButtonUI button = new ButtonUI("Main menu ", tmp2, 0);
       frame.Add_Component(createMatrix2.Get_Component());
+      frame.Add_Component(button.Get_UI());
    }
    public void Set_Matrix2(){
       Matrix2 = createMatrix2.Get_Matrix(); 
       frame.Clean_Frame();  
       Start_Method();  
    }
+
+   public void Reset(){
+      System.out.println("Success");
+      frame.Clean_Frame();    
+      Set_Buttons();   
+      frame.Set_Visible();  
+   }
+
  
 }

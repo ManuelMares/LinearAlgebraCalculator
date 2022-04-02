@@ -47,6 +47,7 @@ public class GetSize extends SectionVertical {
             try{
                 size[0] = rows.Get_Value().intValue();
                 size[1] = columns.Get_Value().intValue();
+                newSection = null;
                 consumer.accept(size);
             }catch(Exception ex){
                 System.out.println("size not valid: " + rows.Get_Value() + ",    : " + columns.Get_Value());
